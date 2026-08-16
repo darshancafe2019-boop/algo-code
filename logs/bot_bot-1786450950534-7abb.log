@@ -1,0 +1,53 @@
+2026-08-12 12:01:20,114 - INFO - Initializing scheduled trading bot live runner for bot-1786450950534-7abb...
+2026-08-12 12:01:20,115 - INFO - SQLite database tables verified/created.
+2026-08-12 12:01:20,117 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-12 12:01:31,282 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-12 12:01:31,288 - INFO - Sending Telegram alert...
+2026-08-12 12:01:35,421 - INFO - Telegram alert sent successfully.
+2026-08-12 12:01:35,422 - INFO - [bot-1786450950534-7abb] Starting signal check cycle for ETH/USDT (1m)...
+2026-08-12 12:01:35,427 - INFO - Fetching recent candles for ETH/USDT (1m) [Bot: bot-1786450950534-7abb]...
+2026-08-12 12:01:37,438 - INFO - Indicators computed | close=1885.67 ema_9=1886.10 ema_20=1886.84 ema_50=1887.36 ema_200=1888.66 macd=-0.6360 poc=1875.0 val=1850.0 vah=1875.0
+2026-08-12 12:01:37,438 - INFO - [bot-1786450950534-7abb] Evaluating strategy on completed candle: 2026-08-12T06:30:00+00:00 at Close price: 1885.64
+2026-08-12 12:01:37,448 - INFO - [bot-1786450950534-7abb] Active trade found in DB (ID: 42, SHORT, Entry: 1892.17, SL: 1896.04, TP: 1884.42)
+2026-08-12 12:01:37,448 - INFO - [bot-1786450950534-7abb] Active trade SL/TP not hit. Holding position.
+2026-08-12 12:01:37,511 - INFO - Logged heartbeat status: OK
+2026-08-12 12:01:37,513 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-12 12:01:37,514 - INFO - Bot bot-1786450950534-7abb scheduled to check every 1 minutes.
+2026-08-12 12:01:37,514 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-12 12:01:37,514 - INFO - Scheduler started
+2026-08-12 12:02:37,534 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:02:37 IST)" (scheduled at 2026-08-12 12:02:37.513846+05:30)
+2026-08-12 12:02:37,534 - INFO - [bot-1786450950534-7abb] Starting signal check cycle for ETH/USDT (1m)...
+2026-08-12 12:02:37,549 - INFO - Fetching recent candles for ETH/USDT (1m) [Bot: bot-1786450950534-7abb]...
+2026-08-12 12:02:38,196 - INFO - Indicators computed | close=1885.64 ema_9=1886.05 ema_20=1886.72 ema_50=1887.24 ema_200=1888.56 macd=-0.5886 poc=1875.0 val=1850.0 vah=1875.0
+2026-08-12 12:02:38,197 - INFO - [bot-1786450950534-7abb] Evaluating strategy on completed candle: 2026-08-12T06:31:00+00:00 at Close price: 1886.12
+2026-08-12 12:02:38,210 - INFO - [bot-1786450950534-7abb] Active trade found in DB (ID: 42, SHORT, Entry: 1892.17, SL: 1896.04, TP: 1884.42)
+2026-08-12 12:02:38,210 - INFO - [bot-1786450950534-7abb] Active trade SL/TP not hit. Holding position.
+2026-08-12 12:02:38,291 - INFO - Logged heartbeat status: OK
+2026-08-12 12:02:38,291 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:03:37 IST)" executed successfully
+2026-08-12 12:03:37,530 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:04:37 IST)" (scheduled at 2026-08-12 12:03:37.513846+05:30)
+2026-08-12 12:03:37,531 - INFO - [bot-1786450950534-7abb] Starting signal check cycle for ETH/USDT (1m)...
+2026-08-12 12:03:37,555 - INFO - Fetching recent candles for ETH/USDT (1m) [Bot: bot-1786450950534-7abb]...
+2026-08-12 12:03:38,273 - INFO - Indicators computed | close=1886.02 ema_9=1886.04 ema_20=1886.63 ema_50=1887.12 ema_200=1888.46 macd=-0.5183 poc=1875.0 val=1850.0 vah=1875.0
+2026-08-12 12:03:38,273 - INFO - [bot-1786450950534-7abb] Evaluating strategy on completed candle: 2026-08-12T06:32:00+00:00 at Close price: 1885.67
+2026-08-12 12:03:38,286 - INFO - [bot-1786450950534-7abb] Active trade found in DB (ID: 42, SHORT, Entry: 1892.17, SL: 1896.04, TP: 1884.42)
+2026-08-12 12:03:38,286 - INFO - [bot-1786450950534-7abb] Active trade SL/TP not hit. Holding position.
+2026-08-12 12:03:38,355 - INFO - Logged heartbeat status: OK
+2026-08-12 12:03:38,355 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:04:37 IST)" executed successfully
+2026-08-12 12:04:37,528 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:05:37 IST)" (scheduled at 2026-08-12 12:04:37.513846+05:30)
+2026-08-12 12:04:37,528 - INFO - [bot-1786450950534-7abb] Starting signal check cycle for ETH/USDT (1m)...
+2026-08-12 12:04:37,539 - INFO - Fetching recent candles for ETH/USDT (1m) [Bot: bot-1786450950534-7abb]...
+2026-08-12 12:04:38,065 - INFO - Indicators computed | close=1885.95 ema_9=1886.01 ema_20=1886.53 ema_50=1887.01 ema_200=1888.36 macd=-0.4666 poc=1875.0 val=1850.0 vah=1875.0
+2026-08-12 12:04:38,066 - INFO - [bot-1786450950534-7abb] Evaluating strategy on completed candle: 2026-08-12T06:33:00+00:00 at Close price: 1886.02
+2026-08-12 12:04:38,077 - INFO - [bot-1786450950534-7abb] Active trade found in DB (ID: 42, SHORT, Entry: 1892.17, SL: 1896.04, TP: 1884.42)
+2026-08-12 12:04:38,077 - INFO - [bot-1786450950534-7abb] Active trade SL/TP not hit. Holding position.
+2026-08-12 12:04:38,191 - INFO - Logged heartbeat status: OK
+2026-08-12 12:04:38,191 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:05:37 IST)" executed successfully
+2026-08-12 12:05:37,529 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:06:37 IST)" (scheduled at 2026-08-12 12:05:37.513846+05:30)
+2026-08-12 12:05:37,529 - INFO - [bot-1786450950534-7abb] Starting signal check cycle for ETH/USDT (1m)...
+2026-08-12 12:05:37,541 - INFO - Fetching recent candles for ETH/USDT (1m) [Bot: bot-1786450950534-7abb]...
+2026-08-12 12:05:38,105 - INFO - Indicators computed | close=1886.21 ema_9=1886.17 ema_20=1886.53 ema_50=1886.97 ema_200=1888.29 macd=-0.3446 poc=1875.0 val=1850.0 vah=1875.0
+2026-08-12 12:05:38,105 - INFO - [bot-1786450950534-7abb] Evaluating strategy on completed candle: 2026-08-12T06:34:00+00:00 at Close price: 1886.37
+2026-08-12 12:05:38,118 - INFO - [bot-1786450950534-7abb] Active trade found in DB (ID: 42, SHORT, Entry: 1892.17, SL: 1896.04, TP: 1884.42)
+2026-08-12 12:05:38,118 - INFO - [bot-1786450950534-7abb] Active trade SL/TP not hit. Holding position.
+2026-08-12 12:05:38,188 - INFO - Logged heartbeat status: OK
+2026-08-12 12:05:38,188 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:01:00], next run at: 2026-08-12 12:06:37 IST)" executed successfully

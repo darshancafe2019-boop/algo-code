@@ -1,0 +1,175 @@
+Total routes found: 173
+
+L 146: @app.route("/") -> def index():
+L 152: @app.route("/favicon.ico") -> def favicon():
+L 158: @app.route("/api/welcome_summary") -> def api_welcome_summary():
+L 167: @app.route("/api/price_history") -> def api_price_history():
+L 202: @app.route("/api/stream/ticker") -> def api_stream_ticker():
+L 252: @app.route("/api/stream/events") -> def api_stream_events():
+L 290: @app.route("/api/ticker") -> def api_ticker():
+L 338: @app.route("/api/candles") -> def api_candles():
+L 448: @app.route("/api/orderbook") -> def api_orderbook():
+L 476: @app.route("/api/status") -> def api_status():
+L 572: @app.route("/api/bot/control", methods=["POST"]) -> def api_bot_control():
+L 600: @app.route("/api/strategy/config", methods=["GET", "POST"]) -> def api_strategy_config():
+L 659: @app.route("/api/bot/status", methods=["GET"]) -> def api_bot_status_rest():
+L 682: @app.route("/api/market", methods=["GET"]) -> def api_market_rest():
+L 704: @app.route("/api/indicators/catalog", methods=["GET"]) -> def api_indicators_catalog():
+L 711: @app.route("/api/indicators", methods=["GET"]) -> def api_indicators_list():
+L 745: @app.route("/api/indicators/<indicator_id>", methods=["GET", "PUT"]) -> def api_indicator_detail(indicator_id):
+L 763: @app.route("/api/bot/<bot_id>/indicators", methods=["POST"]) -> def api_bot_indicators_save(bot_id):
+L 786: @app.route("/api/indicators/<indicator_id>/enable", methods=["POST"]) -> def api_indicator_enable(indicator_id):
+L 796: @app.route("/api/indicators/<indicator_id>/disable", methods=["POST"]) -> def api_indicator_disable(indicator_id):
+L 806: @app.route("/api/indicators/<indicator_id>/favorite", methods=["POST"]) -> def api_indicator_favorite(indicator_id):
+L 815: @app.route("/api/indicators/favorites", methods=["GET"]) -> def api_indicators_favorites():
+L 823: @app.route("/api/indicators/<indicator_id>/reset", methods=["POST"]) -> def api_indicator_reset(indicator_id):
+L 833: @app.route("/api/indicators/reset-all", methods=["POST"]) -> def api_indicators_reset_all():
+L 843: @app.route("/api/indicators/apply-preset", methods=["POST"]) -> def api_indicators_apply_preset():
+L 855: @app.route("/api/indicators/schema", methods=["GET"]) -> def api_indicators_schema():
+L 861: @app.route("/api/indicators/<indicator_id>/apply", methods=["POST"]) -> def api_indicator_apply(indicator_id):
+L 902: @app.route("/api/indicator-presets", methods=["GET", "POST"]) -> def api_indicator_presets():
+L 923: @app.route("/api/indicator-presets/<preset_id>", methods=["DELETE"]) -> def api_indicator_preset_delete(preset_id):
+L 933: @app.route("/api/indicator-config-history", methods=["GET"]) -> def api_indicator_config_history():
+L 942: @app.route("/api/indicators/export", methods=["GET", "POST"]) -> def api_indicators_export():
+L 956: @app.route("/api/indicators/import", methods=["POST"]) -> def api_indicators_import():
+L 982: @app.route("/api/universe/summary", methods=["GET"]) -> def api_universe_summary():
+L1026: @app.route("/api/universe/instruments", methods=["GET"]) -> def api_universe_instruments():
+L1059: @app.route("/api/universe/instruments/<path:identifier>", methods=["GET"]) -> def api_universe_instrument_detail(identifier):
+L1068: @app.route("/api/universe/instruments/<path:identifier>/controls", methods=["POST"]) -> def api_universe_update_controls(identifier):
+L1084: @app.route("/api/universe/sync", methods=["POST"]) -> def api_universe_sync():
+L1101: @app.route("/api/universe/opportunities", methods=["GET"]) -> def api_universe_opportunities():
+L1109: @app.route("/api/universe/providers", methods=["GET"]) -> def api_universe_providers():
+L1122: @app.route("/api/universe/select-all", methods=["POST"]) -> def api_universe_select_all():
+L1143: @app.route("/api/indicators/status", methods=["GET"]) -> def api_indicators_status():
+L1171: @app.route("/api/indicators/profiles", methods=["GET", "POST"]) -> def api_indicators_profiles():
+L1186: @app.route("/api/indicators/profiles/<profile_id>", methods=["GET"]) -> def api_indicators_profile_detail(profile_id):
+L1195: @app.route("/api/indicators/profiles/<profile_id>/apply", methods=["POST"]) -> def api_indicators_profile_apply(profile_id):
+L1207: @app.route("/api/indicators/scenarios", methods=["GET"]) -> def api_indicators_scenarios():
+L1214: @app.route("/api/signals", methods=["GET"]) -> @app.route("/api/signals/pending", methods=["GET"])
+L1215: @app.route("/api/signals/pending", methods=["GET"]) -> def api_signals_pending():
+L1228: @app.route("/api/positions", methods=["GET"]) -> def api_positions_rest():
+L1239: @app.route("/api/performance", methods=["GET"]) -> def api_performance_rest():
+L1263: @app.route("/api/signals/<int:signal_id>/approve", methods=["POST"]) -> @app.route("/api/signals/approve", methods=["POST"])
+L1264: @app.route("/api/signals/approve", methods=["POST"]) -> def api_signals_approve(signal_id=None):
+L1396: @app.route("/api/signals/<int:signal_id>/ignore", methods=["POST"]) -> def api_signals_ignore_rest(signal_id):
+L1406: @app.route("/api/positions/<int:position_id>/square-off", methods=["POST"]) -> @app.route("/api/positions/square-off", methods=["POST"])
+L1407: @app.route("/api/positions/square-off", methods=["POST"]) -> def api_positions_square_off_rest(position_id=None):
+L1451: @app.route("/api/bot/pause", methods=["POST"]) -> def api_bot_pause_rest():
+L1458: @app.route("/api/bot/resume", methods=["POST"]) -> def api_bot_resume_rest():
+L1465: @app.route("/api/bot/stop", methods=["POST"]) -> def api_bot_stop_rest():
+L1472: @app.route("/api/kill-switch", methods=["POST"]) -> def api_kill_switch_rest():
+L1484: @app.route("/api/command", methods=["POST"]) -> def api_execute_command():
+L1508: @app.route("/health/live", methods=["GET"]) -> def health_live():
+L1514: @app.route("/health/ready", methods=["GET"]) -> def health_ready():
+L1529: @app.route("/health/system", methods=["GET"]) -> def health_system():
+L1586: @app.route("/health/bot/<bot_id>", methods=["GET"]) -> def health_bot_instance(bot_id):
+L1611: @app.route("/api/diagnostics/state", methods=["GET"]) -> def api_diagnostics_state():
+L1637: @app.route("/api/risk/calculate", methods=["POST"]) -> def api_risk_calculate():
+L1677: @app.route("/api/market/context") -> @app.route("/api/market-context")
+L1678: @app.route("/api/market-context") -> def api_market_context():
+L1715: @app.route("/api/bots/summary", methods=["GET"]) -> def api_bots_summary():
+L1758: @app.route("/api/bot-templates", methods=["GET", "POST"]) -> @app.route("/api/bots/templates", methods=["GET", "POST"])
+L1759: @app.route("/api/bots/templates", methods=["GET", "POST"]) -> def api_bot_templates_catalog():
+L1774: @app.route("/api/bot-templates/<template_id>", methods=["GET", "PUT", "DELETE"]) -> def api_bot_template_detail(template_id):
+L1800: @app.route("/api/bot-templates/<template_id>/instantiate", methods=["POST"]) -> def api_bot_template_instantiate(template_id):
+L1861: @app.route("/api/bot-groups", methods=["GET", "POST"]) -> @app.route("/api/bots/groups", methods=["GET", "POST"])
+L1862: @app.route("/api/bots/groups", methods=["GET", "POST"]) -> def api_bot_groups_catalog():
+L1877: @app.route("/api/bot-groups/<group_name>", methods=["PUT", "DELETE"]) -> def api_bot_group_manage(group_name):
+L1896: @app.route("/api/bot-groups/<group_name>/batch-control", methods=["POST"]) -> def api_bot_group_batch_control(group_name):
+L1919: @app.route("/api/bots/pause-all", methods=["POST"]) -> def api_bots_pause_all():
+L1928: @app.route("/api/bots/stop-all", methods=["POST"]) -> def api_bots_stop_all():
+L1937: @app.route("/api/bots/<bot_id>/duplicate", methods=["POST"]) -> def api_bots_duplicate(bot_id):
+L1987: @app.route("/api/bots/paper/overview", methods=["GET"]) -> def api_bots_paper_overview():
+L1994: @app.route("/api/bots/paper/reset", methods=["POST"]) -> def api_bots_paper_reset():
+L2003: @app.route("/api/bots/live/overview", methods=["GET"]) -> def api_bots_live_overview():
+L2034: @app.route("/api/bots/history", methods=["GET"]) -> def api_bots_history():
+L2094: @app.route("/api/bots/events", methods=["GET"]) -> def api_bots_events_historical():
+L2106: @app.route("/api/bots", methods=["GET"]) -> def api_bots_list():
+L2151: @app.route("/api/bots/create", methods=["POST"]) -> def api_bots_create():
+L2208: @app.route("/api/bots/<bot_id>", methods=["PUT", "POST"]) -> def api_bots_update(bot_id):
+L2251: @app.route("/api/bots/<bot_id>", methods=["DELETE"]) -> def api_bots_delete(bot_id):
+L2279: @app.route("/api/bots/start-all", methods=["POST"]) -> def api_bots_start_all():
+L2288: @app.route("/api/bots/<bot_id>/control", methods=["POST"]) -> def api_bot_instance_control(bot_id):
+L2313: @app.route("/api/bots/<bot_id>/force_test_trade", methods=["POST"]) -> def api_bot_force_test_trade(bot_id):
+L2483: @app.route("/api/bots/<bot_id>/confluence", methods=["GET"]) -> def api_bot_confluence(bot_id):
+L2519: @app.route("/api/bots/<bot_id>/activity", methods=["GET"]) -> def api_bot_activity(bot_id):
+L2623: summary_line = f"⚡ Bot is RUNNING — actively monitoring open position ({ot_dir} @ ${ot_price:,.2f}) and scanning {b.get('timeframe', '5m')} candles." -> open_pos_label = f"{ot_dir} @ ${ot_price:,.2f} (Actively Monitored)"
+L2643: @app.route("/api/bots/<bot_id>/decisions", methods=["GET"]) -> def api_bot_decisions(bot_id):
+L2782: @app.route("/api/trades/<int:trade_id>/trace", methods=["GET"]) -> def api_trade_trace(trade_id):
+L2862: "details": f"Routed via {tr.get('execution_mode', 'PAPER')} Adapter. Broker Order ID: {tr.get('broker_order_id')}. Filled Qty: {tr.get('position_size')} @ ${tr.get('entry_price', 0.0):,.2f}." -> },
+L2887: @app.route("/api/bots/comparison") -> def api_bots_comparison():
+L3092: @app.route("/api/analytics") -> def api_analytics():
+L3139: @app.route("/api/analytics/summary") -> def api_analytics_summary():
+L3152: @app.route("/api/analytics/pnl-by-symbol") -> def api_analytics_pnl_by_symbol():
+L3165: @app.route("/api/analytics/win-loss") -> def api_analytics_win_loss():
+L3178: @app.route("/api/analytics/open-closed") -> def api_analytics_open_closed():
+L3191: @app.route("/api/analytics/strategy-performance") -> def api_analytics_strategy_performance():
+L3212: @app.route("/api/analytics/direction-bias") -> def api_analytics_direction_bias():
+L3225: @app.route("/api/analytics/asset-class-distribution") -> def api_analytics_asset_class_distribution():
+L3238: @app.route("/api/analytics/execution-mode") -> def api_analytics_execution_mode():
+L3251: @app.route("/api/analytics/equity-curve") -> def api_analytics_equity_curve():
+L3264: @app.route("/api/analytics/drawdown") -> def api_analytics_drawdown():
+L3285: @app.route("/api/analytics/trade-history") -> def api_analytics_trade_history():
+L3298: @app.route("/api/analytics/filters") -> def api_analytics_filters():
+L3335: @app.route("/api/analytics/v2") -> def api_analytics_v2():
+L3360: @app.route("/api/analytics/kpis") -> def api_analytics_kpis():
+L3391: @app.route("/api/analytics/drilldown") -> def api_analytics_drilldown():
+L3404: @app.route("/api/analytics/distributions") -> def api_analytics_distributions():
+L3433: @app.route("/api/analytics/latencies") -> def api_analytics_latencies():
+L3444: @app.route("/api/analytics/integrity") -> def api_analytics_integrity():
+L3456: @app.route("/api/trades/reconcile", methods=["GET", "POST"]) -> def api_trades_reconcile():
+L3482: @app.route("/api/export/trades/complete.csv") -> def api_export_trades_complete_csv():
+L3524: @app.route("/api/export/trades/complete.json") -> def api_export_trades_complete_json():
+L3536: @app.route("/api/trades") -> def api_trades():
+L3593: @app.route("/api/trades/history") -> @app.route("/api/trades/open")
+L3594: @app.route("/api/trades/open") -> @app.route("/api/trades/closed")
+L3595: @app.route("/api/trades/closed") -> def api_trades_history_alias():
+L3601: @app.route("/api/trades/export") -> @app.route("/api/trades/export-csv")
+L3602: @app.route("/api/trades/export-csv") -> def api_trades_export_csv():
+L3674: @app.route("/api/audit/events", methods=["GET"]) -> def api_audit_events():
+L3688: @app.route("/api/audit/export-csv", methods=["GET"]) -> def api_audit_export_csv():
+L3719: @app.route("/api/live-trading/arm", methods=["POST"]) -> def api_live_trading_arm():
+L3781: @app.route("/api/live-trading/disarm", methods=["POST"]) -> def api_live_trading_disarm():
+L3803: @app.route("/api/execution-gate/status", methods=["GET"]) -> def api_execution_gate_status():
+L3831: @app.route("/api/trades/<int:trade_id>/detail", methods=["GET"]) -> def api_trade_detail_v2(trade_id):
+L3840: @app.route("/api/trades/<int:trade_id>/replay", methods=["GET"]) -> def api_trade_replay(trade_id):
+L3855: @app.route("/api/trades/<int:trade_id>/audit-integrity", methods=["GET"]) -> def api_trade_audit_integrity(trade_id):
+L3862: @app.route("/api/trades/v2", methods=["GET"]) -> def api_trades_v2():
+L3971: @app.route("/api/export/trade-audit/<int:trade_id>", methods=["GET"]) -> def api_export_trade_audit_single(trade_id):
+L3987: @app.route("/api/market-intelligence/status", methods=["GET"]) -> def api_market_intelligence_status():
+L4006: @app.route("/api/market-intelligence/scanner", methods=["GET"]) -> def api_market_intelligence_scanner():
+L4018: @app.route("/api/market-intelligence/pre-trade-decisions", methods=["GET"]) -> def api_market_intelligence_pre_trade_decisions():
+L4052: @app.route('/api/risk-limits', methods=['GET']) -> def api_get_risk_limits():
+L4068: @app.route("/api/market-intelligence/data-health", methods=["GET"]) -> def api_market_intelligence_data_health():
+L4084: @app.route("/api/market-intelligence/historical-research", methods=["GET"]) -> def api_market_intelligence_historical_research():
+L4105: @app.route("/api/market-intelligence/pattern-search", methods=["GET"]) -> def api_market_intelligence_pattern_search():
+L4120: @app.route("/api/kill-switch", methods=["GET", "POST"]) -> def api_kill_switch():
+L4157: @app.route("/api/trades/<int:trade_id>/observation", methods=["POST"]) -> def api_trade_observation(trade_id):
+L4174: @app.route("/api/trades/export") -> def api_trades_export():
+L4199: @app.route("/api/trades/<int:trade_id>/timeline", methods=["GET"]) -> def api_trade_timeline(trade_id):
+L4254: @app.route("/api/export/trades.csv", methods=["GET"]) -> def api_export_trades_csv():
+L4259: @app.route("/api/export/audit.csv", methods=["GET"]) -> @app.route("/api/export/bot-events.csv", methods=["GET"])
+L4260: @app.route("/api/export/bot-events.csv", methods=["GET"]) -> def api_export_audit_csv():
+L4268: @app.route("/api/backtest/run", methods=["POST"]) -> def api_backtest_run():
+L4303: @app.route("/api/alerts") -> def api_alerts():
+L4332: @app.route("/api/alerts/clear", methods=["DELETE"]) -> def api_alerts_clear():
+L4344: @app.route("/api/alerts/<int:alert_id>", methods=["DELETE"]) -> def api_alerts_dismiss(alert_id):
+L4356: @app.route("/api/alerts/test", methods=["POST"]) -> def api_alerts_test():
+L4388: @app.route("/api/security/apikeys", methods=["GET", "POST"]) -> def api_security_apikeys():
+L4417: @app.route("/api/security/audit") -> def api_security_audit():
+L4427: @app.route("/api/logs") -> def api_logs():
+L4467: @app.route("/api/logs/diagnostic_report") -> def api_logs_diagnostic_report():
+L4504: @app.route("/api/risk/overview", methods=["GET"]) -> def api_risk_overview():
+L4656: @app.route("/api/risk/profiles", methods=["GET", "POST"]) -> def api_risk_profiles():
+L4670: @app.route("/api/risk/profiles/<profile_id>", methods=["DELETE"]) -> def api_risk_profiles_delete(profile_id):
+L4679: @app.route("/api/risk/profiles/default", methods=["POST"]) -> def api_risk_profiles_set_default():
+L4690: @app.route("/api/risk/rules", methods=["GET", "POST"]) -> def api_risk_rules():
+L4704: @app.route("/api/risk/rules/<rule_id>", methods=["DELETE"]) -> def api_risk_rules_delete(rule_id):
+L4713: @app.route("/api/risk/rules/<rule_id>/toggle", methods=["POST"]) -> def api_risk_rules_toggle(rule_id):
+L4722: @app.route("/api/risk/position-size", methods=["POST"]) -> def api_risk_position_size():
+L4764: @app.route("/api/risk/precheck", methods=["POST"]) -> def api_risk_precheck():
+L4796: @app.route("/api/risk/what-if", methods=["POST"]) -> def api_risk_what_if():
+L4850: @app.route("/api/risk/stress-test", methods=["POST"]) -> def api_risk_stress_test():
+L4866: @app.route("/api/risk/futures/calculate", methods=["POST"]) -> def api_risk_futures_calculate():
+L4888: @app.route("/api/risk/options/calculate", methods=["POST"]) -> def api_risk_options_calculate():
+L4904: @app.route("/api/risk/history", methods=["GET"]) -> def api_risk_history():

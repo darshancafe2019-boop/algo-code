@@ -1,0 +1,27 @@
+2026-08-15 14:15:30,318 - INFO - BotWatchdog thread started.
+2026-08-15 14:15:30,318 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:42:36,915 - INFO - BotWatchdog thread started.
+2026-08-15 14:42:36,916 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:06:21,018 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:21,018 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:10,946 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:10,946 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:32,793 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:32,793 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 16:07:33,347 - INFO - BotWatchdog thread started.
+2026-08-15 16:07:33,347 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:32:06,546 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786783521967...
+2026-08-15 17:38:11,716 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786783521967...
+2026-08-15 17:50:35,485 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786783521967...
+2026-08-15 17:50:35,555 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:35,569 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:54:39,122 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786783521967...
+2026-08-15 17:54:39,151 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:39,173 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:38:05,682 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786783521967...
+2026-08-15 20:22:07,239 - INFO - BotWatchdog thread started.
+2026-08-15 20:22:07,239 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:22:07,292 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786783521967...
+2026-08-15 20:23:05,534 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786783521967...
+2026-08-15 20:23:05,555 - INFO - SQLite database tables verified/created.
+2026-08-15 20:23:05,568 - INFO - Initializing CCXT Binance in TESTNET mode.

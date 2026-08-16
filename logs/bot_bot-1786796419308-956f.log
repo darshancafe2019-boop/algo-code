@@ -1,0 +1,47 @@
+2026-08-15 17:50:33,281 - INFO - Initializing scheduled trading bot live runner for bot-1786796419308-956f...
+2026-08-15 17:54:38,872 - INFO - Initializing scheduled trading bot live runner for bot-1786796419308-956f...
+2026-08-15 17:54:38,904 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:38,924 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:38:01,250 - INFO - Initializing scheduled trading bot live runner for bot-1786796419308-956f...
+2026-08-15 19:38:01,273 - INFO - SQLite database tables verified/created.
+2026-08-15 19:38:01,295 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:04,961 - INFO - BotWatchdog thread started.
+2026-08-15 20:22:04,962 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:22:05,008 - INFO - Initializing scheduled trading bot live runner for bot-1786796419308-956f...
+2026-08-15 20:23:06,338 - INFO - Initializing scheduled trading bot live runner for bot-1786796419308-956f...
+2026-08-15 20:54:02,671 - INFO - BotWatchdog thread started.
+2026-08-15 20:54:02,671 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:54:03,105 - INFO - Initializing scheduled trading bot live runner for bot-1786796419308-956f...
+2026-08-15 20:54:04,670 - INFO - SQLite database tables verified/created.
+2026-08-15 20:54:05,800 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:08,425 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:08,499 - INFO - Sending Telegram alert...
+2026-08-15 20:54:20,357 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:20,378 - INFO - [bot-1786796419308-956f] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 20:54:32,107 - ERROR - Error logging bot activity for bot-1786796419308-956f: database is locked
+2026-08-15 20:54:32,147 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786796419308-956f]...
+2026-08-15 20:54:37,640 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: binance does not have market symbol BTC/USDT
+2026-08-15 20:54:37,684 - ERROR - System Error in runner execution cycle: binance does not have market symbol BTC/USDT
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4714, in fetch_ohlcv
+    market = self.market(symbol)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 2916, in market
+    raise BadSymbol(self.id + ' does not have market symbol ' + symbol)
+ccxt.base.errors.BadSymbol: binance does not have market symbol BTC/USDT
+2026-08-15 20:54:55,815 - INFO - Sending Telegram alert...
+2026-08-15 20:55:36,299 - INFO - Telegram alert sent successfully.
+2026-08-15 20:55:41,051 - INFO - Logged heartbeat status: ERROR
+2026-08-15 20:55:42,286 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-15 20:55:42,286 - INFO - Bot bot-1786796419308-956f scheduled to check every 5 minutes.
+2026-08-15 20:55:42,287 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-15 20:55:42,287 - INFO - Scheduler started

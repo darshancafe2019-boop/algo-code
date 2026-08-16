@@ -1,0 +1,61 @@
+2026-08-15 17:50:32,969 - INFO - Initializing scheduled trading bot live runner for bot-1786796417885-b0fa...
+2026-08-15 17:54:39,233 - INFO - Initializing scheduled trading bot live runner for bot-1786796417885-b0fa...
+2026-08-15 17:54:39,262 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:39,292 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:38:00,407 - INFO - Initializing scheduled trading bot live runner for bot-1786796417885-b0fa...
+2026-08-15 19:38:00,449 - INFO - SQLite database tables verified/created.
+2026-08-15 19:38:00,591 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:04,589 - INFO - BotWatchdog thread started.
+2026-08-15 20:22:04,590 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:22:04,595 - ERROR - Watchdog check failed: disk I/O error
+2026-08-15 20:22:04,698 - INFO - Initializing scheduled trading bot live runner for bot-1786796417885-b0fa...
+2026-08-15 20:23:04,257 - INFO - Initializing scheduled trading bot live runner for bot-1786796417885-b0fa...
+2026-08-15 20:23:04,283 - INFO - SQLite database tables verified/created.
+2026-08-15 20:54:02,994 - INFO - BotWatchdog thread started.
+2026-08-15 20:54:02,994 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:54:03,509 - INFO - Initializing scheduled trading bot live runner for bot-1786796417885-b0fa...
+2026-08-15 20:54:16,343 - INFO - SQLite database tables verified/created.
+2026-08-15 20:54:16,461 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:18,790 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:18,903 - INFO - Sending Telegram alert...
+2026-08-15 20:54:41,194 - ERROR - Error logging Telegram event: database is locked
+2026-08-15 20:54:41,203 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:42,156 - INFO - [bot-1786796417885-b0fa] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 20:54:46,021 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786796417885-b0fa]...
+2026-08-15 20:55:44,120 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: 
+2026-08-15 20:55:44,120 - ERROR - System Error in runner execution cycle: 
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4709, in fetch_ohlcv
+    self.load_markets()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 1816, in load_markets
+    markets = self.fetch_markets(params)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 3241, in fetch_markets
+    promisesRaw.append(self.publicGetExchangeInfo(params))
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 11819, in request
+    response = self.fetch2(path, api, method, params, headers, body, config)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5544, in fetch2
+    raise e
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5525, in fetch2
+    response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 635, in fetch
+    http_response = self.on_rest_response(http_status_code, http_status_text, url, method, headers, response.text, request_headers, request_body)
+                                                                                                    ^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\models.py", line 1075, in text
+    content = str(self.content, encoding or "utf-8", errors="replace")
+MemoryError
+2026-08-15 20:55:47,559 - INFO - Sending Telegram alert...

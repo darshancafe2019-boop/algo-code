@@ -1,0 +1,121 @@
+2026-08-11 17:14:00,877 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-11 17:14:00,881 - INFO - SQLite database tables verified/created.
+2026-08-11 17:14:00,888 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-11 17:14:02,286 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-11 17:14:02,294 - INFO - Sending Telegram alert...
+2026-08-11 17:14:03,086 - INFO - Telegram alert sent successfully.
+2026-08-11 17:14:03,088 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-11 17:14:03,099 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-11 17:14:05,348 - WARNING - Unknown timeframe 5m. Defaulting lookback to 30 days assuming 1h bars (720).
+2026-08-11 17:14:05,368 - INFO - Indicators computed | close=1891.94 ema_9=1885.38 ema_20=1882.44 ema_50=1884.31 ema_200=1895.14 macd=2.0369 poc=1900.0 val=1850.0 vah=1925.0
+2026-08-11 17:14:05,368 - INFO - [bot-3] Evaluating strategy on completed candle: 2026-08-11T10:00:00+00:00 at Close price: 1886.16
+2026-08-11 17:14:05,379 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=43.9) | Direction: HOLD | BullScore: 39.5% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-11 17:14:05,396 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-11 17:14:05,460 - INFO - Logged heartbeat status: OK
+2026-08-11 17:14:05,465 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-11 17:14:05,465 - INFO - Bot bot-3 scheduled to check every 60 minutes.
+2026-08-11 17:14:05,465 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-11 17:14:05,465 - INFO - Scheduler started
+2026-08-11 17:15:17,159 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-11 17:15:17,161 - INFO - SQLite database tables verified/created.
+2026-08-11 17:15:17,167 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-11 17:15:18,397 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-11 17:15:18,403 - INFO - Sending Telegram alert...
+2026-08-11 17:15:19,091 - INFO - Telegram alert sent successfully.
+2026-08-11 17:15:19,092 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-11 17:15:19,122 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-12 12:01:08,274 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-12 12:01:08,276 - INFO - SQLite database tables verified/created.
+2026-08-12 12:01:08,280 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-12 12:01:09,377 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-12 12:01:09,383 - INFO - Sending Telegram alert...
+2026-08-12 12:01:10,374 - INFO - Telegram alert sent successfully.
+2026-08-12 12:01:10,375 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-12 12:01:10,382 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-12 12:01:12,279 - INFO - Indicators computed | close=1885.63 ema_9=1887.15 ema_20=1884.25 ema_50=1883.28 ema_200=1887.89 macd=2.5163 poc=1900.0 val=1875.0 vah=1900.0
+2026-08-12 12:01:12,279 - INFO - [bot-3] Evaluating strategy on completed candle: 2026-08-12T05:00:00+00:00 at Close price: 1891.71
+2026-08-12 12:01:12,288 - INFO - Confluence Evaluation | Regime: RANGING (ADX=18.6) | Direction: HOLD | BullScore: 51.6% | BearScore: 48.4% | Active: ['ema', 'macd', 'vp']
+2026-08-12 12:01:12,366 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 52% (HOLD)
+2026-08-12 12:01:12,421 - INFO - Logged heartbeat status: OK
+2026-08-12 12:01:12,423 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-12 12:01:12,423 - INFO - Bot bot-3 scheduled to check every 60 minutes.
+2026-08-12 12:01:12,423 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-12 12:01:12,423 - INFO - Scheduler started
+2026-08-12 12:25:53,493 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-12 12:25:53,557 - INFO - SQLite database tables verified/created.
+2026-08-12 12:25:53,558 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-12 17:32:03,836 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-12 17:32:03,839 - INFO - SQLite database tables verified/created.
+2026-08-12 17:32:03,846 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-12 17:32:05,035 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-12 17:32:05,041 - INFO - Sending Telegram alert...
+2026-08-12 17:32:06,756 - INFO - Telegram alert sent successfully.
+2026-08-12 17:32:06,757 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-12 17:32:06,763 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-12 17:32:08,727 - INFO - Indicators computed | close=1915.87 ema_9=1908.66 ema_20=1898.29 ema_50=1893.86 ema_200=1891.72 macd=8.5769 poc=1900.0 val=1875.0 vah=1900.0
+2026-08-12 17:32:08,727 - INFO - [bot-3] Evaluating strategy on completed candle: 2026-08-12T11:00:00+00:00 at Close price: 1915.57
+2026-08-12 17:32:08,736 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=45.4) | Direction: HOLD | BullScore: 71.4% | BearScore: 28.6% | Active: [{'id': 'rsi', 'name': 'RSI (Relative Strength Index)', 'params': {'period': 14}}, {'id': 'momentum', 'name': 'Momentum', 'params': {'period': 10}}, {'id': 'bollinger', 'name': 'Bollinger Bands', 'params': {'period': 20, 'stdDev': 2.0}}]
+2026-08-12 17:32:08,751 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 71% (HOLD)
+2026-08-12 17:32:08,811 - INFO - Logged heartbeat status: OK
+2026-08-12 17:32:08,814 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-12 17:32:08,814 - INFO - Bot bot-3 scheduled to check every 60 minutes.
+2026-08-12 17:32:08,815 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-12 17:32:08,815 - INFO - Scheduler started
+2026-08-12 18:32:08,832 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[1:00:00], next run at: 2026-08-12 18:32:08 IST)" (scheduled at 2026-08-12 18:32:08.814435+05:30)
+2026-08-12 18:32:08,835 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-12 18:32:08,867 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-12 18:32:09,346 - INFO - Indicators computed | close=1908.58 ema_9=1907.62 ema_20=1899.20 ema_50=1894.87 ema_200=1892.21 macd=7.2253 poc=1900.0 val=1875.0 vah=1900.0
+2026-08-12 18:32:09,347 - INFO - [bot-3] Evaluating strategy on completed candle: 2026-08-12T12:00:00+00:00 at Close price: 1911.32
+2026-08-12 18:32:09,368 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=51.4) | Direction: HOLD | BullScore: 71.4% | BearScore: 0.0% | Active: [{'id': 'rsi', 'name': 'RSI (Relative Strength Index)', 'params': {'period': 14}}, {'id': 'momentum', 'name': 'Momentum', 'params': {'period': 10}}, {'id': 'bollinger', 'name': 'Bollinger Bands', 'params': {'period': 20, 'stdDev': 2.0}}]
+2026-08-12 18:32:09,396 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 71% (HOLD)
+2026-08-12 18:32:09,461 - INFO - Logged heartbeat status: OK
+2026-08-12 18:32:09,462 - INFO - Job "LiveRunner.process_cycle (trigger: interval[1:00:00], next run at: 2026-08-12 19:32:08 IST)" executed successfully
+2026-08-12 19:32:08,828 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[1:00:00], next run at: 2026-08-12 20:32:08 IST)" (scheduled at 2026-08-12 19:32:08.814435+05:30)
+2026-08-12 19:32:08,828 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-12 19:32:08,837 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-12 19:32:09,550 - INFO - Indicators computed | close=1896.16 ema_9=1902.19 ema_20=1897.88 ema_50=1894.37 ema_200=1892.09 macd=4.1339 poc=1900.0 val=1875.0 vah=1900.0
+2026-08-12 19:32:09,551 - INFO - [bot-3] Evaluating strategy on completed candle: 2026-08-12T13:00:00+00:00 at Close price: 1901.32
+2026-08-12 19:32:09,613 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=56.1) | Direction: HOLD | BullScore: 71.4% | BearScore: 0.0% | Active: [{'id': 'rsi', 'name': 'RSI (Relative Strength Index)', 'params': {'period': 14}}, {'id': 'momentum', 'name': 'Momentum', 'params': {'period': 10}}, {'id': 'bollinger', 'name': 'Bollinger Bands', 'params': {'period': 20, 'stdDev': 2.0}}]
+2026-08-12 19:32:09,628 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 71% (HOLD)
+2026-08-12 19:32:09,692 - INFO - Logged heartbeat status: OK
+2026-08-12 19:32:09,693 - INFO - Job "LiveRunner.process_cycle (trigger: interval[1:00:00], next run at: 2026-08-12 20:32:08 IST)" executed successfully
+2026-08-12 20:13:40,063 - INFO - Scheduler shutdown successfully.
+2026-08-14 17:06:29,993 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-14 17:06:30,024 - INFO - SQLite database tables verified/created.
+2026-08-14 17:06:30,029 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 17:06:41,352 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 17:06:41,364 - INFO - Sending Telegram alert...
+2026-08-14 17:06:43,358 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-14 17:06:43,362 - INFO - SQLite database tables verified/created.
+2026-08-14 17:06:43,364 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 17:06:44,229 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 17:06:44,241 - INFO - Sending Telegram alert...
+2026-08-14 17:06:45,005 - INFO - Telegram alert sent successfully.
+2026-08-14 17:06:45,008 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-14 17:06:45,012 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-14 17:06:46,930 - INFO - Indicators computed | close=1878.30 ema_9=1878.53 ema_20=1881.45 ema_50=1884.80 ema_200=1892.00 macd=-2.8740 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-14 17:06:46,930 - INFO - [bot-3] Evaluating strategy on completed candle: 2026-08-14T10:00:00+00:00 at Close price: 1876.19
+2026-08-14 17:06:46,937 - INFO - Confluence Evaluation | Regime: RANGING (ADX=22.9) | Direction: HOLD | BullScore: 0.0% | BearScore: 60.5% | Active: [{'id': 'rsi', 'name': 'RSI (Relative Strength Index)', 'params': {'period': 14}}, {'id': 'momentum', 'name': 'Momentum', 'params': {'period': 10}}, {'id': 'bollinger', 'name': 'Bollinger Bands', 'params': {'period': 20, 'stdDev': 2.0}}]
+2026-08-14 17:06:46,942 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 60% (HOLD)
+2026-08-14 17:06:46,976 - INFO - Logged heartbeat status: OK
+2026-08-14 17:06:46,978 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-14 17:06:46,978 - INFO - Bot bot-3 scheduled to check every 60 minutes.
+2026-08-14 17:06:46,978 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-14 17:06:46,978 - INFO - Scheduler started
+2026-08-14 21:25:18,742 - INFO - Initializing scheduled trading bot live runner for bot-3...
+2026-08-14 21:25:19,768 - INFO - SQLite database tables verified/created.
+2026-08-14 21:25:20,408 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 21:25:23,584 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 21:25:23,658 - INFO - Sending Telegram alert...
+2026-08-14 21:25:24,395 - INFO - Telegram alert sent successfully.
+2026-08-14 21:25:24,400 - INFO - [bot-3] Starting signal check cycle for ETH/USDT (1h)...
+2026-08-14 21:25:24,412 - INFO - Fetching recent candles for ETH/USDT (1h) [Bot: bot-3]...
+2026-08-14 21:25:26,844 - INFO - Indicators computed | close=1883.62 ema_9=1876.08 ema_20=1878.94 ema_50=1883.15 ema_200=1891.27 macd=-3.2178 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-14 21:25:26,845 - INFO - [bot-3] Evaluating strategy on completed candle: 2026-08-14T14:00:00+00:00 at Close price: 1866.93
+2026-08-14 21:25:26,868 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=36.2) | Direction: HOLD | BullScore: 0.0% | BearScore: 71.4% | Active: [{'id': 'rsi', 'name': 'RSI (Relative Strength Index)', 'params': {'period': 14}}, {'id': 'momentum', 'name': 'Momentum', 'params': {'period': 10}}, {'id': 'bollinger', 'name': 'Bollinger Bands', 'params': {'period': 20, 'stdDev': 2.0}}]
+2026-08-14 21:25:26,893 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 71% (HOLD)
+2026-08-14 21:25:26,953 - INFO - Logged heartbeat status: OK
+2026-08-14 21:25:26,959 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-14 21:25:26,959 - INFO - Bot bot-3 scheduled to check every 60 minutes.
+2026-08-14 21:25:26,959 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-14 21:25:26,959 - INFO - Scheduler started

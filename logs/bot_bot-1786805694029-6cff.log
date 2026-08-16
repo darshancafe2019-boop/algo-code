@@ -1,0 +1,3 @@
+2026-08-15 20:25:15,218 - INFO - Initializing scheduled trading bot live runner for bot-1786805694029-6cff...
+2026-08-15 20:25:15,235 - INFO - SQLite database tables verified/created.
+2026-08-15 20:25:15,248 - INFO - Initializing CCXT Binance in TESTNET mode.

@@ -1,0 +1,25 @@
+# Env file containing credentials
+.env
+
+# SQLite databases
+*.db
+*.sqlite
+
+# Data directory with raw historical CSVs
+data/
+
+# Backup directory
+backup/
+
+# Python cache & build files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.eggs/
+dist/
+build/
+
+# Bot status / execution flags
+kill_switch.flag

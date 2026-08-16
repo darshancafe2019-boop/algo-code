@@ -1,0 +1,11 @@
+2026-08-15 15:40:10,933 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:10,933 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:32,648 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:32,649 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 16:07:33,347 - INFO - BotWatchdog thread started.
+2026-08-15 16:07:33,347 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:38:11,641 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786788602909...
+2026-08-15 17:54:41,721 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786788602909...
+2026-08-15 19:38:03,905 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786788602909...
+2026-08-15 19:38:03,939 - INFO - SQLite database tables verified/created.
+2026-08-15 19:38:03,961 - INFO - Initializing CCXT Binance in TESTNET mode.

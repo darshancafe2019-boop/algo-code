@@ -1,0 +1,60 @@
+2026-08-15 13:34:12,824 - INFO - BotWatchdog thread started.
+2026-08-15 13:34:12,824 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:39:42,013 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:42,013 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:40:14,884 - INFO - BotWatchdog thread started.
+2026-08-15 13:40:14,884 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:53:50,259 - INFO - BotWatchdog thread started.
+2026-08-15 13:53:50,259 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:54:55,318 - INFO - BotWatchdog thread started.
+2026-08-15 13:54:55,318 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:00:46,348 - INFO - BotWatchdog thread started.
+2026-08-15 14:00:46,349 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:15:29,905 - INFO - BotWatchdog thread started.
+2026-08-15 14:15:29,905 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:42:36,185 - INFO - BotWatchdog thread started.
+2026-08-15 14:42:36,185 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:06:19,498 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:19,498 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:11,240 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:11,240 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:32,645 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:32,645 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 16:07:31,672 - INFO - BotWatchdog thread started.
+2026-08-15 16:07:31,672 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:32:04,367 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786781045639...
+2026-08-15 17:32:04,480 - INFO - SQLite database tables verified/created.
+2026-08-15 17:32:04,500 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:38:11,052 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786781045639...
+2026-08-15 17:50:33,597 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786781045639...
+2026-08-15 17:50:33,726 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:33,745 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:54:40,113 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786781045639...
+2026-08-15 17:54:40,140 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:40,162 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:38:03,032 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786781045639...
+2026-08-15 19:38:03,076 - INFO - SQLite database tables verified/created.
+2026-08-15 19:38:03,093 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:07,305 - INFO - BotWatchdog thread started.
+2026-08-15 20:22:07,306 - INFO - BotWatchdog singleton background thread started.
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 19, in <module>
+    from src import config
+  File "H:\algo\algo\btc-bot\src\__init__.py", line 14, in <module>
+    from . import trade_ledger
+  File "H:\algo\algo\btc-bot\src\trade_ledger.py", line 646, in <module>
+    trade_ledger = AuthoritativeTradeLedger()
+  File "H:\algo\algo\btc-bot\src\trade_ledger.py", line 282, in __init__
+    init_trade_ledger_schema()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "H:\algo\algo\btc-bot\src\trade_ledger.py", line 27, in init_trade_ledger_schema
+    cursor.execute(
+    ~~~~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        """
+        ^^^
+    )
+    ^
+sqlite3.OperationalError: disk I/O error

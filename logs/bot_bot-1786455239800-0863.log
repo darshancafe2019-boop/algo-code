@@ -1,0 +1,17 @@
+2026-08-12 12:01:38,117 - INFO - Initializing scheduled trading bot live runner for bot-1786455239800-0863...
+2026-08-12 12:01:38,120 - INFO - SQLite database tables verified/created.
+2026-08-12 12:01:38,124 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-12 12:01:39,042 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-12 12:01:39,047 - INFO - Sending Telegram alert...
+2026-08-12 12:01:40,062 - INFO - Telegram alert sent successfully.
+2026-08-12 12:01:40,063 - INFO - [bot-1786455239800-0863] Starting signal check cycle for BTC/USDT (1h)...
+2026-08-12 12:01:40,070 - INFO - Fetching recent candles for BTC/USDT (1h) [Bot: bot-1786455239800-0863]...
+2026-08-12 12:01:42,472 - INFO - Indicators computed | close=63606.27 ema_9=63731.59 ema_20=63751.94 ema_50=63800.93 ema_200=64079.74 macd=-17.7431 poc=64950.0 val=64175.0 vah=65250.0
+2026-08-12 12:01:42,473 - INFO - [bot-1786455239800-0863] Evaluating strategy on completed candle: 2026-08-12T05:00:00+00:00 at Close price: 63849.94
+2026-08-12 12:01:42,481 - INFO - [bot-1786455239800-0863] Active trade found in DB (ID: 44, SHORT, Entry: 63770.03, SL: 64579.95, TP: 62150.20)
+2026-08-12 12:01:42,481 - INFO - [bot-1786455239800-0863] Active trade SL/TP not hit. Holding position.
+2026-08-12 12:01:42,543 - INFO - Logged heartbeat status: OK
+2026-08-12 12:01:42,546 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-12 12:01:42,546 - INFO - Bot bot-1786455239800-0863 scheduled to check every 60 minutes.
+2026-08-12 12:01:42,546 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-12 12:01:42,546 - INFO - Scheduler started

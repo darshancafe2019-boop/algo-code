@@ -1,0 +1,59 @@
+2026-08-15 15:06:19,289 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:19,289 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:10,220 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:10,221 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:31,155 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:31,155 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:32:01,748 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 17:32:01,760 - INFO - SQLite database tables verified/created.
+2026-08-15 17:32:01,781 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:38:07,115 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 17:38:07,171 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:30,828 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 17:50:30,922 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:33,886 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 19:37:54,452 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 19:37:54,547 - INFO - SQLite database tables verified/created.
+2026-08-15 20:09:29,539 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 20:21:58,528 - INFO - BotWatchdog thread started.
+2026-08-15 20:21:58,529 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:21:58,578 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 20:22:57,534 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 20:22:57,552 - INFO - SQLite database tables verified/created.
+2026-08-15 20:25:06,078 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 20:54:01,077 - INFO - BotWatchdog thread started.
+2026-08-15 20:54:01,082 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:54:01,401 - INFO - Initializing scheduled trading bot live runner for bot-1786786572743-a749...
+2026-08-15 20:54:04,669 - INFO - SQLite database tables verified/created.
+2026-08-15 20:54:05,911 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:08,869 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:08,896 - INFO - Sending Telegram alert...
+2026-08-15 20:54:19,837 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:19,892 - INFO - [bot-1786786572743-a749] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-15 20:54:19,932 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786786572743-a749]...
+2026-08-15 20:54:31,663 - ERROR - Error fetching live OHLCV for ETH/USDT 15m: binance does not have market symbol ETH/USDT
+2026-08-15 20:54:31,686 - ERROR - System Error in runner execution cycle: binance does not have market symbol ETH/USDT
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4714, in fetch_ohlcv
+    market = self.market(symbol)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 2916, in market
+    raise BadSymbol(self.id + ' does not have market symbol ' + symbol)
+ccxt.base.errors.BadSymbol: binance does not have market symbol ETH/USDT
+2026-08-15 20:54:43,006 - ERROR - Error logging system error to DB: database is locked
+2026-08-15 20:54:47,270 - INFO - Sending Telegram alert...
+2026-08-15 20:55:17,074 - INFO - Telegram alert sent successfully.
+2026-08-15 20:55:22,034 - INFO - Logged heartbeat status: ERROR
+2026-08-15 20:55:37,226 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-15 20:55:37,226 - INFO - Bot bot-1786786572743-a749 scheduled to check every 15 minutes.
+2026-08-15 20:55:37,227 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-15 20:55:37,227 - INFO - Scheduler started

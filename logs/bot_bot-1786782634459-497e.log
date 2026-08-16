@@ -1,0 +1,85 @@
+2026-08-15 14:00:46,132 - INFO - BotWatchdog thread started.
+2026-08-15 14:00:46,133 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:15:29,179 - INFO - BotWatchdog thread started.
+2026-08-15 14:15:29,179 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:42:35,382 - INFO - BotWatchdog thread started.
+2026-08-15 14:42:35,382 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:06:19,483 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:19,484 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:09,101 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:09,101 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:29,892 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:29,892 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:31:59,308 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 17:31:59,378 - INFO - SQLite database tables verified/created.
+2026-08-15 17:31:59,424 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:38:05,499 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 17:38:05,526 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:27,787 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 17:54:30,570 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 17:54:30,598 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:30,614 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:37:52,631 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 20:21:58,538 - INFO - BotWatchdog thread started.
+2026-08-15 20:21:58,539 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:21:58,876 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 20:21:58,892 - INFO - SQLite database tables verified/created.
+2026-08-15 20:21:58,904 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:58,796 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 20:25:05,535 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 20:53:55,393 - INFO - BotWatchdog thread started.
+2026-08-15 20:53:55,394 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:53:56,815 - INFO - Initializing scheduled trading bot live runner for bot-1786782634459-497e...
+2026-08-15 20:53:57,198 - INFO - SQLite database tables verified/created.
+2026-08-15 20:53:57,888 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:01,067 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:01,177 - INFO - Sending Telegram alert...
+2026-08-15 20:54:15,669 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:15,682 - INFO - [bot-1786782634459-497e] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-15 20:54:15,705 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786782634459-497e]...
+2026-08-15 20:54:19,106 - ERROR - Error fetching live OHLCV for ETH/USDT 15m: 
+2026-08-15 20:54:19,129 - ERROR - System Error in runner execution cycle: 
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4709, in fetch_ohlcv
+    self.load_markets()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 1816, in load_markets
+    markets = self.fetch_markets(params)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 3246, in fetch_markets
+    promisesRaw.append(self.fapiPublicGetExchangeInfo(params))
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 11819, in request
+    response = self.fetch2(path, api, method, params, headers, body, config)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5544, in fetch2
+    raise e
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5525, in fetch2
+    response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 620, in fetch
+    response = self.session.request(
+        method,
+    ...<6 lines>...
+        files=files
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 827, in send
+    r.content
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\models.py", line 1042, in content
+    self._content = b"".join(self.iter_content(CONTENT_CHUNK_SIZE)) or b""
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MemoryError
+2026-08-15 20:55:20,340 - INFO - Sending Telegram alert...
+2026-08-15 20:55:39,038 - INFO - Telegram alert sent successfully.

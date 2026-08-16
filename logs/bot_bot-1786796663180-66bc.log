@@ -1,0 +1,33 @@
+2026-08-15 17:54:39,615 - INFO - Initializing scheduled trading bot live runner for bot-1786796663180-66bc...
+2026-08-15 17:54:39,643 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:39,666 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:38:01,340 - INFO - Initializing scheduled trading bot live runner for bot-1786796663180-66bc...
+2026-08-15 19:38:01,378 - INFO - SQLite database tables verified/created.
+2026-08-15 19:38:01,401 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:09:36,895 - INFO - Initializing scheduled trading bot live runner for bot-1786796663180-66bc...
+2026-08-15 20:22:04,822 - INFO - BotWatchdog thread started.
+2026-08-15 20:22:04,823 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:22:04,836 - ERROR - Watchdog check failed: disk I/O error
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 19, in <module>
+    from src import config
+  File "H:\algo\algo\btc-bot\src\__init__.py", line 14, in <module>
+    from . import trade_ledger
+  File "H:\algo\algo\btc-bot\src\trade_ledger.py", line 646, in <module>
+    trade_ledger = AuthoritativeTradeLedger()
+  File "H:\algo\algo\btc-bot\src\trade_ledger.py", line 282, in __init__
+    init_trade_ledger_schema()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "H:\algo\algo\btc-bot\src\trade_ledger.py", line 27, in init_trade_ledger_schema
+    cursor.execute(
+    ~~~~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        """
+        ^^^
+    )
+    ^
+sqlite3.OperationalError: disk I/O error
+2026-08-15 20:23:06,248 - INFO - Initializing scheduled trading bot live runner for bot-1786796663180-66bc...
+2026-08-15 20:25:11,204 - INFO - Initializing scheduled trading bot live runner for bot-1786796663180-66bc...

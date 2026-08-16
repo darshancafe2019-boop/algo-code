@@ -1,0 +1,77 @@
+2026-08-15 13:34:12,352 - INFO - BotWatchdog thread started.
+2026-08-15 13:34:12,352 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:34:12,357 - WARNING - Watchdog detected stall — attempting automatic restart for 'Lifecycle Bot' (test-lifecycle-1786730466172, 2847s inactive).
+2026-08-15 13:39:47,766 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:47,766 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:40:16,460 - INFO - BotWatchdog thread started.
+2026-08-15 13:40:16,460 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:53:49,938 - INFO - BotWatchdog thread started.
+2026-08-15 13:53:49,938 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:54:54,485 - INFO - BotWatchdog thread started.
+2026-08-15 13:54:54,489 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:00:46,221 - INFO - BotWatchdog thread started.
+2026-08-15 14:00:46,222 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:15:26,975 - INFO - BotWatchdog thread started.
+2026-08-15 14:15:26,976 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:42:34,394 - INFO - BotWatchdog thread started.
+2026-08-15 14:42:34,394 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:06:18,403 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:18,403 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:07,767 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:07,767 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:28,823 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:28,825 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:38:03,296 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 17:38:03,364 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:26,438 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 17:50:26,542 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:26,557 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:54:30,420 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 17:54:30,451 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:30,471 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:37:50,923 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 20:09:32,271 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 20:21:57,282 - INFO - BotWatchdog thread started.
+2026-08-15 20:21:57,283 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:21:57,434 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 20:21:57,451 - INFO - SQLite database tables verified/created.
+2026-08-15 20:21:57,463 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:55,846 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 20:53:19,942 - INFO - BotWatchdog thread started.
+2026-08-15 20:53:19,942 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:53:19,992 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 20:53:20,008 - INFO - SQLite database tables verified/created.
+2026-08-15 20:53:20,035 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:53:21,404 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:53:21,414 - INFO - Sending Telegram alert...
+2026-08-15 20:53:53,704 - INFO - BotWatchdog thread started.
+2026-08-15 20:53:53,705 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:53:55,583 - INFO - Initializing scheduled trading bot live runner for bot-1786781026836-bf57...
+2026-08-15 20:53:56,554 - INFO - SQLite database tables verified/created.
+2026-08-15 20:53:56,737 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:00,848 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:01,041 - INFO - Sending Telegram alert...
+2026-08-15 20:54:16,163 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:16,167 - INFO - [bot-1786781026836-bf57] Starting signal check cycle for RELIANCE (15m)...
+2026-08-15 20:54:16,182 - INFO - Fetching recent candles for RELIANCE (15m) [Bot: bot-1786781026836-bf57]...
+2026-08-15 20:54:32,652 - ERROR - Error fetching live OHLCV for RELIANCE 15m: binance does not have market symbol RELIANCE
+2026-08-15 20:54:32,674 - ERROR - System Error in runner execution cycle: binance does not have market symbol RELIANCE
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4714, in fetch_ohlcv
+    market = self.market(symbol)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 2916, in market
+    raise BadSymbol(self.id + ' does not have market symbol ' + symbol)
+ccxt.base.errors.BadSymbol: binance does not have market symbol RELIANCE
+2026-08-15 20:54:43,885 - ERROR - Error logging system error to DB: database is locked
+2026-08-15 20:54:51,032 - INFO - Sending Telegram alert...
+2026-08-15 20:55:41,052 - INFO - Telegram alert sent successfully.

@@ -1,0 +1,87 @@
+2026-08-15 14:42:35,833 - INFO - BotWatchdog thread started.
+2026-08-15 14:42:35,833 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:06:19,166 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:19,166 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:10,833 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:10,833 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:29,896 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:29,896 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:31:59,921 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 17:38:06,766 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 17:38:06,802 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:31,692 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 17:54:31,752 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:31,766 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:37:53,391 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 19:37:53,428 - INFO - SQLite database tables verified/created.
+2026-08-15 19:37:53,441 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:09:28,985 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 20:21:58,472 - INFO - BotWatchdog thread started.
+2026-08-15 20:21:58,473 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:21:58,621 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 20:21:58,644 - INFO - SQLite database tables verified/created.
+2026-08-15 20:21:58,658 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:59,218 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 20:22:59,237 - INFO - SQLite database tables verified/created.
+2026-08-15 20:25:06,694 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 20:53:59,850 - INFO - BotWatchdog thread started.
+2026-08-15 20:53:59,850 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:54:01,160 - INFO - Initializing scheduled trading bot live runner for bot-1786783554018-a6e6...
+2026-08-15 20:54:06,305 - INFO - SQLite database tables verified/created.
+2026-08-15 20:54:06,612 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:08,847 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:08,888 - INFO - Sending Telegram alert...
+2026-08-15 20:54:19,987 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:20,024 - INFO - [bot-1786783554018-a6e6] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 20:54:20,313 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786783554018-a6e6]...
+2026-08-15 20:54:24,765 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: 
+2026-08-15 20:54:24,765 - ERROR - System Error in runner execution cycle: 
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4709, in fetch_ohlcv
+    self.load_markets()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 1816, in load_markets
+    markets = self.fetch_markets(params)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 3241, in fetch_markets
+    promisesRaw.append(self.publicGetExchangeInfo(params))
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 11819, in request
+    response = self.fetch2(path, api, method, params, headers, body, config)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5544, in fetch2
+    raise e
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5525, in fetch2
+    response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 620, in fetch
+    response = self.session.request(
+        method,
+    ...<6 lines>...
+        files=files
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 827, in send
+    r.content
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\models.py", line 1042, in content
+    self._content = b"".join(self.iter_content(CONTENT_CHUNK_SIZE)) or b""
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MemoryError
+2026-08-15 20:55:20,346 - INFO - Sending Telegram alert...
+2026-08-15 20:55:36,671 - ERROR - Failed to send Telegram alert due to connection error: 
+Exception ignored while finalizing file <http.client.HTTPResponse object at 0x0000016BD78BB520>:
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 439, in close
+    if self.fp:
+AttributeError: 'HTTPResponse' object has no attribute 'fp'

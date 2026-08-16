@@ -1,0 +1,104 @@
+2026-08-14 22:39:05,837 - INFO - Initializing scheduled trading bot live runner for bot-1786700485356-8138...
+2026-08-14 22:39:05,844 - INFO - SQLite database tables verified/created.
+2026-08-14 22:39:05,849 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 22:39:06,771 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 22:39:06,793 - INFO - Sending Telegram alert...
+2026-08-14 22:39:07,575 - INFO - Telegram alert sent successfully.
+2026-08-14 22:39:07,578 - INFO - [bot-1786700485356-8138] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-14 22:39:07,583 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786700485356-8138]...
+2026-08-14 22:39:10,432 - INFO - Indicators computed | close=1884.26 ema_9=1881.64 ema_20=1878.50 ema_50=1878.21 ema_200=1883.27 macd=2.4205 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-14 22:39:10,433 - INFO - [bot-1786700485356-8138] Evaluating strategy on completed candle: 2026-08-14T16:45:00+00:00 at Close price: 1885.41
+2026-08-14 22:39:10,633 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=32.3) | Direction: LONG | BullScore: 82.6% | BearScore: 0.0% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-14 22:39:10,653 - INFO - Capping position size 12.547051 BTC to available cash equivalent 2.651943 BTC.
+2026-08-14 22:39:10,670 - INFO - Created pending signal approval ID 87 for bot bot-1786700485356-8138 (LONG @ $1885.41, status: WAITING_APPROVAL)
+2026-08-14 22:39:12,512 - INFO - [bot-1786700485356-8138] Signal LONG generated (ID: 87). Waiting for manual user approval.
+2026-08-14 22:39:12,573 - INFO - Logged heartbeat status: OK
+2026-08-14 22:39:12,580 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-14 22:39:12,580 - INFO - Bot bot-1786700485356-8138 scheduled to check every 15 minutes.
+2026-08-14 22:39:12,581 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-14 22:39:12,581 - INFO - Scheduler started
+2026-08-14 22:54:12,583 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-14 22:54:12 IST)" (scheduled at 2026-08-14 22:54:12.580246+05:30)
+2026-08-14 22:54:12,589 - INFO - [bot-1786700485356-8138] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-14 22:54:12,714 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786700485356-8138]...
+2026-08-14 22:54:14,123 - INFO - Indicators computed | close=1887.44 ema_9=1882.95 ema_20=1879.44 ema_50=1878.61 ema_200=1883.32 macd=2.8647 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-14 22:54:14,123 - INFO - [bot-1786700485356-8138] Evaluating strategy on completed candle: 2026-08-14T17:00:00+00:00 at Close price: 1885.23
+2026-08-14 22:54:14,303 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.4) | Direction: LONG | BullScore: 82.6% | BearScore: 0.0% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-14 22:54:14,331 - INFO - Capping position size 12.836970 BTC to available cash equivalent 2.652196 BTC.
+2026-08-14 22:54:14,384 - INFO - [bot-1786700485356-8138] Signal LONG active pending approval already exists (ID: 87).
+2026-08-14 22:54:14,774 - INFO - Logged heartbeat status: OK
+2026-08-14 22:54:14,774 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-14 23:09:12 IST)" executed successfully
+2026-08-15 13:34:03,154 - INFO - BotWatchdog thread started.
+2026-08-15 13:34:03,154 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:34:03,168 - WARNING - Watchdog detected stall — attempting automatic restart for 'Lifecycle Bot' (test-lifecycle-1786700485370, 52790s inactive).
+2026-08-15 13:39:36,667 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:36,667 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:39:53,173 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:53,173 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 22:42:31,732 - INFO - BotWatchdog thread started.
+2026-08-15 22:42:31,733 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 22:42:32,219 - INFO - Initializing scheduled trading bot live runner for bot-1786700485356-8138...
+2026-08-15 22:42:32,245 - INFO - SQLite database tables verified/created.
+2026-08-15 22:42:32,400 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 22:42:35,569 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 22:42:35,579 - INFO - Sending Telegram alert...
+2026-08-15 22:42:36,452 - INFO - Telegram alert sent successfully.
+2026-08-15 22:42:36,454 - INFO - [bot-1786700485356-8138] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-15 22:42:36,457 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786700485356-8138]...
+2026-08-15 22:42:38,696 - INFO - Indicators computed | close=1885.44 ema_9=1884.68 ema_20=1883.68 ema_50=1882.43 ema_200=1882.35 macd=1.0967 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-15 22:42:38,696 - INFO - [bot-1786700485356-8138] Evaluating strategy on completed candle: 2026-08-15T16:45:00+00:00 at Close price: 1884.98
+2026-08-15 22:42:38,707 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=47.7) | Direction: LONG | BullScore: 82.6% | BearScore: 0.0% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-15 22:42:38,715 - INFO - Capping position size 34.013605 BTC to available cash equivalent 2.652548 BTC.
+2026-08-15 22:42:39,323 - INFO - Created pending signal approval ID 162 for bot bot-1786700485356-8138 (LONG @ $1884.98, status: WAITING_APPROVAL)
+2026-08-15 22:42:40,215 - INFO - [bot-1786700485356-8138] Signal LONG generated (ID: 162). Waiting for manual user approval.
+2026-08-15 22:42:40,262 - INFO - Logged heartbeat status: OK
+2026-08-15 22:42:40,267 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-15 22:42:40,267 - INFO - Bot bot-1786700485356-8138 scheduled to check every 15 minutes.
+2026-08-15 22:42:40,267 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-15 22:42:40,267 - INFO - Scheduler started
+2026-08-15 22:57:40,269 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-15 22:57:40 IST)" (scheduled at 2026-08-15 22:57:40.266966+05:30)
+2026-08-15 22:57:40,274 - INFO - [bot-1786700485356-8138] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-15 22:57:40,283 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786700485356-8138]...
+2026-08-15 22:57:41,681 - INFO - Indicators computed | close=1883.34 ema_9=1884.45 ema_20=1883.67 ema_50=1882.47 ema_200=1882.37 macd=0.9480 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-15 22:57:41,682 - INFO - [bot-1786700485356-8138] Evaluating strategy on completed candle: 2026-08-15T17:00:00+00:00 at Close price: 1885.70
+2026-08-15 22:57:41,696 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=45.9) | Direction: LONG | BullScore: 82.6% | BearScore: 0.0% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-15 22:57:41,717 - INFO - Capping position size 27.322404 BTC to available cash equivalent 2.651535 BTC.
+2026-08-15 22:57:41,749 - INFO - [bot-1786700485356-8138] Signal LONG active pending approval already exists (ID: 162).
+2026-08-15 22:57:41,800 - INFO - Logged heartbeat status: OK
+2026-08-15 22:57:41,801 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-15 23:12:40 IST)" executed successfully
+2026-08-15 23:12:40,283 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-15 23:27:40 IST)" (scheduled at 2026-08-15 23:12:40.266966+05:30)
+2026-08-15 23:12:40,291 - INFO - [bot-1786700485356-8138] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-15 23:12:40,303 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786700485356-8138]...
+2026-08-15 23:12:41,868 - INFO - Indicators computed | close=1884.29 ema_9=1884.41 ema_20=1883.72 ema_50=1882.54 ema_200=1882.39 macd=0.8772 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-15 23:12:41,868 - INFO - [bot-1786700485356-8138] Evaluating strategy on completed candle: 2026-08-15T17:15:00+00:00 at Close price: 1883.29
+2026-08-15 23:12:41,882 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=42.0) | Direction: HOLD | BullScore: 17.4% | BearScore: 17.4% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-15 23:12:41,899 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 17% (HOLD)
+2026-08-15 23:12:41,956 - INFO - Logged heartbeat status: OK
+2026-08-15 23:12:41,956 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-15 23:27:40 IST)" executed successfully
+2026-08-15 23:27:40,278 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-15 23:42:40 IST)" (scheduled at 2026-08-15 23:27:40.266966+05:30)
+2026-08-15 23:27:40,279 - INFO - [bot-1786700485356-8138] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-15 23:27:40,284 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786700485356-8138]...
+2026-08-15 23:27:41,792 - INFO - Indicators computed | close=1884.23 ema_9=1884.31 ema_20=1883.74 ema_50=1882.59 ema_200=1882.40 macd=0.7848 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-15 23:27:41,793 - INFO - [bot-1786700485356-8138] Evaluating strategy on completed candle: 2026-08-15T17:30:00+00:00 at Close price: 1883.88
+2026-08-15 23:27:41,817 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=38.9) | Direction: HOLD | BullScore: 67.4% | BearScore: 0.0% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-15 23:27:41,835 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 67% (HOLD)
+2026-08-15 23:27:41,896 - INFO - Logged heartbeat status: OK
+2026-08-15 23:27:41,897 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:15:00], next run at: 2026-08-15 23:42:40 IST)" executed successfully
+2026-08-16 11:53:51,561 - INFO - BotWatchdog thread started.
+2026-08-16 11:53:51,561 - INFO - BotWatchdog singleton background thread started.
+2026-08-16 11:53:51,642 - INFO - Initializing scheduled trading bot live runner for bot-1786700485356-8138...
+2026-08-16 11:53:51,652 - INFO - SQLite database tables verified/created.
+2026-08-16 11:53:51,664 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 11:53:53,471 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 11:53:53,576 - INFO - Sending Telegram alert...
+2026-08-16 11:53:54,481 - INFO - Telegram alert sent successfully.
+2026-08-16 11:53:54,486 - INFO - [bot-1786700485356-8138] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-16 11:53:54,492 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786700485356-8138]...
+2026-08-16 11:53:59,783 - INFO - Indicators computed | close=1879.39 ema_9=1880.81 ema_20=1881.71 ema_50=1882.43 ema_200=1882.57 macd=-0.8216 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-16 11:53:59,784 - INFO - [bot-1786700485356-8138] Evaluating strategy on completed candle: 2026-08-16T06:00:00+00:00 at Close price: 1879.80
+2026-08-16 11:53:59,800 - INFO - Confluence Evaluation | Regime: RANGING (ADX=20.1) | Direction: HOLD | BullScore: 32.6% | BearScore: 67.4% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-16 11:53:59,969 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 67% (HOLD)
+2026-08-16 11:54:00,615 - INFO - Logged heartbeat status: OK
+2026-08-16 11:54:00,645 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 11:54:00,646 - INFO - Bot bot-1786700485356-8138 scheduled to check every 15 minutes.
+2026-08-16 11:54:00,646 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 11:54:00,646 - INFO - Scheduler started

@@ -1,0 +1,17 @@
+2026-08-15 13:38:41,329 - INFO - BotWatchdog thread started.
+2026-08-15 13:38:41,329 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:38:46,165 - INFO - BotWatchdog thread started.
+2026-08-15 13:38:46,165 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:38:53,240 - INFO - BotWatchdog thread started.
+2026-08-15 13:38:53,240 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:39:03,209 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:03,209 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:39:05,989 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:05,989 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:39:41,814 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:41,814 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:40:19,043 - INFO - BotWatchdog thread started.
+2026-08-15 13:40:19,043 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 16:07:31,521 - INFO - BotWatchdog thread started.
+2026-08-15 16:07:31,521 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 16:07:31,526 - WARNING - Watchdog detected stall — attempting automatic restart for 'Alpha BTC Scalper' (bot-1, 1287s inactive).

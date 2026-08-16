@@ -1,0 +1,207 @@
+2026-08-14 22:51:55,691 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786728107116...
+2026-08-14 22:51:55,733 - INFO - SQLite database tables verified/created.
+2026-08-14 22:51:55,741 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 22:51:56,840 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 22:51:59,250 - INFO - Sending Telegram alert...
+2026-08-14 22:52:00,054 - INFO - Telegram alert sent successfully.
+2026-08-14 22:52:00,070 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-14 22:52:00,137 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-14 22:52:02,503 - INFO - Indicators computed | close=63200.00 ema_9=63160.27 ema_20=63092.60 ema_50=62967.52 ema_200=63045.97 macd=87.2296 poc=63475.0 val=63325.0 vah=64200.0
+2026-08-14 22:52:04,018 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-14T17:15:00+00:00 at Close price: 63201.77
+2026-08-14 22:52:04,431 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=62.1) | Direction: HOLD | BullScore: 60.5% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-14 22:52:05,017 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 60% (HOLD)
+2026-08-14 22:52:05,860 - INFO - Logged heartbeat status: OK
+2026-08-14 22:52:05,863 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-14 22:52:05,863 - INFO - Bot test-lifecycle-1786728107116 scheduled to check every 5 minutes.
+2026-08-14 22:52:05,863 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-14 22:52:05,863 - INFO - Scheduler started
+2026-08-14 22:57:05,872 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-14 22:57:05 IST)" (scheduled at 2026-08-14 22:57:05.863057+05:30)
+2026-08-14 22:57:05,875 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-14 22:57:05,884 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-14 22:57:06,555 - INFO - Indicators computed | close=63200.53 ema_9=63172.79 ema_20=63105.29 ema_50=62977.71 ema_200=63047.78 macd=87.0177 poc=63475.0 val=63325.0 vah=64200.0
+2026-08-14 22:57:06,556 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-14T17:20:00+00:00 at Close price: 63227.95
+2026-08-14 22:57:06,726 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=59.0) | Direction: HOLD | BullScore: 60.5% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-14 22:57:06,750 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 60% (HOLD)
+2026-08-14 22:57:06,821 - INFO - Logged heartbeat status: OK
+2026-08-14 22:57:06,821 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-14 23:02:05 IST)" executed successfully
+2026-08-14 23:27:39,343 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786728107116...
+2026-08-14 23:27:39,415 - INFO - SQLite database tables verified/created.
+2026-08-14 23:27:39,420 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 23:27:50,204 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786728107116...
+2026-08-14 23:27:50,213 - INFO - SQLite database tables verified/created.
+2026-08-14 23:27:50,231 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 23:27:51,260 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 23:27:51,281 - INFO - Sending Telegram alert...
+2026-08-14 23:27:52,080 - INFO - Telegram alert sent successfully.
+2026-08-14 23:27:52,086 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-14 23:27:52,095 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-14 23:27:55,089 - INFO - Indicators computed | close=63014.54 ema_9=63111.43 ema_20=63103.40 ema_50=63005.28 ema_200=63051.40 macd=35.5178 poc=63475.0 val=63300.0 vah=64200.0
+2026-08-14 23:27:55,089 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-14T17:50:00+00:00 at Close price: 63074.80
+2026-08-14 23:27:55,189 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.3) | Direction: HOLD | BullScore: 21.1% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-14 23:27:55,201 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 21% (HOLD)
+2026-08-14 23:27:55,272 - INFO - Logged heartbeat status: OK
+2026-08-14 23:27:55,280 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-14 23:27:55,280 - INFO - Bot test-lifecycle-1786728107116 scheduled to check every 5 minutes.
+2026-08-14 23:27:55,281 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-14 23:27:55,281 - INFO - Scheduler started
+2026-08-14 23:28:06,348 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786728107116...
+2026-08-14 23:28:06,358 - INFO - SQLite database tables verified/created.
+2026-08-14 23:28:06,369 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 23:28:07,345 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 23:28:07,372 - INFO - Sending Telegram alert...
+2026-08-14 23:28:08,128 - INFO - Telegram alert sent successfully.
+2026-08-14 23:28:08,138 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-14 23:28:08,153 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-14 23:28:10,279 - INFO - Indicators computed | close=63014.54 ema_9=63111.43 ema_20=63103.40 ema_50=63005.28 ema_200=63051.40 macd=35.5178 poc=63475.0 val=63300.0 vah=64200.0
+2026-08-14 23:28:10,280 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-14T17:50:00+00:00 at Close price: 63074.80
+2026-08-14 23:28:10,454 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.3) | Direction: HOLD | BullScore: 21.1% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-14 23:28:10,472 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 21% (HOLD)
+2026-08-14 23:28:10,679 - INFO - Logged heartbeat status: OK
+2026-08-14 23:28:10,682 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-14 23:28:10,682 - INFO - Bot test-lifecycle-1786728107116 scheduled to check every 5 minutes.
+2026-08-14 23:28:10,683 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-14 23:28:10,683 - INFO - Scheduler started
+2026-08-15 11:44:53,195 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786728107116...
+2026-08-15 11:44:53,244 - INFO - SQLite database tables verified/created.
+2026-08-15 11:44:53,254 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 11:44:55,454 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 11:44:55,486 - INFO - Sending Telegram alert...
+2026-08-15 11:45:05,582 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786728107116...
+2026-08-15 11:45:05,589 - INFO - SQLite database tables verified/created.
+2026-08-15 11:45:05,599 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 11:45:07,310 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 11:45:07,361 - INFO - Sending Telegram alert...
+2026-08-15 11:45:18,059 - INFO - Telegram alert sent successfully.
+2026-08-15 11:45:18,065 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 11:45:18,077 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 11:45:21,838 - INFO - Indicators computed | close=63037.77 ema_9=63073.06 ema_20=63090.30 ema_50=63086.67 ema_200=63039.50 macd=-13.3355 poc=63425.0 val=63100.0 vah=64200.0
+2026-08-15 11:45:21,839 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:10:00+00:00 at Close price: 63037.76
+2026-08-15 11:45:21,987 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=35.9) | Direction: SHORT | BullScore: 21.1% | BearScore: 78.9% | Active: ['ema', 'macd', 'vp']
+2026-08-15 11:45:22,013 - INFO - Capping position size 1.657550 BTC to available cash equivalent 0.158635 BTC.
+2026-08-15 11:45:22,036 - INFO - Created pending signal approval ID 95 for bot test-lifecycle-1786728107116 (SHORT @ $63037.76, status: WAITING_APPROVAL)
+2026-08-15 11:45:32,960 - INFO - [test-lifecycle-1786728107116] Signal SHORT generated (ID: 95). Waiting for manual user approval.
+2026-08-15 11:45:33,019 - INFO - Logged heartbeat status: OK
+2026-08-15 11:45:33,029 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-15 11:45:33,029 - INFO - Bot test-lifecycle-1786728107116 scheduled to check every 5 minutes.
+2026-08-15 11:45:33,030 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-15 11:45:33,030 - INFO - Scheduler started
+2026-08-15 11:50:33,043 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 11:50:33 IST)" (scheduled at 2026-08-15 11:50:33.029538+05:30)
+2026-08-15 11:50:33,048 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 11:50:33,056 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 11:50:34,940 - INFO - Indicators computed | close=63047.68 ema_9=63069.57 ema_20=63087.10 ema_50=63085.52 ema_200=63039.68 macd=-14.3087 poc=63425.0 val=63100.0 vah=64200.0
+2026-08-15 11:50:34,941 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:15:00+00:00 at Close price: 63047.68
+2026-08-15 11:50:35,185 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=35.2) | Direction: HOLD | BullScore: 21.1% | BearScore: 39.5% | Active: ['ema', 'macd', 'vp']
+2026-08-15 11:50:35,209 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-15 11:50:35,277 - INFO - Logged heartbeat status: OK
+2026-08-15 11:50:35,277 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 11:55:33 IST)" executed successfully
+2026-08-15 11:55:33,033 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:00:33 IST)" (scheduled at 2026-08-15 11:55:33.029538+05:30)
+2026-08-15 11:55:33,037 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 11:55:33,047 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 11:55:33,952 - INFO - Indicators computed | close=63067.85 ema_9=63071.05 ema_20=63086.25 ema_50=63085.26 ema_200=63040.08 macd=-13.2138 poc=63425.0 val=63100.0 vah=64200.0
+2026-08-15 11:55:33,954 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:20:00+00:00 at Close price: 63059.12
+2026-08-15 11:55:34,161 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.9) | Direction: HOLD | BullScore: 21.1% | BearScore: 39.5% | Active: ['ema', 'macd', 'vp']
+2026-08-15 11:55:34,187 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-15 11:55:34,245 - INFO - Logged heartbeat status: OK
+2026-08-15 11:55:34,245 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:00:33 IST)" executed successfully
+2026-08-15 12:00:33,042 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:05:33 IST)" (scheduled at 2026-08-15 12:00:33.029538+05:30)
+2026-08-15 12:00:33,048 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:00:33,055 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:00:34,794 - INFO - Indicators computed | close=63057.18 ema_9=63063.26 ema_20=63080.78 ema_50=63082.98 ema_200=63039.94 macd=-15.7024 poc=63425.0 val=63075.0 vah=64200.0
+2026-08-15 12:00:34,794 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:25:00+00:00 at Close price: 63036.50
+2026-08-15 12:00:34,993 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.2) | Direction: SHORT | BullScore: 21.1% | BearScore: 78.9% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:00:35,015 - INFO - Capping position size 1.640420 BTC to available cash equivalent 0.158638 BTC.
+2026-08-15 12:00:35,030 - INFO - [test-lifecycle-1786728107116] Signal SHORT active pending approval already exists (ID: 95).
+2026-08-15 12:00:35,093 - INFO - Logged heartbeat status: OK
+2026-08-15 12:00:35,093 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:05:33 IST)" executed successfully
+2026-08-15 12:05:33,032 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:10:33 IST)" (scheduled at 2026-08-15 12:05:33.029538+05:30)
+2026-08-15 12:05:33,035 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:05:33,042 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:05:34,498 - INFO - Indicators computed | close=63059.36 ema_9=63062.83 ema_20=63078.93 ema_50=63082.13 ema_200=63040.15 macd=-15.2063 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:05:34,499 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:30:00+00:00 at Close price: 63059.35
+2026-08-15 12:05:34,551 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=34.1) | Direction: HOLD | BullScore: 21.1% | BearScore: 39.5% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:05:34,570 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-15 12:05:34,626 - INFO - Logged heartbeat status: OK
+2026-08-15 12:05:34,626 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:10:33 IST)" executed successfully
+2026-08-15 12:10:33,030 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:15:33 IST)" (scheduled at 2026-08-15 12:10:33.029538+05:30)
+2026-08-15 12:10:33,290 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:10:33,410 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:10:33,846 - INFO - Indicators computed | close=63059.99 ema_9=63061.63 ema_20=63076.78 ema_50=63081.11 ema_200=63040.31 macd=-14.9737 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:10:33,846 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:35:00+00:00 at Close price: 63055.40
+2026-08-15 12:10:34,016 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=36.8) | Direction: HOLD | BullScore: 21.1% | BearScore: 39.5% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:10:34,444 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-15 12:10:34,861 - INFO - Logged heartbeat status: OK
+2026-08-15 12:10:34,861 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:15:33 IST)" executed successfully
+2026-08-15 12:15:33,033 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:20:33 IST)" (scheduled at 2026-08-15 12:15:33.029538+05:30)
+2026-08-15 12:15:33,037 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:15:33,044 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:15:34,491 - INFO - Indicators computed | close=63069.29 ema_9=63064.65 ema_20=63076.87 ema_50=63081.00 ema_200=63040.69 macd=-13.0585 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:15:34,491 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:40:00+00:00 at Close price: 63069.29
+2026-08-15 12:15:34,546 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=39.1) | Direction: HOLD | BullScore: 21.1% | BearScore: 39.5% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:15:34,567 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-15 12:15:34,633 - INFO - Logged heartbeat status: OK
+2026-08-15 12:15:34,633 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:20:33 IST)" executed successfully
+2026-08-15 12:20:33,040 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:25:33 IST)" (scheduled at 2026-08-15 12:20:33.029538+05:30)
+2026-08-15 12:20:33,046 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:20:33,054 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:20:34,517 - INFO - Indicators computed | close=63090.00 ema_9=63071.03 ema_20=63078.83 ema_50=63081.66 ema_200=63041.26 macd=-9.8322 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:20:34,517 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:45:00+00:00 at Close price: 63077.51
+2026-08-15 12:20:34,580 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=37.8) | Direction: HOLD | BullScore: 21.1% | BearScore: 39.5% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:20:34,668 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-15 12:20:34,797 - INFO - Logged heartbeat status: OK
+2026-08-15 12:20:34,797 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:25:33 IST)" executed successfully
+2026-08-15 12:25:33,043 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:30:33 IST)" (scheduled at 2026-08-15 12:25:33.029538+05:30)
+2026-08-15 12:25:33,049 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:25:33,057 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:25:33,740 - INFO - Indicators computed | close=63134.23 ema_9=63089.82 ema_20=63087.41 ema_50=63085.17 ema_200=63042.57 macd=-1.8115 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:25:33,740 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:50:00+00:00 at Close price: 63128.42
+2026-08-15 12:25:33,887 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=37.0) | Direction: HOLD | BullScore: 60.5% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:25:34,000 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 60% (HOLD)
+2026-08-15 12:25:34,056 - INFO - Logged heartbeat status: OK
+2026-08-15 12:25:34,057 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:30:33 IST)" executed successfully
+2026-08-15 12:30:33,040 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:35:33 IST)" (scheduled at 2026-08-15 12:30:33.029538+05:30)
+2026-08-15 12:30:33,043 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:30:33,048 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:30:34,849 - INFO - Indicators computed | close=63114.68 ema_9=63091.66 ema_20=63088.33 ema_50=63085.59 ema_200=63043.09 macd=-0.6717 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:30:34,850 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T06:55:00+00:00 at Close price: 63114.68
+2026-08-15 12:30:34,859 - INFO - LONG signal blocked | Momentum blocked (MACD -3.3710 <= 0) | context={'close': 63114.68, 'ema_9': 63085.91050304538, 'ema_20': 63085.552910014354, 'ema_50': 63084.405019787475, 'ema_200': 63042.37059935142, 'macd_line': -3.3710122032280196, 'macd_signal': -9.214580376161154, 'macd_hist': 5.843568172933134, 'poc': np.float64(63425.0), 'val': np.float64(63100.0), 'vah': np.float64(64300.0)}
+2026-08-15 12:30:35,058 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=35.3) | Direction: HOLD | BullScore: 60.5% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:30:35,069 - INFO - Signal evaluated: HOLD. Reason/Details: LONG setup blocked: Momentum blocked (MACD -3.3710 <= 0)
+2026-08-15 12:30:35,070 - INFO - Sending Telegram alert...
+2026-08-15 12:30:45,735 - ERROR - Failed to send Telegram alert. HTTP Status: 400. Response: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"=\" at byte offset 97"}
+2026-08-15 12:30:45,917 - INFO - Logged heartbeat status: OK
+2026-08-15 12:30:45,917 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:35:33 IST)" executed successfully
+2026-08-15 12:35:33,041 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:40:33 IST)" (scheduled at 2026-08-15 12:35:33.029538+05:30)
+2026-08-15 12:35:33,045 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:35:33,052 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:35:34,536 - INFO - Indicators computed | close=63113.51 ema_9=63095.85 ema_20=63090.62 ema_50=63086.64 ema_200=63043.78 macd=1.2855 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:35:34,537 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T07:00:00+00:00 at Close price: 63113.51
+2026-08-15 12:35:34,595 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.5) | Direction: HOLD | BullScore: 60.5% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:35:34,615 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 60% (HOLD)
+2026-08-15 12:35:34,689 - INFO - Logged heartbeat status: OK
+2026-08-15 12:35:34,690 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:40:33 IST)" executed successfully
+2026-08-15 12:40:33,037 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:45:33 IST)" (scheduled at 2026-08-15 12:40:33.029538+05:30)
+2026-08-15 12:40:33,042 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:40:33,049 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:40:34,491 - INFO - Indicators computed | close=63077.25 ema_9=63085.19 ema_20=63085.62 ema_50=63084.64 ema_200=63043.68 macd=-2.6852 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:40:34,492 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T07:05:00+00:00 at Close price: 63070.16
+2026-08-15 12:40:34,545 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=31.7) | Direction: HOLD | BullScore: 21.1% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:40:34,564 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 21% (HOLD)
+2026-08-15 12:40:34,618 - INFO - Logged heartbeat status: OK
+2026-08-15 12:40:34,618 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:45:33 IST)" executed successfully
+2026-08-15 12:45:33,037 - INFO - Running job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:50:33 IST)" (scheduled at 2026-08-15 12:45:33.029538+05:30)
+2026-08-15 12:45:33,042 - INFO - [test-lifecycle-1786728107116] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 12:45:33,050 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786728107116]...
+2026-08-15 12:45:34,505 - INFO - Indicators computed | close=63128.04 ema_9=63102.97 ema_20=63094.62 ema_50=63088.51 ema_200=63045.09 macd=4.5419 poc=63425.0 val=63100.0 vah=64300.0
+2026-08-15 12:45:34,505 - INFO - [test-lifecycle-1786728107116] Evaluating strategy on completed candle: 2026-08-15T07:10:00+00:00 at Close price: 63134.83
+2026-08-15 12:45:34,563 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=30.2) | Direction: LONG | BullScore: 100.0% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-15 12:45:34,583 - INFO - Capping position size 2.042275 BTC to available cash equivalent 0.158391 BTC.
+2026-08-15 12:45:34,611 - INFO - Created pending signal approval ID 105 for bot test-lifecycle-1786728107116 (LONG @ $63134.83, status: WAITING_APPROVAL)
+2026-08-15 12:45:45,303 - INFO - [test-lifecycle-1786728107116] Signal LONG generated (ID: 105). Waiting for manual user approval.
+2026-08-15 12:45:45,365 - INFO - Logged heartbeat status: OK
+2026-08-15 12:45:45,365 - INFO - Job "LiveRunner.process_cycle (trigger: interval[0:05:00], next run at: 2026-08-15 12:50:33 IST)" executed successfully
+2026-08-15 13:36:38,140 - INFO - BotWatchdog thread started.
+2026-08-15 13:36:38,140 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:39:38,935 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:38,936 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:40:05,272 - INFO - BotWatchdog thread started.
+2026-08-15 13:40:05,272 - INFO - BotWatchdog singleton background thread started.

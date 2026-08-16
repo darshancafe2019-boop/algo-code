@@ -1,0 +1,80 @@
+2026-08-15 13:34:11,002 - INFO - BotWatchdog thread started.
+2026-08-15 13:34:11,002 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:34:11,007 - WARNING - Watchdog detected stall — attempting automatic restart for 'Lifecycle Bot' (test-lifecycle-1786730254187, 2880s inactive).
+2026-08-15 13:34:14,367 - INFO - Watchdog auto-recovery succeeded for 'Lifecycle Bot' (test-lifecycle-1786730254187).
+2026-08-15 13:34:14,367 - INFO - Sending Telegram alert...
+2026-08-15 13:39:41,796 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:41,796 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:40:13,452 - INFO - BotWatchdog thread started.
+2026-08-15 13:40:13,452 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:53:49,927 - INFO - BotWatchdog thread started.
+2026-08-15 13:53:49,927 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:54:55,318 - INFO - BotWatchdog thread started.
+2026-08-15 13:54:55,319 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:00:46,185 - INFO - BotWatchdog thread started.
+2026-08-15 14:00:46,186 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:15:27,272 - INFO - BotWatchdog thread started.
+2026-08-15 14:15:27,273 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:42:32,949 - INFO - BotWatchdog thread started.
+2026-08-15 14:42:32,949 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:06:17,055 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:17,057 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:08,795 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:08,795 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:28,865 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:28,867 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 16:07:31,521 - INFO - BotWatchdog thread started.
+2026-08-15 16:07:31,521 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 16:07:31,526 - WARNING - Watchdog detected stall — attempting automatic restart for 'Alpha BTC Scalper' (bot-1, 1287s inactive).
+2026-08-15 17:31:56,531 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 17:38:03,012 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 17:50:25,025 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 17:50:25,061 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:25,076 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:54:29,178 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 17:54:29,218 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:29,237 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:37:50,445 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 20:09:25,622 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 20:21:55,038 - INFO - BotWatchdog thread started.
+2026-08-15 20:21:55,040 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:21:55,251 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 20:21:55,284 - INFO - SQLite database tables verified/created.
+2026-08-15 20:21:55,309 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:52,843 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 20:53:52,554 - INFO - BotWatchdog thread started.
+2026-08-15 20:53:52,555 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:53:53,129 - INFO - Initializing scheduled trading bot live runner for bot-1786778602065-4b1a...
+2026-08-15 20:53:53,209 - INFO - SQLite database tables verified/created.
+2026-08-15 20:53:55,391 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:00,172 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:01,042 - INFO - Sending Telegram alert...
+2026-08-15 20:54:19,237 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:19,365 - INFO - [bot-1786778602065-4b1a] Starting signal check cycle for BTC/USDT (15m)...
+2026-08-15 20:54:20,342 - INFO - Fetching recent candles for BTC/USDT (15m) [Bot: bot-1786778602065-4b1a]...
+2026-08-15 20:54:31,685 - ERROR - Error fetching live OHLCV for BTC/USDT 15m: binance does not have market symbol BTC/USDT
+2026-08-15 20:54:31,738 - ERROR - System Error in runner execution cycle: binance does not have market symbol BTC/USDT
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4714, in fetch_ohlcv
+    market = self.market(symbol)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 2916, in market
+    raise BadSymbol(self.id + ' does not have market symbol ' + symbol)
+ccxt.base.errors.BadSymbol: binance does not have market symbol BTC/USDT
+2026-08-15 20:54:43,459 - ERROR - Error logging system error to DB: database is locked
+2026-08-15 20:54:48,384 - INFO - Sending Telegram alert...
+2026-08-15 20:55:16,467 - INFO - Telegram alert sent successfully.
+2026-08-15 20:55:27,503 - INFO - Logged heartbeat status: ERROR
+2026-08-15 20:55:40,761 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-15 20:55:40,762 - INFO - Bot bot-1786778602065-4b1a scheduled to check every 15 minutes.
+2026-08-15 20:55:40,764 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-15 20:55:40,764 - INFO - Scheduler started

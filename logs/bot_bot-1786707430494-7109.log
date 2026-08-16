@@ -1,0 +1,23 @@
+2026-08-14 17:07:13,263 - INFO - Initializing scheduled trading bot live runner for bot-1786707430494-7109...
+2026-08-14 17:07:13,267 - INFO - SQLite database tables verified/created.
+2026-08-14 17:07:13,270 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-14 17:07:14,552 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-14 17:07:14,562 - INFO - Sending Telegram alert...
+2026-08-14 17:07:15,388 - INFO - Telegram alert sent successfully.
+2026-08-14 17:07:15,390 - INFO - [bot-1786707430494-7109] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-14 17:07:15,393 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786707430494-7109]...
+2026-08-14 17:07:17,430 - INFO - Indicators computed | close=1878.43 ema_9=1876.67 ema_20=1876.99 ema_50=1879.91 ema_200=1885.00 macd=-1.0686 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-14 17:07:17,431 - INFO - [bot-1786707430494-7109] Evaluating strategy on completed candle: 2026-08-14T11:15:00+00:00 at Close price: 1877.75
+2026-08-14 17:07:17,566 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=41.7) | Direction: HOLD | BullScore: 34.8% | BearScore: 0.0% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-14 17:07:17,575 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 35% (HOLD)
+2026-08-14 17:07:17,611 - INFO - Logged heartbeat status: OK
+2026-08-14 17:07:17,617 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-14 17:07:17,617 - INFO - Bot bot-1786707430494-7109 scheduled to check every 15 minutes.
+2026-08-14 17:07:17,618 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-14 17:07:17,618 - INFO - Scheduler started
+2026-08-15 13:35:38,210 - INFO - BotWatchdog thread started.
+2026-08-15 13:35:38,210 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:39:38,066 - INFO - BotWatchdog thread started.
+2026-08-15 13:39:38,066 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 13:40:03,898 - INFO - BotWatchdog thread started.
+2026-08-15 13:40:03,898 - INFO - BotWatchdog singleton background thread started.

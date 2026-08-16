@@ -1,0 +1,84 @@
+2026-08-15 14:00:46,360 - INFO - BotWatchdog thread started.
+2026-08-15 14:00:46,361 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:15:28,913 - INFO - BotWatchdog thread started.
+2026-08-15 14:15:28,913 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 14:42:35,417 - INFO - BotWatchdog thread started.
+2026-08-15 14:42:35,417 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:06:19,000 - INFO - BotWatchdog thread started.
+2026-08-15 15:06:19,001 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:40:09,086 - INFO - BotWatchdog thread started.
+2026-08-15 15:40:09,087 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 15:45:28,760 - INFO - BotWatchdog thread started.
+2026-08-15 15:45:28,761 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 17:31:59,229 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 17:31:59,282 - INFO - SQLite database tables verified/created.
+2026-08-15 17:31:59,354 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:38:05,298 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 17:50:26,139 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 17:50:26,199 - INFO - SQLite database tables verified/created.
+2026-08-15 17:50:26,214 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 17:54:30,819 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 17:54:30,842 - INFO - SQLite database tables verified/created.
+2026-08-15 17:54:30,857 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 19:37:52,338 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 20:09:26,286 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 20:21:58,988 - INFO - BotWatchdog thread started.
+2026-08-15 20:21:59,070 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:21:59,639 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 20:21:59,665 - INFO - SQLite database tables verified/created.
+2026-08-15 20:21:59,707 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:22:56,049 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 20:25:05,535 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 20:53:54,661 - INFO - BotWatchdog thread started.
+2026-08-15 20:53:54,662 - INFO - BotWatchdog singleton background thread started.
+2026-08-15 20:53:55,583 - INFO - Initializing scheduled trading bot live runner for bot-1786782315954-94c8...
+2026-08-15 20:53:57,225 - INFO - SQLite database tables verified/created.
+2026-08-15 20:53:57,889 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-15 20:54:00,650 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-15 20:54:00,997 - INFO - Sending Telegram alert...
+2026-08-15 20:54:16,996 - INFO - Telegram alert sent successfully.
+2026-08-15 20:54:17,174 - INFO - [bot-1786782315954-94c8] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-15 20:54:17,203 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786782315954-94c8]...
+2026-08-15 20:54:20,275 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: 
+2026-08-15 20:54:20,287 - ERROR - System Error in runner execution cycle: 
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 161, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 4709, in fetch_ohlcv
+    self.load_markets()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 1816, in load_markets
+    markets = self.fetch_markets(params)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 3241, in fetch_markets
+    promisesRaw.append(self.publicGetExchangeInfo(params))
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\binance.py", line 11819, in request
+    response = self.fetch2(path, api, method, params, headers, body, config)
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5544, in fetch2
+    raise e
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 5525, in fetch2
+    response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ccxt\base\exchange.py", line 635, in fetch
+    http_response = self.on_rest_response(http_status_code, http_status_text, url, method, headers, response.text, request_headers, request_body)
+                                                                                                    ^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\models.py", line 1075, in text
+    content = str(self.content, encoding or "utf-8", errors="replace")
+MemoryError
+2026-08-15 20:54:47,058 - INFO - Sending Telegram alert...
+2026-08-15 20:55:18,693 - INFO - Telegram alert sent successfully.
+2026-08-15 20:55:29,472 - INFO - Logged heartbeat status: ERROR
+2026-08-15 20:55:36,590 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-15 20:55:36,590 - INFO - Bot bot-1786782315954-94c8 scheduled to check every 5 minutes.
+2026-08-15 20:55:36,590 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-15 20:55:36,590 - INFO - Scheduler started
