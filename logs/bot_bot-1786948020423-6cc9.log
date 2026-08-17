@@ -1,0 +1,37 @@
+2026-08-17 12:58:51,342 - INFO - Initializing scheduled trading bot live runner for bot-1786948020423-6cc9...
+2026-08-17 12:58:51,464 - INFO - SQLite database tables verified/created.
+2026-08-17 12:58:51,598 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-17 12:58:55,979 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-17 12:58:56,068 - INFO - Sending Telegram alert...
+2026-08-17 12:58:57,076 - INFO - Telegram alert sent successfully.
+2026-08-17 12:58:57,080 - INFO - [bot-1786948020423-6cc9] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-17 12:58:57,087 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786948020423-6cc9]...
+2026-08-17 12:59:26,278 - INFO - Indicators computed | close=63596.01 ema_9=63588.06 ema_20=63576.10 ema_50=63494.41 ema_200=63252.90 macd=23.8485 poc=63050.0 val=62650.0 vah=63150.0
+2026-08-17 12:59:26,278 - INFO - [bot-1786948020423-6cc9] Evaluating strategy on completed candle: 2026-08-17T07:20:00+00:00 at Close price: 63563.80
+2026-08-17 12:59:26,304 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=32.8) | Direction: HOLD | BullScore: 0.0% | BearScore: 34.8% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-17 12:59:26,321 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 35% (HOLD)
+2026-08-17 12:59:29,393 - INFO - Logged heartbeat status: OK
+2026-08-17 12:59:29,400 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-17 12:59:29,400 - INFO - Bot bot-1786948020423-6cc9 scheduled to check every 5 minutes.
+2026-08-17 12:59:29,400 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-17 12:59:29,400 - INFO - Scheduler started
+2026-08-17 13:20:40,170 - INFO - Initializing scheduled trading bot live runner for bot-1786948020423-6cc9...
+2026-08-17 13:20:40,182 - INFO - SQLite database tables verified/created.
+2026-08-17 13:20:40,196 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-17 13:20:45,679 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-17 13:20:45,725 - INFO - Sending Telegram alert...
+2026-08-17 13:20:46,667 - INFO - Telegram alert sent successfully.
+2026-08-17 13:20:46,673 - INFO - [bot-1786948020423-6cc9] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-17 13:20:46,799 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786948020423-6cc9]...
+2026-08-17 13:21:01,563 - INFO - Indicators computed | close=63528.09 ema_9=63555.58 ema_20=63562.71 ema_50=63503.27 ema_200=63267.09 macd=4.2318 poc=63050.0 val=62650.0 vah=63175.0
+2026-08-17 13:21:01,563 - INFO - [bot-1786948020423-6cc9] Evaluating strategy on completed candle: 2026-08-17T07:45:00+00:00 at Close price: 63530.32
+2026-08-17 13:21:02,015 - INFO - SHORT signal blocked | Trend blocked (Close 63530.32 >= EMA200 63264.47) | Momentum blocked (MACD 7.9105 >= 0) | context={'close': 63530.32, 'ema_9': 63562.45285305866, 'ema_20': 63566.349185658415, 'ema_50': 63502.25588128577, 'ema_200': 63264.471317897565, 'macd_line': 7.910512841990567, 'macd_signal': 21.311854446562897, 'macd_hist': -13.40134160457233, 'poc': np.float64(63050.0), 'val': np.float64(62650.0), 'vah': np.float64(63175.0)}
+2026-08-17 13:21:02,039 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.9) | Direction: HOLD | BullScore: 0.0% | BearScore: 34.8% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-17 13:21:02,067 - INFO - Signal evaluated: HOLD. Reason/Details: SHORT setup blocked: Trend blocked (Close 63530.32 >= EMA200 63264.47) | Momentum blocked (MACD 7.9105 >= 0)
+2026-08-17 13:21:02,067 - INFO - Sending Telegram alert...
+2026-08-17 13:21:02,999 - INFO - Telegram alert sent successfully.
+2026-08-17 13:21:05,501 - INFO - Logged heartbeat status: OK
+2026-08-17 13:21:05,505 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-17 13:21:05,505 - INFO - Bot bot-1786948020423-6cc9 scheduled to check every 5 minutes.
+2026-08-17 13:21:05,505 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-17 13:21:05,505 - INFO - Scheduler started

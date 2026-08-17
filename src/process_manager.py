@@ -364,6 +364,7 @@ class BotProcessManager:
         running = self.is_running()
         uptime_seconds = 0
         uptime_formatted = "0m 0s"
+        db_status = BOT_STATE_STOPPED
 
         # Authoritative uptime calculation from server DB timestamps
         try:
@@ -408,18 +409,22 @@ class BotProcessManager:
         if kill_switch_active:
             state = BOT_STATE_HALTED
         elif not running and state not in [BOT_STATE_PAUSED, BOT_STATE_ERROR, BOT_STATE_CREATED]:
-            state = BOT_STATE_STOPPED
+            state = db_status if db_status in [BOT_STATE_RUNNING, BOT_STATE_PAUSED] else BOT_STATE_STOPPED
+
+        is_running_flag = running or (state == BOT_STATE_RUNNING) or (db_status == BOT_STATE_RUNNING)
+        is_paused_flag = self.is_paused or (state == BOT_STATE_PAUSED) or (db_status == BOT_STATE_PAUSED)
 
         return {
             "status": state,
-            "is_running": running or (state == BOT_STATE_RUNNING),
-            "is_paused": self.is_paused or (state == BOT_STATE_PAUSED),
+            "is_running": is_running_flag,
+            "is_paused": is_paused_flag,
             "kill_switch_active": kill_switch_active,
             "uptime_seconds": uptime_seconds,
             "uptime_formatted": uptime_formatted,
             "pid": self.process.pid if self.process else None,
             "last_error": self.last_error
         }
+
 
 
 class MultiBotManager:
@@ -499,6 +504,7 @@ class MultiBotManager:
             return {"status": "error", "message": f"DB Error: {e}"}
 
         started_list = []
+        skipped_list = []
         for bot in bots:
             bot_id = bot["id"]
             mode = (bot.get("execution_mode") or "PAPER").upper()
@@ -506,13 +512,23 @@ class MultiBotManager:
             # Pre-flight check: If live trading disabled globally, skip live bots
             if mode == "LIVE":
                 if not getattr(config, "LIVE_TRADING_ENABLED", False):
+                    skipped_list.append(bot_id)
                     continue
 
             res = self.start_bot(bot_id)
             if res.get("status") in ["success", "already_running"]:
                 started_list.append(bot_id)
+            else:
+                skipped_list.append(bot_id)
 
-        return {"status": "success", "started_count": len(started_list)}
+        return {
+            "status": "success",
+            "started_count": len(started_list),
+            "skipped_count": len(skipped_list),
+            "started": started_list,
+            "skipped": skipped_list
+        }
+
 
     def pause_all_bots(self) -> Dict[str, Any]:
         """Pauses all currently running bot instances."""
@@ -614,7 +630,10 @@ class MultiBotManager:
             "results": results
         }
 
+    control_group_bots = execute_group_action
+
     def _update_db_status(self, bot_id: str, status: str, pid: Optional[int] = None, error: Optional[str] = None) -> None:
+
         try:
             from src.db import get_connection
             conn = get_connection()

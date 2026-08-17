@@ -1,0 +1,113 @@
+2026-08-16 19:06:06,854 - INFO - Initializing scheduled trading bot live runner for bot-1786885611530-61e8...
+2026-08-16 19:06:07,041 - INFO - SQLite database tables verified/created.
+2026-08-16 19:06:07,047 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:06:13,544 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 19:06:13,552 - INFO - Sending Telegram alert...
+2026-08-16 19:06:16,533 - INFO - Telegram alert sent successfully.
+2026-08-16 19:06:18,257 - INFO - [bot-1786885611530-61e8] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 19:06:29,235 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786885611530-61e8]...
+2026-08-16 19:06:30,749 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: 
+2026-08-16 19:06:30,749 - ERROR - System Error in runner execution cycle: 
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 167, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 4713, in fetch_ohlcv
+    self.load_markets()
+    ~~~~~~~~~~~~~~~~~^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 1816, in load_markets
+    markets = self.fetch_markets(params)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 3241, in fetch_markets
+    promisesRaw.append(self.publicGetExchangeInfo(params))
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 11823, in request
+    response = self.fetch2(path, api, method, params, headers, body, config)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 5544, in fetch2
+    raise e
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 5525, in fetch2
+    response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 635, in fetch
+    http_response = self.on_rest_response(http_status_code, http_status_text, url, method, headers, response.text, request_headers, request_body)
+                                                                                                    ^^^^^^^^^^^^^
+  File "H:\algo\algo\.venv\Lib\site-packages\requests\models.py", line 1075, in text
+    content = str(self.content, encoding or "utf-8", errors="replace")
+MemoryError
+2026-08-16 19:06:46,142 - INFO - Sending Telegram alert...
+2026-08-16 19:06:47,427 - INFO - Telegram alert sent successfully.
+2026-08-16 19:06:47,481 - INFO - Logged heartbeat status: ERROR
+2026-08-16 19:06:47,483 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 19:06:47,483 - INFO - Bot bot-1786885611530-61e8 scheduled to check every 5 minutes.
+2026-08-16 19:06:47,484 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 19:06:47,484 - INFO - Scheduler started
+2026-08-16 19:11:40,662 - INFO - Initializing scheduled trading bot live runner for bot-1786885611530-61e8...
+2026-08-16 19:11:52,388 - INFO - SQLite database tables verified/created.
+2026-08-16 19:11:52,566 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:11:56,938 - WARNING - ExecutionEngine: failed to load markets: 
+2026-08-16 19:11:56,938 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 19:11:57,717 - INFO - Sending Telegram alert...
+2026-08-16 19:12:11,168 - ERROR - Error logging Telegram event: database is locked
+2026-08-16 19:12:11,170 - INFO - Telegram alert sent successfully.
+2026-08-16 19:12:12,124 - INFO - [bot-1786885611530-61e8] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 19:12:14,054 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786885611530-61e8]...
+2026-08-16 19:12:17,865 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: 
+2026-08-16 19:12:17,865 - ERROR - System Error in runner execution cycle: 
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 167, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 4713, in fetch_ohlcv
+    self.load_markets()
+    ~~~~~~~~~~~~~~~~~^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 1816, in load_markets
+    markets = self.fetch_markets(params)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 3241, in fetch_markets
+    promisesRaw.append(self.publicGetExchangeInfo(params))
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 11823, in request
+    response = self.fetch2(path, api, method, params, headers, body, config)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 5544, in fetch2
+    raise e
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 5525, in fetch2
+    response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 620, in fetch
+    response = self.session.request(
+        method,
+    ...<6 lines>...
+        files=files
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "H:\algo\algo\.venv\Lib\site-packages\requests\sessions.py", line 827, in send
+    r.content
+  File "H:\algo\algo\.venv\Lib\site-packages\requests\models.py", line 1042, in content
+    self._content = b"".join(self.iter_content(CONTENT_CHUNK_SIZE)) or b""
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MemoryError
+2026-08-16 19:12:29,316 - ERROR - Error logging system error to DB: database is locked
+2026-08-16 19:12:35,021 - INFO - Sending Telegram alert...
+2026-08-16 19:12:38,937 - INFO - Telegram alert sent successfully.
+2026-08-16 19:12:52,432 - INFO - Logged heartbeat status: ERROR
+2026-08-16 19:12:52,607 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 19:12:52,607 - INFO - Bot bot-1786885611530-61e8 scheduled to check every 5 minutes.
+2026-08-16 19:12:52,608 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 19:12:52,608 - INFO - Scheduler started

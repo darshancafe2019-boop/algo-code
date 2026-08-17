@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 19, in <module>
+    from src import config
+  File "H:\algo\algo\btc-bot\src\__init__.py", line 4, in <module>
+    from . import indicators
+  File "H:\algo\algo\btc-bot\src\indicators.py", line 2, in <module>
+    import pandas as pd
+  File "H:\algo\algo\.venv\Lib\site-packages\pandas\__init__.py", line 58, in <module>
+    from pandas.core.api import (
+    ...<61 lines>...
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\pandas\core\api.py", line 27, in <module>
+    from pandas.core.arrays import Categorical
+  File "H:\algo\algo\.venv\Lib\site-packages\pandas\core\arrays\__init__.py", line 1, in <module>
+    from pandas.core.arrays.arrow import ArrowExtensionArray
+  File "H:\algo\algo\.venv\Lib\site-packages\pandas\core\arrays\arrow\__init__.py", line 5, in <module>
+    from pandas.core.arrays.arrow.array import ArrowExtensionArray
+  File "H:\algo\algo\.venv\Lib\site-packages\pandas\core\arrays\arrow\array.py", line 80, in <module>
+    from pandas.core.arrays.string_ import StringDtype
+  File "H:\algo\algo\.venv\Lib\site-packages\pandas\core\arrays\string_.py", line 70, in <module>
+    from pandas.core.arrays.numpy_ import NumpyExtensionArray
+  File "H:\algo\algo\.venv\Lib\site-packages\pandas\core\arrays\numpy_.py", line 37, in <module>
+    from pandas.core.arrays._mixins import NDArrayBackedExtensionArray
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 851, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+MemoryError

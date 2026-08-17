@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import random
@@ -10,6 +11,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar
+
 
 from src import config
 
@@ -389,10 +391,15 @@ def init_db(force: bool = False) -> None:
                     CREATE TABLE IF NOT EXISTS bot_indicator_profiles (
                         bot_id TEXT PRIMARY KEY,
                         profile_id TEXT NOT NULL,
-                        assigned_at TEXT NOT NULL
+                        applied_at TEXT NOT NULL DEFAULT ''
                     )
                     """
                 )
+                try:
+                    cursor.execute("ALTER TABLE bot_indicator_profiles ADD COLUMN applied_at TEXT NOT NULL DEFAULT ''")
+                except Exception:
+                    pass
+
 
                 cursor.execute(
                     """
@@ -435,6 +442,33 @@ def init_db(force: bool = False) -> None:
                     )
                     """
                 )
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS bot_indicator_configs (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        bot_id TEXT NOT NULL,
+                        indicator_id TEXT NOT NULL,
+                        symbol TEXT DEFAULT '',
+                        timeframe TEXT DEFAULT '',
+                        enabled INTEGER NOT NULL DEFAULT 1,
+                        weight REAL NOT NULL DEFAULT 15.0,
+                        timeframe_override TEXT DEFAULT '',
+                        long_enabled INTEGER NOT NULL DEFAULT 1,
+                        short_enabled INTEGER NOT NULL DEFAULT 1,
+                        signal_mode TEXT NOT NULL DEFAULT 'both',
+                        min_confirmations INTEGER NOT NULL DEFAULT 1,
+                        parameters_json TEXT NOT NULL DEFAULT '{}',
+                        display_json TEXT NOT NULL DEFAULT '{}',
+                        signal_rules_json TEXT NOT NULL DEFAULT '{}',
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT NOT NULL,
+                        UNIQUE(bot_id, indicator_id, symbol, timeframe)
+                    )
+                    """
+                )
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_bot_ind_cfg ON bot_indicator_configs(bot_id, indicator_id)")
+
 
                 cursor.execute(
                     """
@@ -582,6 +616,260 @@ def init_db(force: bool = False) -> None:
                     """
                 )
 
+                # =============================================================
+                # MARKET UNIVERSE 2.0 AUTHORITATIVE INSTRUMENT MASTER TABLES
+                # =============================================================
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS instruments (
+                        instrument_id TEXT PRIMARY KEY,
+                        provider_symbol TEXT NOT NULL,
+                        canonical_symbol TEXT NOT NULL,
+                        display_symbol TEXT NOT NULL,
+                        company_name TEXT DEFAULT '',
+                        exchange TEXT NOT NULL,
+                        mic TEXT DEFAULT '',
+                        country TEXT DEFAULT 'GLOBAL',
+                        currency TEXT DEFAULT 'USD',
+                        asset_class TEXT NOT NULL,
+                        instrument_type TEXT NOT NULL DEFAULT 'EQUITY',
+                        underlying_id TEXT DEFAULT '',
+                        underlying_symbol TEXT DEFAULT '',
+                        series TEXT DEFAULT 'EQ',
+                        isin TEXT DEFAULT '',
+                        lot_size REAL DEFAULT 1.0,
+                        tick_size REAL DEFAULT 0.05,
+                        contract_size REAL DEFAULT 1.0,
+                        price_multiplier REAL DEFAULT 1.0,
+                        expiry TEXT DEFAULT '',
+                        option_type TEXT DEFAULT 'NONE',
+                        strike REAL DEFAULT 0.0,
+                        segment TEXT DEFAULT 'CASH',
+                        market_status TEXT DEFAULT 'OPEN',
+                        tradability TEXT DEFAULT 'TRADABLE',
+                        data_status TEXT DEFAULT 'LIVE',
+                        data_source TEXT DEFAULT 'SYSTEM',
+                        broker_symbol_mappings TEXT DEFAULT '{}',
+                        contract_status TEXT DEFAULT 'ACTIVE',
+                        paper_enabled INTEGER DEFAULT 1,
+                        live_enabled INTEGER DEFAULT 0,
+                        strategy_enabled INTEGER DEFAULT 1,
+                        last_price REAL DEFAULT 0.0,
+                        change_24h REAL DEFAULT 0.0,
+                        volume_24h REAL DEFAULT 0.0,
+                        open_interest REAL DEFAULT 0.0,
+                        oi_change REAL DEFAULT 0.0,
+                        implied_volatility REAL DEFAULT 0.0,
+                        delta REAL DEFAULT 0.0,
+                        gamma REAL DEFAULT 0.0,
+                        theta REAL DEFAULT 0.0,
+                        vega REAL DEFAULT 0.0,
+                        volatility_score REAL DEFAULT 50.0,
+                        volatility_category TEXT DEFAULT 'Medium',
+                        momentum_score REAL DEFAULT 50.0,
+                        directional_bias TEXT DEFAULT 'NEUTRAL',
+                        is_swing_candidate INTEGER DEFAULT 0,
+                        is_scalping_candidate INTEGER DEFAULT 0,
+                        is_hedge_candidate INTEGER DEFAULT 0,
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT NOT NULL,
+                        active_from TEXT DEFAULT '',
+                        active_to TEXT DEFAULT ''
+                    )
+                    """
+                )
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_inst_canonical ON instruments(canonical_symbol)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_inst_asset_class ON instruments(asset_class)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_inst_exchange ON instruments(exchange)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_inst_underlying ON instruments(underlying_symbol, expiry)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_inst_strike ON instruments(underlying_symbol, strike, option_type)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_inst_contract_status ON instruments(contract_status)")
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS market_sync_history (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        sync_id TEXT NOT NULL,
+                        job_name TEXT NOT NULL,
+                        provider_id TEXT NOT NULL,
+                        started_at TEXT NOT NULL,
+                        finished_at TEXT NOT NULL,
+                        status TEXT NOT NULL,
+                        records_seen INTEGER DEFAULT 0,
+                        records_added INTEGER DEFAULT 0,
+                        records_updated INTEGER DEFAULT 0,
+                        records_expired INTEGER DEFAULT 0,
+                        errors_json TEXT DEFAULT '[]'
+                    )
+                    """
+                )
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_sync_hist_started ON market_sync_history(started_at DESC)")
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS provider_health_status (
+                        provider_id TEXT PRIMARY KEY,
+                        provider_name TEXT NOT NULL,
+                        status TEXT NOT NULL DEFAULT 'CONNECTED',
+                        latency_ms REAL DEFAULT 0.0,
+                        last_successful_sync TEXT DEFAULT '',
+                        last_quote_at TEXT DEFAULT '',
+                        last_error TEXT DEFAULT '',
+                        instruments_count INTEGER DEFAULT 0,
+                        realtime_capable INTEGER DEFAULT 1,
+                        historical_capable INTEGER DEFAULT 1,
+                        entitlement_status TEXT DEFAULT 'ACTIVE',
+                        updated_at TEXT NOT NULL
+                    )
+                    """
+                )
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS user_watchlists (
+                        id TEXT PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        description TEXT DEFAULT '',
+                        is_default INTEGER DEFAULT 0,
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT NOT NULL
+                    )
+                    """
+                )
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS user_watchlist_items (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        watchlist_id TEXT NOT NULL,
+                        instrument_id TEXT NOT NULL,
+                        added_at TEXT NOT NULL,
+                        notes TEXT DEFAULT '',
+                        UNIQUE(watchlist_id, instrument_id)
+                    )
+                    """
+                )
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS bot_strategy_permissions (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        bot_id TEXT NOT NULL,
+                        asset_class TEXT NOT NULL,
+                        strategy_name TEXT NOT NULL,
+                        is_allowed INTEGER NOT NULL DEFAULT 1,
+                        restriction_reason TEXT DEFAULT '',
+                        updated_at TEXT NOT NULL,
+                        UNIQUE(bot_id, asset_class, strategy_name)
+                    )
+                    """
+                )
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS backtest_runs (
+                        backtest_id TEXT PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        asset_class TEXT NOT NULL,
+                        symbol TEXT NOT NULL,
+                        exchange TEXT DEFAULT '',
+                        timeframe TEXT NOT NULL,
+                        start_date TEXT NOT NULL,
+                        end_date TEXT NOT NULL,
+                        strategy_id TEXT DEFAULT '',
+                        strategy_name TEXT NOT NULL,
+                        strategy_version TEXT DEFAULT 'v1.0',
+                        indicator_profile TEXT DEFAULT '',
+                        risk_model TEXT DEFAULT 'FIXED_RISK',
+                        initial_capital REAL NOT NULL,
+                        available_capital REAL DEFAULT 0.0,
+                        reserve_cash REAL DEFAULT 0.0,
+                        final_equity REAL DEFAULT 0.0,
+                        net_profit REAL DEFAULT 0.0,
+                        return_pct REAL DEFAULT 0.0,
+                        cagr_pct REAL DEFAULT 0.0,
+                        total_trades INTEGER DEFAULT 0,
+                        winning_trades INTEGER DEFAULT 0,
+                        losing_trades INTEGER DEFAULT 0,
+                        breakeven_trades INTEGER DEFAULT 0,
+                        win_rate_pct REAL DEFAULT 0.0,
+                        profit_factor REAL DEFAULT 0.0,
+                        expectancy REAL DEFAULT 0.0,
+                        max_drawdown_pct REAL DEFAULT 0.0,
+                        sharpe_ratio REAL DEFAULT 0.0,
+                        total_fees REAL DEFAULT 0.0,
+                        total_slippage REAL DEFAULT 0.0,
+                        status TEXT DEFAULT 'COMPLETED',
+                        config_json TEXT NOT NULL,
+                        metrics_json TEXT NOT NULL,
+                        equity_curve_json TEXT NOT NULL,
+                        monthly_performance_json TEXT DEFAULT '[]',
+                        data_quality_json TEXT DEFAULT '{}',
+                        created_at TEXT NOT NULL
+                    )
+                    """
+                )
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_bt_created ON backtest_runs(created_at DESC)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_bt_symbol ON backtest_runs(symbol, timeframe)")
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS backtest_trades (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        backtest_id TEXT NOT NULL,
+                        trade_id INTEGER NOT NULL,
+                        symbol TEXT NOT NULL,
+                        side TEXT NOT NULL,
+                        entry_time TEXT NOT NULL,
+                        entry_price REAL NOT NULL,
+                        exit_time TEXT NOT NULL,
+                        exit_price REAL NOT NULL,
+                        quantity REAL NOT NULL,
+                        notional REAL NOT NULL,
+                        capital_used REAL NOT NULL,
+                        margin_used REAL DEFAULT 0.0,
+                        stop_loss_price REAL NOT NULL,
+                        stop_distance REAL DEFAULT 0.0,
+                        stop_distance_pct REAL DEFAULT 0.0,
+                        take_profit_price REAL NOT NULL,
+                        risk_reward_ratio REAL DEFAULT 0.0,
+                        planned_risk REAL DEFAULT 0.0,
+                        actual_risk REAL DEFAULT 0.0,
+                        gross_pnl REAL NOT NULL,
+                        fees REAL DEFAULT 0.0,
+                        slippage REAL DEFAULT 0.0,
+                        net_pnl REAL NOT NULL,
+                        return_pct REAL NOT NULL,
+                        holding_time_seconds INTEGER DEFAULT 0,
+                        exit_reason TEXT NOT NULL,
+                        entry_score REAL DEFAULT 0.0,
+                        entry_quality TEXT DEFAULT 'Good',
+                        market_regime TEXT DEFAULT 'UNKNOWN',
+                        indicators_at_entry_json TEXT DEFAULT '{}',
+                        indicators_at_exit_json TEXT DEFAULT '{}',
+                        partial_fills_json TEXT DEFAULT '[]'
+                    )
+                    """
+                )
+                cursor.execute("CREATE INDEX IF NOT EXISTS idx_btt_bt_id ON backtest_trades(backtest_id)")
+
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS backtest_presets (
+                        id TEXT PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        category TEXT NOT NULL,
+                        asset_class TEXT NOT NULL,
+                        strategy_name TEXT NOT NULL,
+                        timeframe TEXT NOT NULL,
+                        description TEXT DEFAULT '',
+                        recommended_capital REAL DEFAULT 10000.0,
+                        config_json TEXT NOT NULL,
+                        created_at TEXT NOT NULL
+                    )
+                    """
+                )
+
                 cursor.execute(
                     """
                     CREATE TABLE IF NOT EXISTS system_session (
@@ -591,6 +879,7 @@ def init_db(force: bool = False) -> None:
                     )
                     """
                 )
+
 
                 cursor.execute(
                     """
@@ -2660,11 +2949,20 @@ def log_indicator_config_history(indicator_id: str, old_cfg: Dict[str, Any], new
         logger.error(f"Error logging indicator config history: {exc}")
 
 
-def get_indicator_config_history(indicator_id: Optional[str] = None, limit: int = 50) -> List[Dict[str, Any]]:
+def get_indicator_config_history(indicator_id: Optional[str] = None, bot_id: Optional[str] = None, limit: int = 50) -> List[Dict[str, Any]]:
     """Fetch chronological history of indicator configuration changes."""
     try:
-        if indicator_id:
+        try:
+            limit = int(limit)
+        except Exception:
+            limit = 50
+
+        if indicator_id and bot_id:
+            rows = safe_query("SELECT * FROM indicator_config_history WHERE indicator_id = ? AND bot_id = ? ORDER BY id DESC LIMIT ?", (indicator_id, bot_id, limit))
+        elif indicator_id:
             rows = safe_query("SELECT * FROM indicator_config_history WHERE indicator_id = ? ORDER BY id DESC LIMIT ?", (indicator_id, limit))
+        elif bot_id:
+            rows = safe_query("SELECT * FROM indicator_config_history WHERE bot_id = ? ORDER BY id DESC LIMIT ?", (bot_id, limit))
         else:
             rows = safe_query("SELECT * FROM indicator_config_history ORDER BY id DESC LIMIT ?", (limit,))
         for r in rows:
@@ -2678,6 +2976,7 @@ def get_indicator_config_history(indicator_id: Optional[str] = None, limit: int 
         return []
 
 
+
 def set_indicator_enabled(indicator_id: str, enabled: bool) -> bool:
     """Set enabled status (True/False) for an indicator in database."""
     try:
@@ -2687,6 +2986,18 @@ def set_indicator_enabled(indicator_id: str, enabled: bool) -> bool:
     except Exception as exc:
         logger.error(f"Error setting indicator enabled {indicator_id}: {exc}")
         return False
+
+
+def set_all_indicators_enabled(enabled: bool) -> bool:
+    """Set enabled status (True/False) for ALL indicators in database atomically."""
+    try:
+        now_str = datetime.now(timezone.utc).isoformat()
+        val = 1 if enabled else 0
+        return safe_execute("UPDATE indicator_configs SET enabled = ?, updated_at = ?", (val, now_str))
+    except Exception as exc:
+        logger.error(f"Error setting all indicators enabled={enabled}: {exc}")
+        return False
+
 
 
 def toggle_indicator_favorite(indicator_id: str) -> Tuple[bool, bool]:
@@ -2744,6 +3055,313 @@ def reset_all_indicator_configs() -> bool:
     except Exception as exc:
         logger.error(f"Error resetting all indicator configs: {exc}")
         return False
+
+
+# ============================================================================
+# PER-BOT CUSTOM INDICATOR CONFIGURATION ENGINE & HIERARCHY RESOLVER
+# ============================================================================
+
+def get_bot_effective_indicator_configs(bot_id: str = "bot-1", symbol: Optional[str] = None, timeframe: Optional[str] = None) -> List[Dict[str, Any]]:
+    """
+    Resolves the effective indicator configurations for a specific bot following the strict hierarchy:
+    GLOBAL DEFAULT -> PROFILE -> BOT OVERRIDE.
+    Each returned indicator dictionary includes:
+      - effective_source: 'BOT OVERRIDE', 'BOT PROFILE', or 'GLOBAL DEFAULT'
+      - effective_profile_name: Name of active profile if applicable
+      - all schema-validated parameters, weights, timeframes, and enabled flags
+    """
+    try:
+        # 1. Base: Global Defaults from indicator_configs
+        all_defaults = get_all_indicator_configs()
+        resolved_map = {ind["indicator_id"]: copy.deepcopy(ind) for ind in all_defaults}
+
+        for ind in resolved_map.values():
+            ind["effective_source"] = "GLOBAL DEFAULT"
+            ind["effective_profile_name"] = None
+            ind["bot_id"] = bot_id
+
+        # 2. Profile Layer: Overlay bot's assigned profile if present
+        profile = get_bot_indicator_profile(bot_id)
+        if profile and profile.get("config"):
+            p_name = profile.get("name", "Assigned Profile")
+            p_cfg = profile.get("config", {})
+            for iid, p_ind in p_cfg.items():
+                if iid in resolved_map and isinstance(p_ind, dict):
+                    target = resolved_map[iid]
+                    target["effective_source"] = "BOT PROFILE"
+                    target["effective_profile_name"] = p_name
+                    if "enabled" in p_ind: target["enabled"] = bool(p_ind["enabled"])
+                    if "weight" in p_ind: target["weight"] = float(p_ind["weight"])
+                    if "timeframe" in p_ind: target["timeframe"] = str(p_ind["timeframe"])
+                    if "long_enabled" in p_ind: target["long_enabled"] = bool(p_ind["long_enabled"])
+                    if "short_enabled" in p_ind: target["short_enabled"] = bool(p_ind["short_enabled"])
+                    if "signal_mode" in p_ind: target["signal_mode"] = str(p_ind["signal_mode"])
+                    if "parameters" in p_ind and isinstance(p_ind["parameters"], dict):
+                        target["parameters"].update(p_ind["parameters"])
+
+        # 3. Bot Override Layer: Overlay specific bot_indicator_configs for this bot
+        bot_overrides = safe_query("SELECT * FROM bot_indicator_configs WHERE bot_id = ?", (bot_id,))
+        for row in bot_overrides:
+            iid = row.get("indicator_id")
+            if iid in resolved_map:
+                target = resolved_map[iid]
+                target["effective_source"] = "BOT OVERRIDE"
+                target["enabled"] = bool(row.get("enabled", 1))
+                target["weight"] = float(row.get("weight", 15.0))
+                if row.get("timeframe_override"):
+                    target["timeframe"] = row["timeframe_override"]
+                target["long_enabled"] = bool(row.get("long_enabled", 1))
+                target["short_enabled"] = bool(row.get("short_enabled", 1))
+                target["signal_mode"] = str(row.get("signal_mode") or "both")
+                target["min_confirmations"] = int(row.get("min_confirmations") or 1)
+
+                try:
+                    p_json = json.loads(row.get("parameters_json") or "{}")
+                    if p_json: target["parameters"].update(p_json)
+                except Exception: pass
+
+                try:
+                    d_json = json.loads(row.get("display_json") or "{}")
+                    if d_json: target["display"].update(d_json)
+                except Exception: pass
+
+                try:
+                    s_json = json.loads(row.get("signal_rules_json") or "{}")
+                    if s_json: target["signal_rules"].update(s_json)
+                except Exception: pass
+
+        return list(resolved_map.values())
+    except Exception as exc:
+        logger.error(f"Error resolving bot effective indicator configs for {bot_id}: {exc}")
+        return get_all_indicator_configs()
+
+
+def get_bot_effective_indicator_config(bot_id: str, indicator_id: str, symbol: Optional[str] = None, timeframe: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    """Retrieve single effective indicator configuration for a bot."""
+    configs = get_bot_effective_indicator_configs(bot_id, symbol, timeframe)
+    for c in configs:
+        if c.get("indicator_id") == indicator_id or c.get("id") == indicator_id:
+            return c
+    return get_indicator_config(indicator_id)
+
+
+def save_bot_indicator_config(
+    bot_id: str,
+    indicator_id: str,
+    cfg_data: Dict[str, Any],
+    symbol: str = "",
+    timeframe: str = "",
+    user_source: str = "Web Dashboard",
+    reason: str = ""
+) -> Tuple[bool, str]:
+    """
+    Save or update a per-bot indicator configuration override in bot_indicator_configs.
+    Does NOT modify other bots or global defaults.
+    """
+    try:
+        from src.indicator_schema import validate_indicator_parameters, UNIVERSAL_INDICATOR_SCHEMAS
+
+        params = cfg_data.get("parameters") or cfg_data.get("params") or {}
+        if not params and cfg_data.get("parameters_json"):
+            try: params = json.loads(cfg_data["parameters_json"])
+            except Exception: params = {}
+        if isinstance(params, str):
+            try: params = json.loads(params)
+            except Exception: params = {}
+
+        # Validate parameters against indicator schema
+        is_valid, err_msg = validate_indicator_parameters(indicator_id, params)
+        if not is_valid:
+            return False, err_msg
+
+        # Capture old effective config for historical audit diff
+        old_cfg = get_bot_effective_indicator_config(bot_id, indicator_id)
+
+        schema = UNIVERSAL_INDICATOR_SCHEMAS.get(indicator_id, {})
+        enabled = 1 if cfg_data.get("enabled", True) else 0
+        weight = float(cfg_data.get("weight", schema.get("default_weight", 15.0)))
+        timeframe_override = str(cfg_data.get("timeframe", cfg_data.get("timeframe_override", "")))
+        long_enabled = 1 if cfg_data.get("long_enabled", True) else 0
+        short_enabled = 1 if cfg_data.get("short_enabled", True) else 0
+        signal_mode = str(cfg_data.get("signal_mode", "both"))
+        min_confirmations = int(cfg_data.get("min_confirmations", 1))
+
+        disp_obj = cfg_data.get("display") or schema.get("default_display", {})
+        if not disp_obj and cfg_data.get("display_json"):
+            try: disp_obj = json.loads(cfg_data["display_json"])
+            except Exception: disp_obj = {}
+
+        sig_rules_obj = cfg_data.get("signal_rules") or {}
+        if not sig_rules_obj and cfg_data.get("signal_rules_json"):
+            try: sig_rules_obj = json.loads(cfg_data["signal_rules_json"])
+            except Exception: sig_rules_obj = {}
+
+
+        now_str = datetime.now(timezone.utc).isoformat()
+
+        with get_db_transaction() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO bot_indicator_configs
+                (bot_id, indicator_id, symbol, timeframe, enabled, weight, timeframe_override,
+                 long_enabled, short_enabled, signal_mode, min_confirmations,
+                 parameters_json, display_json, signal_rules_json, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(bot_id, indicator_id, symbol, timeframe) DO UPDATE SET
+                    enabled = excluded.enabled,
+                    weight = excluded.weight,
+                    timeframe_override = excluded.timeframe_override,
+                    long_enabled = excluded.long_enabled,
+                    short_enabled = excluded.short_enabled,
+                    signal_mode = excluded.signal_mode,
+                    min_confirmations = excluded.min_confirmations,
+                    parameters_json = excluded.parameters_json,
+                    display_json = excluded.display_json,
+                    signal_rules_json = excluded.signal_rules_json,
+                    updated_at = excluded.updated_at
+                """,
+                (
+                    bot_id, indicator_id, symbol, timeframe, enabled, weight, timeframe_override,
+                    long_enabled, short_enabled, signal_mode, min_confirmations,
+                    json.dumps(params), json.dumps(disp_obj), json.dumps(sig_rules_obj), now_str, now_str
+                )
+            )
+
+        new_cfg = get_bot_effective_indicator_config(bot_id, indicator_id)
+
+        # Record history log
+        safe_execute(
+            """
+            INSERT INTO indicator_config_history 
+            (timestamp, indicator_id, bot_id, symbol, timeframe, action, user_source, old_config_json, new_config_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                now_str, indicator_id, bot_id, symbol or "BTC/USDT", timeframe or "15m",
+                "BOT_OVERRIDE_SAVE", user_source, json.dumps(old_cfg or {}), json.dumps(new_cfg or {})
+            )
+        )
+
+        log_bot_activity(
+            bot_id, "INDICATOR_CONFIGURED",
+            f"Configured indicator '{indicator_id}' for bot {bot_id} (weight: {weight}%, enabled: {bool(enabled)})",
+            {"indicator_id": indicator_id, "params": params, "reason": reason}
+        )
+
+        return True, indicator_id
+    except Exception as exc:
+        logger.error(f"Error saving bot indicator config for {bot_id}/{indicator_id}: {exc}")
+        return False, str(exc)
+
+
+def reset_bot_indicator_config(bot_id: str, indicator_id: str) -> bool:
+    """Reset a bot's specific override for an indicator, falling back to profile/default."""
+    try:
+        old_cfg = get_bot_effective_indicator_config(bot_id, indicator_id)
+        now_str = datetime.now(timezone.utc).isoformat()
+
+        safe_execute("DELETE FROM bot_indicator_configs WHERE bot_id = ? AND indicator_id = ?", (bot_id, indicator_id))
+
+        new_cfg = get_bot_effective_indicator_config(bot_id, indicator_id)
+
+        safe_execute(
+            """
+            INSERT INTO indicator_config_history 
+            (timestamp, indicator_id, bot_id, symbol, timeframe, action, user_source, old_config_json, new_config_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (now_str, indicator_id, bot_id, "BTC/USDT", "15m", "BOT_OVERRIDE_RESET", "Web Dashboard", json.dumps(old_cfg or {}), json.dumps(new_cfg or {}))
+        )
+
+        log_bot_activity(bot_id, "INDICATOR_RESET", f"Reset indicator '{indicator_id}' overrides for bot {bot_id} to profile/default.")
+        return True
+    except Exception as exc:
+        logger.error(f"Error resetting bot indicator config {bot_id}/{indicator_id}: {exc}")
+        return False
+
+
+def reset_all_bot_indicator_configs(bot_id: str) -> bool:
+    """Reset ALL indicator overrides for a specific bot to profile/global defaults."""
+    try:
+        safe_execute("DELETE FROM bot_indicator_configs WHERE bot_id = ?", (bot_id,))
+        log_bot_activity(bot_id, "INDICATORS_RESET_ALL", f"Reset all indicator overrides for bot {bot_id}.")
+        return True
+    except Exception as exc:
+        logger.error(f"Error resetting all indicator configs for bot {bot_id}: {exc}")
+        return False
+
+
+def set_bot_indicator_enabled(bot_id: str, indicator_id: str, enabled: bool) -> bool:
+    """Set enabled status for an indicator specifically on a given bot."""
+    try:
+        cfg = get_bot_effective_indicator_config(bot_id, indicator_id) or {}
+        cfg["enabled"] = enabled
+        ok, _ = save_bot_indicator_config(bot_id, indicator_id, cfg)
+        return ok
+    except Exception as exc:
+        logger.error(f"Error setting bot indicator enabled {bot_id}/{indicator_id}: {exc}")
+        return False
+
+
+def set_all_bot_indicators_enabled(bot_id: str, enabled: bool) -> bool:
+    """Set enabled status for ALL indicators specifically on a given bot."""
+    try:
+        configs = get_bot_effective_indicator_configs(bot_id)
+        for c in configs:
+            c["enabled"] = enabled
+            save_bot_indicator_config(bot_id, c["indicator_id"], c)
+        return True
+    except Exception as exc:
+        logger.error(f"Error setting all bot indicators enabled for {bot_id}: {exc}")
+        return False
+
+
+def copy_bot_indicator_configs(source_bot_id: str, target_bot_id: str) -> bool:
+    """Deep-copies all indicator overrides and profile bindings from source_bot to target_bot."""
+    try:
+        now_str = datetime.now(timezone.utc).isoformat()
+        # 1. Copy profile binding
+        prof_row = safe_query_one("SELECT profile_id FROM bot_indicator_profiles WHERE bot_id = ?", (source_bot_id,))
+        if prof_row:
+            safe_execute("INSERT OR REPLACE INTO bot_indicator_profiles (bot_id, profile_id, applied_at) VALUES (?, ?, ?)", (target_bot_id, prof_row["profile_id"], now_str))
+
+
+        # 2. Copy indicator overrides
+        overrides = safe_query("SELECT * FROM bot_indicator_configs WHERE bot_id = ?", (source_bot_id,))
+        for row in overrides:
+            d = dict(row)
+            d.pop("id", None)
+            d["bot_id"] = target_bot_id
+            d["created_at"] = now_str
+            d["updated_at"] = now_str
+            save_bot_indicator_config(target_bot_id, d["indicator_id"], d)
+        return True
+    except Exception as exc:
+        logger.error(f"Error copying indicator configs from {source_bot_id} to {target_bot_id}: {exc}")
+        return False
+
+
+def restore_indicator_config_from_history(history_id: int) -> Tuple[bool, str]:
+    """Restores an indicator configuration from an indicator_config_history record."""
+    try:
+        row = safe_query_one("SELECT * FROM indicator_config_history WHERE id = ?", (history_id,))
+        if not row:
+            return False, "History entry not found"
+
+        bot_id = row.get("bot_id") or "bot-1"
+        indicator_id = row.get("indicator_id")
+        old_cfg = json.loads(row.get("old_config_json") or "{}")
+
+        if not old_cfg:
+            return False, "History record contains empty configuration"
+
+        ok, err = save_bot_indicator_config(bot_id, indicator_id, old_cfg, user_source="History Restore", reason=f"Restored from history ID {history_id}")
+        return ok, err
+    except Exception as exc:
+        logger.error(f"Error restoring indicator config history {history_id}: {exc}")
+        return False, str(exc)
+
 
 
 def get_indicator_presets() -> List[Dict[str, Any]]:
@@ -4413,6 +5031,1063 @@ def log_standard_bot_event(
         logger.error(f"Error inserting standard bot event: {e}")
 
     return event_payload
+
+
+# =============================================================
+# MARKET UNIVERSE 2.0 DATABASE OPERATIONS & HELPERS
+# =============================================================
+
+def bulk_upsert_instruments(instruments_list: List[Dict[str, Any]]) -> Tuple[int, int]:
+    """Bulk upserts canonical instrument records into instruments table without deleting historical records."""
+    if not instruments_list:
+        return 0, 0
+
+    inserted = 0
+    updated = 0
+    now_utc = datetime.now(timezone.utc).isoformat()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    for inst in instruments_list:
+        inst_id = inst.get("instrument_id")
+        if not inst_id:
+            continue
+
+        cursor.execute("SELECT instrument_id FROM instruments WHERE instrument_id = ?", (inst_id,))
+        exists = cursor.fetchone()
+
+        broker_mappings = inst.get("broker_symbol_mappings")
+        if isinstance(broker_mappings, dict):
+            broker_mappings_str = json.dumps(broker_mappings)
+        elif isinstance(broker_mappings, str):
+            broker_mappings_str = broker_mappings
+        else:
+            broker_mappings_str = "{}"
+
+        if exists:
+            cursor.execute(
+                """
+                UPDATE instruments SET
+                    provider_symbol = ?,
+                    canonical_symbol = ?,
+                    display_symbol = ?,
+                    company_name = ?,
+                    exchange = ?,
+                    mic = ?,
+                    country = ?,
+                    currency = ?,
+                    asset_class = ?,
+                    instrument_type = ?,
+                    underlying_id = ?,
+                    underlying_symbol = ?,
+                    series = ?,
+                    isin = ?,
+                    lot_size = ?,
+                    tick_size = ?,
+                    contract_size = ?,
+                    price_multiplier = ?,
+                    expiry = ?,
+                    option_type = ?,
+                    strike = ?,
+                    segment = ?,
+                    market_status = ?,
+                    tradability = ?,
+                    data_status = ?,
+                    data_source = ?,
+                    broker_symbol_mappings = ?,
+                    contract_status = ?,
+                    paper_enabled = ?,
+                    live_enabled = ?,
+                    strategy_enabled = ?,
+                    last_price = ?,
+                    change_24h = ?,
+                    volume_24h = ?,
+                    open_interest = ?,
+                    oi_change = ?,
+                    implied_volatility = ?,
+                    delta = ?,
+                    gamma = ?,
+                    theta = ?,
+                    vega = ?,
+                    volatility_score = ?,
+                    volatility_category = ?,
+                    momentum_score = ?,
+                    directional_bias = ?,
+                    is_swing_candidate = ?,
+                    is_scalping_candidate = ?,
+                    is_hedge_candidate = ?,
+                    updated_at = ?
+                WHERE instrument_id = ?
+                """,
+                (
+                    inst.get("provider_symbol") or inst.get("symbol", ""),
+                    inst.get("canonical_symbol") or inst.get("symbol", ""),
+                    inst.get("display_symbol") or inst.get("display_name", ""),
+                    inst.get("company_name", ""),
+                    inst.get("exchange", "GLOBAL"),
+                    inst.get("mic", ""),
+                    inst.get("country", "GLOBAL"),
+                    inst.get("currency") or inst.get("quote_currency", "USD"),
+                    inst.get("asset_class", "INDIAN_STOCKS"),
+                    inst.get("instrument_type", "EQUITY"),
+                    inst.get("underlying_id", ""),
+                    inst.get("underlying_symbol", ""),
+                    inst.get("series", "EQ"),
+                    inst.get("isin", ""),
+                    float(inst.get("lot_size", 1.0)),
+                    float(inst.get("tick_size", 0.05)),
+                    float(inst.get("contract_size", 1.0)),
+                    float(inst.get("price_multiplier", 1.0)),
+                    inst.get("expiry", ""),
+                    inst.get("option_type", "NONE"),
+                    float(inst.get("strike", 0.0)),
+                    inst.get("segment", "CASH"),
+                    inst.get("market_status", "OPEN"),
+                    inst.get("tradability", "TRADABLE"),
+                    inst.get("data_status", "LIVE"),
+                    inst.get("data_source", "SYSTEM"),
+                    broker_mappings_str,
+                    inst.get("contract_status", "ACTIVE"),
+                    int(inst.get("paper_enabled", 1)),
+                    int(inst.get("live_enabled", 0)),
+                    int(inst.get("strategy_enabled", 1)),
+                    float(inst.get("last_price", 0.0)),
+                    float(inst.get("change_24h", inst.get("change_pct", 0.0))),
+                    float(inst.get("volume_24h", inst.get("volume", 0.0))),
+                    float(inst.get("open_interest", 0.0)),
+                    float(inst.get("oi_change", 0.0)),
+                    float(inst.get("implied_volatility", 0.0)),
+                    float(inst.get("delta", 0.0)),
+                    float(inst.get("gamma", 0.0)),
+                    float(inst.get("theta", 0.0)),
+                    float(inst.get("vega", 0.0)),
+                    float(inst.get("volatility_score", 50.0)),
+                    inst.get("volatility_category", "Medium"),
+                    float(inst.get("momentum_score", 50.0)),
+                    inst.get("directional_bias", "NEUTRAL"),
+                    int(inst.get("is_swing_candidate", 0)),
+                    int(inst.get("is_scalping_candidate", 0)),
+                    int(inst.get("is_hedge_candidate", 0)),
+                    now_utc,
+                    inst_id
+                )
+            )
+            updated += 1
+        else:
+            cursor.execute(
+                """
+                INSERT INTO instruments (
+                    instrument_id, provider_symbol, canonical_symbol, display_symbol, company_name,
+                    exchange, mic, country, currency, asset_class, instrument_type, underlying_id,
+                    underlying_symbol, series, isin, lot_size, tick_size, contract_size, price_multiplier,
+                    expiry, option_type, strike, segment, market_status, tradability, data_status,
+                    data_source, broker_symbol_mappings, contract_status, paper_enabled, live_enabled,
+                    strategy_enabled, last_price, change_24h, volume_24h, open_interest, oi_change,
+                    implied_volatility, delta, gamma, theta, vega, volatility_score, volatility_category,
+                    momentum_score, directional_bias, is_swing_candidate, is_scalping_candidate,
+                    is_hedge_candidate, created_at, updated_at, active_from, active_to
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
+                """,
+                (
+                    inst_id,
+                    inst.get("provider_symbol") or inst.get("symbol", ""),
+                    inst.get("canonical_symbol") or inst.get("symbol", ""),
+                    inst.get("display_symbol") or inst.get("display_name", ""),
+                    inst.get("company_name", ""),
+                    inst.get("exchange", "GLOBAL"),
+                    inst.get("mic", ""),
+                    inst.get("country", "GLOBAL"),
+                    inst.get("currency") or inst.get("quote_currency", "USD"),
+                    inst.get("asset_class", "INDIAN_STOCKS"),
+                    inst.get("instrument_type", "EQUITY"),
+                    inst.get("underlying_id", ""),
+                    inst.get("underlying_symbol", ""),
+                    inst.get("series", "EQ"),
+                    inst.get("isin", ""),
+                    float(inst.get("lot_size", 1.0)),
+                    float(inst.get("tick_size", 0.05)),
+                    float(inst.get("contract_size", 1.0)),
+                    float(inst.get("price_multiplier", 1.0)),
+                    inst.get("expiry", ""),
+                    inst.get("option_type", "NONE"),
+                    float(inst.get("strike", 0.0)),
+                    inst.get("segment", "CASH"),
+                    inst.get("market_status", "OPEN"),
+                    inst.get("tradability", "TRADABLE"),
+                    inst.get("data_status", "LIVE"),
+                    inst.get("data_source", "SYSTEM"),
+                    broker_mappings_str,
+                    inst.get("contract_status", "ACTIVE"),
+                    int(inst.get("paper_enabled", 1)),
+                    int(inst.get("live_enabled", 0)),
+                    int(inst.get("strategy_enabled", 1)),
+                    float(inst.get("last_price", 0.0)),
+                    float(inst.get("change_24h", inst.get("change_pct", 0.0))),
+                    float(inst.get("volume_24h", inst.get("volume", 0.0))),
+                    float(inst.get("open_interest", 0.0)),
+                    float(inst.get("oi_change", 0.0)),
+                    float(inst.get("implied_volatility", 0.0)),
+                    float(inst.get("delta", 0.0)),
+                    float(inst.get("gamma", 0.0)),
+                    float(inst.get("theta", 0.0)),
+                    float(inst.get("vega", 0.0)),
+                    float(inst.get("volatility_score", 50.0)),
+                    inst.get("volatility_category", "Medium"),
+                    float(inst.get("momentum_score", 50.0)),
+                    inst.get("directional_bias", "NEUTRAL"),
+                    int(inst.get("is_swing_candidate", 0)),
+                    int(inst.get("is_scalping_candidate", 0)),
+                    int(inst.get("is_hedge_candidate", 0)),
+                    now_utc,
+                    now_utc,
+                    inst.get("active_from", now_utc),
+                    inst.get("active_to", "")
+                )
+            )
+            inserted += 1
+
+    conn.commit()
+    conn.close()
+    return inserted, updated
+
+
+def get_instruments_master(
+    asset_class: str = "ALL",
+    exchange: str = "ALL",
+    instrument_type: str = "ALL",
+    search: str = "",
+    status: str = "ALL",
+    volatility_filter: str = "ALL",
+    limit: int = 100,
+    offset: int = 0
+) -> Dict[str, Any]:
+    """Queries instruments with pagination and multi-parameter filters."""
+    conditions = []
+    params = []
+
+    if asset_class and asset_class.upper() != "ALL":
+        ac_up = asset_class.upper()
+        if ac_up in ["STOCK", "STOCKS"]:
+            conditions.append("asset_class IN ('Stock', 'INDIAN_STOCKS', 'GLOBAL_STOCKS')")
+        elif ac_up in ["CRYPTO", "CRYPTOCURRENCY"]:
+            conditions.append("asset_class IN ('Crypto', 'CRYPTO')")
+        elif ac_up in ["FOREX", "FX", "CURRENCY"]:
+            conditions.append("asset_class IN ('Forex', 'FOREX')")
+        elif ac_up in ["INDICES", "INDEX"]:
+            conditions.append("asset_class IN ('Indices', 'INDIAN_INDICES', 'GLOBAL_INDICES')")
+        elif ac_up in ["COMMODITIES", "COMMODITY"]:
+            conditions.append("asset_class IN ('Commodities', 'COMMODITIES')")
+        else:
+            conditions.append("(asset_class = ? OR asset_class = ?)")
+            params.extend([asset_class, asset_class.upper()])
+
+    if exchange and exchange.upper() != "ALL":
+        conditions.append("exchange = ?")
+        params.append(exchange.upper())
+
+    if instrument_type and instrument_type.upper() != "ALL":
+        conditions.append("instrument_type = ?")
+        params.append(instrument_type.upper())
+
+    if status and status.upper() != "ALL":
+        conditions.append("contract_status = ?")
+        params.append(status.upper())
+
+    if volatility_filter and volatility_filter.upper() != "ALL":
+        conditions.append("volatility_category = ?")
+        params.append(volatility_filter)
+
+    if search:
+        search_like = f"%{search}%"
+        conditions.append("(canonical_symbol LIKE ? OR display_symbol LIKE ? OR company_name LIKE ? OR isin LIKE ? OR underlying_symbol LIKE ? OR provider_symbol LIKE ?)")
+        params.extend([search_like, search_like, search_like, search_like, search_like, search_like])
+
+    where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
+
+    count_sql = f"SELECT COUNT(*) as total FROM instruments {where_clause}"
+    count_rows = safe_query(count_sql, tuple(params))
+    total_count = count_rows[0]["total"] if count_rows else 0
+
+    query_sql = f"""
+        SELECT * FROM instruments
+        {where_clause}
+        ORDER BY volume_24h DESC, last_price DESC
+        LIMIT ? OFFSET ?
+    """
+    query_params = tuple(params + [limit, offset])
+    rows = safe_query(query_sql, query_params)
+
+    enriched_rows = []
+    for r in rows:
+        d = dict(r)
+        d["symbol"] = d.get("canonical_symbol") or d.get("instrument_id")
+        d["display_name"] = d.get("display_symbol") or d.get("symbol")
+        d["watch_enabled"] = bool(d.get("paper_enabled", 1))
+        d["paper_enabled"] = bool(d.get("paper_enabled", 1))
+        d["strategy_enabled"] = bool(d.get("strategy_enabled", 1))
+        d["live_enabled"] = bool(d.get("live_enabled", 0))
+        enriched_rows.append(d)
+
+    return {
+        "total": total_count,
+        "limit": limit,
+        "offset": offset,
+        "instruments": enriched_rows
+    }
+
+
+
+def get_instrument_by_id(instrument_id: str) -> Optional[Dict[str, Any]]:
+    """Fetches a canonical instrument by instrument_id."""
+    return safe_query_one("SELECT * FROM instruments WHERE instrument_id = ?", (instrument_id,))
+
+
+def get_instrument_by_canonical(canonical_symbol: str) -> Optional[Dict[str, Any]]:
+    """Fetches a canonical instrument by canonical_symbol."""
+    return safe_query_one("SELECT * FROM instruments WHERE canonical_symbol = ?", (canonical_symbol,))
+
+
+def get_universe_summary_stats() -> Dict[str, Any]:
+    """Returns real-time universe summary counts across asset classes and segments."""
+    sql = """
+        SELECT
+            COUNT(*) as total_instruments,
+            SUM(CASE WHEN asset_class IN ('INDIAN_STOCKS', 'Stock') AND exchange = 'NSE' THEN 1 ELSE 0 END) as indian_stocks,
+            SUM(CASE WHEN asset_class IN ('INDIAN_INDICES', 'GLOBAL_INDICES', 'Indices') THEN 1 ELSE 0 END) as indices,
+            SUM(CASE WHEN asset_class IN ('GLOBAL_STOCKS', 'Stock') AND exchange IN ('NASDAQ', 'NYSE') THEN 1 ELSE 0 END) as global_stocks,
+            SUM(CASE WHEN asset_class IN ('CRYPTO', 'Crypto') THEN 1 ELSE 0 END) as crypto,
+            SUM(CASE WHEN asset_class IN ('FOREX', 'Forex') THEN 1 ELSE 0 END) as forex,
+            SUM(CASE WHEN asset_class IN ('COMMODITIES', 'Commodities') THEN 1 ELSE 0 END) as commodities,
+            SUM(CASE WHEN instrument_type = 'FUTURES' THEN 1 ELSE 0 END) as futures,
+            SUM(CASE WHEN instrument_type = 'OPTIONS' THEN 1 ELSE 0 END) as options,
+            SUM(CASE WHEN volatility_category IN ('High', 'Extreme') THEN 1 ELSE 0 END) as high_volatility,
+            SUM(CASE WHEN exchange = 'NSE' THEN 1 ELSE 0 END) as nse_total,
+            SUM(CASE WHEN exchange = 'BSE' THEN 1 ELSE 0 END) as bse_total,
+            SUM(CASE WHEN paper_enabled = 1 THEN 1 ELSE 0 END) as paper_enabled,
+            SUM(CASE WHEN live_enabled = 1 THEN 1 ELSE 0 END) as live_enabled,
+            SUM(CASE WHEN tradability = 'TRADABLE' THEN 1 ELSE 0 END) as tradable
+        FROM instruments
+    """
+    row = safe_query_one(sql)
+    if not row:
+        row = {
+            "total_instruments": 0, "indian_stocks": 0, "indices": 0, "global_stocks": 0,
+            "crypto": 0, "forex": 0, "commodities": 0, "futures": 0, "options": 0,
+            "high_volatility": 0, "nse_total": 0, "bse_total": 0, "paper_enabled": 0,
+            "live_enabled": 0, "tradable": 0
+        }
+
+    # Add legacy key aliases
+    row["crypto_count"] = row.get("crypto", 0)
+    row["indian_stocks_count"] = row.get("indian_stocks", 0)
+    row["global_stocks_count"] = row.get("global_stocks", 0)
+    row["forex_count"] = row.get("forex", 0)
+    row["indices_count"] = row.get("indices", 0)
+    return row
+
+
+def get_market_universe(
+    asset_class: str = "ALL",
+    category: str = "ALL",
+    volatility: str = "ALL",
+    search: str = "",
+    status_filter: str = "",
+    limit: int = 500,
+    offset: int = 0
+) -> Dict[str, Any]:
+    """Compatibility wrapper for get_instruments_master with enriched fields."""
+    # Map legacy asset class filter
+    ac = asset_class
+    if asset_class.lower() == "stock":
+        ac = "ALL"  # will match via search or type
+
+    res = get_instruments_master(
+        asset_class=ac,
+        search=search,
+        volatility_filter=volatility if volatility != "ALL" else "ALL",
+        limit=limit,
+        offset=offset
+    )
+
+    enriched_insts = []
+    for inst in res.get("instruments", []):
+        d = dict(inst)
+        d["symbol"] = d.get("canonical_symbol") or d.get("instrument_id")
+        d["display_name"] = d.get("display_symbol") or d.get("symbol")
+        d["watch_enabled"] = bool(d.get("paper_enabled", 1))
+        d["paper_enabled"] = bool(d.get("paper_enabled", 1))
+        d["strategy_enabled"] = bool(d.get("strategy_enabled", 1))
+        d["live_enabled"] = bool(d.get("live_enabled", 0))
+        enriched_insts.append(d)
+
+    return {
+        "instruments": enriched_insts,
+        "total_count": res.get("total", 0),
+        "limit": limit,
+        "offset": offset
+    }
+
+
+def get_market_instrument(identifier: str) -> Optional[Dict[str, Any]]:
+    """Compatibility getter for single instrument."""
+    inst = get_instrument_by_id(identifier) or get_instrument_by_canonical(identifier)
+    if not inst:
+        # Search by symbol
+        row = safe_query_one("SELECT * FROM instruments WHERE canonical_symbol LIKE ? OR provider_symbol LIKE ? LIMIT 1", (f"%{identifier}%", f"%{identifier}%"))
+        inst = row
+
+    if inst:
+        d = dict(inst)
+        d["symbol"] = d.get("canonical_symbol") or d.get("instrument_id")
+        d["display_name"] = d.get("display_symbol") or d.get("symbol")
+        d["watch_enabled"] = bool(d.get("paper_enabled", 1))
+        d["paper_enabled"] = bool(d.get("paper_enabled", 1))
+        d["strategy_enabled"] = bool(d.get("strategy_enabled", 1))
+        d["live_enabled"] = bool(d.get("live_enabled", 0))
+        return d
+    return None
+
+
+def update_instrument_controls(
+    identifier: str,
+    watch: Optional[bool] = None,
+    paper: Optional[bool] = None,
+    strategy: Optional[bool] = None,
+    live: Optional[bool] = None
+) -> Tuple[bool, str]:
+    """Compatibility updater for instrument activation controls."""
+    now_utc = datetime.now(timezone.utc).isoformat()
+    ok = safe_execute(
+        """
+        UPDATE instruments SET
+            paper_enabled = COALESCE(?, paper_enabled),
+            live_enabled = COALESCE(?, live_enabled),
+            strategy_enabled = COALESCE(?, strategy_enabled),
+            updated_at = ?
+        WHERE instrument_id = ? OR canonical_symbol = ? OR provider_symbol = ?
+        """,
+        (
+            1 if paper else (0 if paper is False else None),
+            1 if live else (0 if live is False else None),
+            1 if strategy else (0 if strategy is False else None),
+            now_utc,
+            identifier,
+            identifier,
+            identifier
+        )
+    )
+    return (True, identifier) if ok else (False, f"Failed to update '{identifier}'")
+
+
+def get_top_market_opportunities(limit: int = 10) -> List[Dict[str, Any]]:
+    """Returns top opportunities ranked by momentum score."""
+    rows = safe_query("SELECT * FROM instruments ORDER BY momentum_score DESC, volume_24h DESC LIMIT ?", (limit,))
+    res = []
+    for r in rows:
+        d = dict(r)
+        d["symbol"] = d.get("canonical_symbol")
+        d["display_name"] = d.get("display_symbol")
+        res.append(d)
+    return res
+
+
+
+def get_option_chain_from_db(underlying: str, expiry: Optional[str] = None) -> Dict[str, Any]:
+    """Builds authoritative Option Chain data from instruments table."""
+    # 1. Fetch spot and futures price
+    spot_row = safe_query_one(
+        "SELECT last_price, change_24h FROM instruments WHERE (canonical_symbol = ? OR underlying_symbol = ?) AND instrument_type IN ('EQUITY', 'INDEX', 'SPOT') LIMIT 1",
+        (underlying, underlying)
+    )
+    spot_price = spot_row["last_price"] if spot_row else 0.0
+
+    # 2. Fetch available expiries
+    expiries_rows = safe_query(
+        "SELECT DISTINCT expiry FROM instruments WHERE underlying_symbol = ? AND instrument_type = 'OPTIONS' AND expiry != '' ORDER BY expiry ASC",
+        (underlying,)
+    )
+    available_expiries = [r["expiry"] for r in expiries_rows]
+    selected_expiry = expiry if (expiry and expiry in available_expiries) else (available_expiries[0] if available_expiries else "")
+
+    if not selected_expiry:
+        return {
+            "underlying": underlying,
+            "spot_price": spot_price,
+            "selected_expiry": "",
+            "available_expiries": [],
+            "strikes": []
+        }
+
+    # 3. Query all option contracts for selected expiry
+    opt_rows = safe_query(
+        """
+        SELECT * FROM instruments
+        WHERE underlying_symbol = ? AND instrument_type = 'OPTIONS' AND expiry = ?
+        ORDER BY strike ASC
+        """,
+        (underlying, selected_expiry)
+    )
+
+    # Group by strike
+    strikes_map: Dict[float, Dict[str, Any]] = {}
+    for opt in opt_rows:
+        strk = float(opt.get("strike", 0.0))
+        if strk not in strikes_map:
+            strikes_map[strk] = {"strike": strk, "call": None, "put": None}
+
+        op_type = opt.get("option_type", "").upper()
+        if op_type == "CE":
+            strikes_map[strk]["call"] = opt
+        elif op_type == "PE":
+            strikes_map[strk]["put"] = opt
+
+    sorted_strikes = [strikes_map[k] for k in sorted(strikes_map.keys())]
+
+    return {
+        "underlying": underlying,
+        "spot_price": spot_price,
+        "selected_expiry": selected_expiry,
+        "available_expiries": available_expiries,
+        "strikes": sorted_strikes
+    }
+
+
+def get_futures_chain_from_db(underlying: str) -> List[Dict[str, Any]]:
+    """Builds Futures term structure (Near, Next, Far) for an underlying."""
+    spot_row = safe_query_one(
+        "SELECT last_price FROM instruments WHERE (canonical_symbol = ? OR underlying_symbol = ?) AND instrument_type IN ('EQUITY', 'INDEX', 'SPOT') LIMIT 1",
+        (underlying, underlying)
+    )
+    spot_price = spot_row["last_price"] if spot_row else 0.0
+
+    fut_rows = safe_query(
+        """
+        SELECT * FROM instruments
+        WHERE underlying_symbol = ? AND instrument_type = 'FUTURES'
+        ORDER BY expiry ASC
+        LIMIT 6
+        """,
+        (underlying,)
+    )
+
+    enriched_contracts = []
+    today = datetime.now(timezone.utc).date()
+    for fut in fut_rows:
+        fut_price = float(fut.get("last_price", 0.0))
+        basis = round(fut_price - spot_price, 2)
+        exp_str = fut.get("expiry", "")
+        days_to_exp = 0
+        if exp_str and exp_str != "PERPETUAL":
+            try:
+                exp_d = datetime.strptime(exp_str, "%Y-%m-%d").date()
+                days_to_exp = max(0, (exp_d - today).days)
+            except Exception:
+                days_to_exp = 0
+        enriched = dict(fut)
+        enriched["basis"] = basis
+        enriched["spot_price"] = spot_price
+        enriched["days_to_expiry"] = days_to_exp
+        enriched_contracts.append(enriched)
+
+    return enriched_contracts
+
+
+def log_sync_run(
+    job_name: str,
+    provider_id: str,
+    started_at: str,
+    finished_at: str,
+    status: str,
+    records_seen: int,
+    records_added: int,
+    records_updated: int,
+    records_expired: int,
+    errors: Optional[List[str]] = None
+) -> str:
+    """Logs a sync run execution to market_sync_history."""
+    sync_id = f"sync_{int(time.time()*1000)}_{uuid.uuid4().hex[:6]}"
+    err_json = json.dumps(errors or [])
+
+    safe_execute(
+        """
+        INSERT INTO market_sync_history (
+            sync_id, job_name, provider_id, started_at, finished_at, status,
+            records_seen, records_added, records_updated, records_expired, errors_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            sync_id, job_name, provider_id, started_at, finished_at, status,
+            records_seen, records_added, records_updated, records_expired, err_json
+        )
+    )
+    return sync_id
+
+
+def get_sync_history(limit: int = 50) -> List[Dict[str, Any]]:
+    """Fetches recent synchronization run history."""
+    return safe_query("SELECT * FROM market_sync_history ORDER BY started_at DESC LIMIT ?", (limit,))
+
+
+def update_provider_health_status(
+    provider_id: str,
+    provider_name: str,
+    status: str,
+    latency_ms: float = 0.0,
+    last_successful_sync: str = "",
+    last_quote_at: str = "",
+    last_error: str = "",
+    instruments_count: int = 0,
+    realtime_capable: int = 1,
+    historical_capable: int = 1,
+    entitlement_status: str = "ACTIVE"
+) -> None:
+    """Updates or inserts provider health record in provider_health_status."""
+    now_utc = datetime.now(timezone.utc).isoformat()
+    safe_execute(
+        """
+        INSERT INTO provider_health_status (
+            provider_id, provider_name, status, latency_ms, last_successful_sync,
+            last_quote_at, last_error, instruments_count, realtime_capable, historical_capable,
+            entitlement_status, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(provider_id) DO UPDATE SET
+            provider_name = excluded.provider_name,
+            status = excluded.status,
+            latency_ms = excluded.latency_ms,
+            last_successful_sync = CASE WHEN excluded.last_successful_sync != '' THEN excluded.last_successful_sync ELSE provider_health_status.last_successful_sync END,
+            last_quote_at = CASE WHEN excluded.last_quote_at != '' THEN excluded.last_quote_at ELSE provider_health_status.last_quote_at END,
+            last_error = excluded.last_error,
+            instruments_count = excluded.instruments_count,
+            realtime_capable = excluded.realtime_capable,
+            historical_capable = excluded.historical_capable,
+            entitlement_status = excluded.entitlement_status,
+            updated_at = excluded.updated_at
+        """,
+        (
+            provider_id, provider_name, status, latency_ms, last_successful_sync,
+            last_quote_at, last_error, instruments_count, realtime_capable, historical_capable,
+            entitlement_status, now_utc
+        )
+    )
+
+
+def get_provider_health_records() -> List[Dict[str, Any]]:
+    """Fetches all provider health tracking records."""
+    return safe_query("SELECT * FROM provider_health_status ORDER BY provider_name ASC")
+
+
+def get_strategy_permissions_matrix(bot_id: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Returns strategy permission rules per bot and asset class."""
+    if bot_id:
+        return safe_query("SELECT * FROM bot_strategy_permissions WHERE bot_id = ? ORDER BY asset_class ASC", (bot_id,))
+    return safe_query("SELECT * FROM bot_strategy_permissions ORDER BY bot_id, asset_class ASC")
+
+
+def save_strategy_permission(bot_id: str, asset_class: str, strategy_name: str, is_allowed: bool, reason: str = "") -> bool:
+    """Saves or updates a strategy permission entry for a bot."""
+    now_utc = datetime.now(timezone.utc).isoformat()
+    return safe_execute(
+        """
+        INSERT INTO bot_strategy_permissions (bot_id, asset_class, strategy_name, is_allowed, restriction_reason, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ON CONFLICT(bot_id, asset_class, strategy_name) DO UPDATE SET
+            is_allowed = excluded.is_allowed,
+            restriction_reason = excluded.restriction_reason,
+            updated_at = excluded.updated_at
+        """,
+        (bot_id, asset_class, strategy_name, 1 if is_allowed else 0, reason, now_utc)
+    )
+
+
+def get_user_watchlists() -> List[Dict[str, Any]]:
+    """Fetches user watchlists with items count."""
+    watchlists = safe_query("SELECT * FROM user_watchlists ORDER BY is_default DESC, name ASC")
+    if not watchlists:
+        # Seed default watchlists
+        now_utc = datetime.now(timezone.utc).isoformat()
+        default_lists = [
+            ("wl_main", "My Watchlist", "Primary active trading watchlist", 1),
+            ("wl_crypto", "Crypto Top 10", "Major liquid crypto assets", 0),
+            ("wl_indian", "Indian Bluechips", "NSE Largecap leaders", 0),
+            ("wl_options", "F&O Active", "High volume derivatives", 0),
+            ("wl_volatility", "High Volatility", "Breakout and momentum scanner", 0)
+        ]
+        for w_id, w_name, w_desc, w_def in default_lists:
+            safe_execute(
+                "INSERT INTO user_watchlists (id, name, description, is_default, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
+                (w_id, w_name, w_desc, w_def, now_utc, now_utc)
+            )
+        watchlists = safe_query("SELECT * FROM user_watchlists ORDER BY is_default DESC, name ASC")
+
+    for wl in watchlists:
+        wl["watchlist_id"] = wl["id"]
+        items = safe_query(
+            """
+            SELECT i.* FROM instruments i
+            JOIN user_watchlist_items wi ON i.instrument_id = wi.instrument_id
+            WHERE wi.watchlist_id = ?
+            ORDER BY wi.added_at DESC
+            """,
+            (wl["id"],)
+        )
+        wl["items"] = items
+        wl["items_count"] = len(items)
+
+    return watchlists
+
+
+
+def add_item_to_watchlist(watchlist_id: str, instrument_id: str, notes: str = "") -> bool:
+    """Adds an instrument to a watchlist."""
+    now_utc = datetime.now(timezone.utc).isoformat()
+    return safe_execute(
+        """
+        INSERT INTO user_watchlist_items (watchlist_id, instrument_id, added_at, notes)
+        VALUES (?, ?, ?, ?)
+        ON CONFLICT(watchlist_id, instrument_id) DO UPDATE SET added_at = excluded.added_at, notes = excluded.notes
+        """,
+        (watchlist_id, instrument_id, now_utc, notes)
+    )
+
+
+def remove_item_from_watchlist(watchlist_id: str, instrument_id: str) -> bool:
+    """Removes an instrument from a watchlist."""
+    return safe_execute(
+        "DELETE FROM user_watchlist_items WHERE watchlist_id = ? AND instrument_id = ?",
+        (watchlist_id, instrument_id)
+    )
+
+
+# ============================================================================
+# ADVANCED BACKTESTING LAB PERSISTENCE LAYER
+# ============================================================================
+
+def save_backtest_run(run_data: Dict[str, Any], trades: Optional[List[Dict[str, Any]]] = None) -> str:
+    """Saves complete backtest run metadata, metrics, and trades to database."""
+    backtest_id = run_data.get("backtest_id") or f"BT-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{uuid.uuid4().hex[:4].upper()}"
+    now_utc = datetime.now(timezone.utc).isoformat()
+
+    config_json = json.dumps(run_data.get("config") or run_data.get("config_json") or {})
+    metrics_json = json.dumps(run_data.get("metrics") or run_data.get("metrics_json") or {})
+    equity_curve_json = json.dumps(run_data.get("equity_curve") or run_data.get("equity_curve_json") or [])
+    monthly_perf_json = json.dumps(run_data.get("monthly_performance") or run_data.get("monthly_performance_json") or [])
+    data_quality_json = json.dumps(run_data.get("data_quality") or run_data.get("data_quality_json") or {})
+
+    safe_execute(
+        """
+        INSERT INTO backtest_runs (
+            backtest_id, name, asset_class, symbol, exchange, timeframe,
+            start_date, end_date, strategy_id, strategy_name, strategy_version,
+            indicator_profile, risk_model, initial_capital, available_capital,
+            reserve_cash, final_equity, net_profit, return_pct, cagr_pct,
+            total_trades, winning_trades, losing_trades, breakeven_trades,
+            win_rate_pct, profit_factor, expectancy, max_drawdown_pct,
+            sharpe_ratio, total_fees, total_slippage, status,
+            config_json, metrics_json, equity_curve_json, monthly_performance_json,
+            data_quality_json, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(backtest_id) DO UPDATE SET
+            name = excluded.name,
+            final_equity = excluded.final_equity,
+            net_profit = excluded.net_profit,
+            return_pct = excluded.return_pct,
+            total_trades = excluded.total_trades,
+            win_rate_pct = excluded.win_rate_pct,
+            profit_factor = excluded.profit_factor,
+            max_drawdown_pct = excluded.max_drawdown_pct,
+            sharpe_ratio = excluded.sharpe_ratio,
+            metrics_json = excluded.metrics_json,
+            equity_curve_json = excluded.equity_curve_json,
+            monthly_performance_json = excluded.monthly_performance_json
+        """,
+        (
+            backtest_id,
+            run_data.get("name") or f"{run_data.get('strategy_name', 'Strategy')} Backtest",
+            run_data.get("asset_class", "Crypto"),
+            run_data.get("symbol", "BTC/USDT"),
+            run_data.get("exchange", "BINANCE"),
+            run_data.get("timeframe", "15m"),
+            run_data.get("start_date", "2024-01-01"),
+            run_data.get("end_date", "2024-06-01"),
+            run_data.get("strategy_id", "EMA_MACD_VP"),
+            run_data.get("strategy_name", "EMA_MACD_VP"),
+            run_data.get("strategy_version", "v3.2"),
+            run_data.get("indicator_profile", "Balanced"),
+            run_data.get("risk_model", "FIXED_RISK"),
+            float(run_data.get("initial_capital", 10000.0)),
+            float(run_data.get("available_capital", 8000.0)),
+            float(run_data.get("reserve_cash", 2000.0)),
+            float(run_data.get("final_equity", 10000.0)),
+            float(run_data.get("net_profit", 0.0)),
+            float(run_data.get("return_pct", 0.0)),
+            float(run_data.get("cagr_pct", 0.0)),
+            int(run_data.get("total_trades", 0)),
+            int(run_data.get("winning_trades", 0)),
+            int(run_data.get("losing_trades", 0)),
+            int(run_data.get("breakeven_trades", 0)),
+            float(run_data.get("win_rate_pct", 0.0)),
+            float(run_data.get("profit_factor", 0.0)),
+            float(run_data.get("expectancy", 0.0)),
+            float(run_data.get("max_drawdown_pct", 0.0)),
+            float(run_data.get("sharpe_ratio", 0.0)),
+            float(run_data.get("total_fees", 0.0)),
+            float(run_data.get("total_slippage", 0.0)),
+            run_data.get("status", "COMPLETED"),
+            config_json,
+            metrics_json,
+            equity_curve_json,
+            monthly_perf_json,
+            data_quality_json,
+            now_utc
+        )
+    )
+
+    if trades:
+        # Delete prior trades for this run if updating
+        safe_execute("DELETE FROM backtest_trades WHERE backtest_id = ?", (backtest_id,))
+        for idx, t in enumerate(trades, start=1):
+            indicators_at_entry = json.dumps(t.get("indicators_at_entry") or t.get("indicators_snapshot") or {})
+            indicators_at_exit = json.dumps(t.get("indicators_at_exit") or {})
+            partial_fills = json.dumps(t.get("partial_fills") or [])
+
+            safe_execute(
+                """
+                INSERT INTO backtest_trades (
+                    backtest_id, trade_id, symbol, side, entry_time, entry_price,
+                    exit_time, exit_price, quantity, notional, capital_used,
+                    margin_used, stop_loss_price, stop_distance, stop_distance_pct,
+                    take_profit_price, risk_reward_ratio, planned_risk, actual_risk,
+                    gross_pnl, fees, slippage, net_pnl, return_pct,
+                    holding_time_seconds, exit_reason, entry_score, entry_quality,
+                    market_regime, indicators_at_entry_json, indicators_at_exit_json,
+                    partial_fills_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    backtest_id,
+                    t.get("trade_id", idx),
+                    t.get("symbol", run_data.get("symbol", "BTC/USDT")),
+                    t.get("side") or t.get("direction", "LONG"),
+                    t.get("entry_time") or t.get("entry_timestamp", now_utc),
+                    float(t.get("entry_price", 0.0)),
+                    t.get("exit_time") or t.get("exit_timestamp", now_utc),
+                    float(t.get("exit_price", 0.0)),
+                    float(t.get("quantity") or t.get("position_size", 1.0)),
+                    float(t.get("notional", 0.0)),
+                    float(t.get("capital_used", 0.0)),
+                    float(t.get("margin_used", 0.0)),
+                    float(t.get("stop_loss_price") or t.get("stop_loss", 0.0)),
+                    float(t.get("stop_distance", 0.0)),
+                    float(t.get("stop_distance_pct", 0.0)),
+                    float(t.get("take_profit_price") or t.get("take_profit", 0.0)),
+                    float(t.get("risk_reward_ratio") or t.get("rr", 1.5)),
+                    float(t.get("planned_risk", 0.0)),
+                    float(t.get("actual_risk", 0.0)),
+                    float(t.get("gross_pnl", 0.0)),
+                    float(t.get("fees", 0.0)),
+                    float(t.get("slippage", 0.0)),
+                    float(t.get("net_pnl") or t.get("pnl", 0.0)),
+                    float(t.get("return_pct", 0.0)),
+                    int(t.get("holding_time_seconds", 0)),
+                    t.get("exit_reason", "SIGNAL"),
+                    float(t.get("entry_score", 85.0)),
+                    t.get("entry_quality", "Strong" if float(t.get("entry_score", 85.0)) >= 80 else "Good"),
+                    t.get("market_regime", "TRENDING_BULL"),
+                    indicators_at_entry,
+                    indicators_at_exit,
+                    partial_fills
+                )
+            )
+
+    return backtest_id
+
+
+def get_backtest_run_by_id(backtest_id: str) -> Optional[Dict[str, Any]]:
+    """Retrieves full backtest run by ID with parsed JSON structures."""
+    row = safe_query_one("SELECT * FROM backtest_runs WHERE backtest_id = ?", (backtest_id,))
+    if not row:
+        return None
+
+    res = dict(row)
+    res["config"] = json.loads(res.get("config_json") or "{}")
+    res["metrics"] = json.loads(res.get("metrics_json") or "{}")
+    res["equity_curve"] = json.loads(res.get("equity_curve_json") or "[]")
+    res["monthly_performance"] = json.loads(res.get("monthly_performance_json") or "[]")
+    res["data_quality"] = json.loads(res.get("data_quality_json") or "{}")
+    res["trades"] = get_backtest_trades(backtest_id)
+    return res
+
+
+def get_backtest_history(limit: int = 50, asset_class: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Fetches list of backtest runs."""
+    if asset_class and asset_class.upper() != "ALL":
+        rows = safe_query("SELECT * FROM backtest_runs WHERE asset_class = ? ORDER BY created_at DESC LIMIT ?", (asset_class, limit))
+    else:
+        rows = safe_query("SELECT * FROM backtest_runs ORDER BY created_at DESC LIMIT ?", (limit,))
+
+    results = []
+    for r in rows:
+        d = dict(r)
+        d["config"] = json.loads(d.get("config_json") or "{}")
+        d["metrics"] = json.loads(d.get("metrics_json") or "{}")
+        results.append(d)
+    return results
+
+
+def get_backtest_trades(backtest_id: str, limit: int = 500) -> List[Dict[str, Any]]:
+    """Fetches trades associated with a specific backtest run."""
+    rows = safe_query("SELECT * FROM backtest_trades WHERE backtest_id = ? ORDER BY trade_id ASC LIMIT ?", (backtest_id, limit))
+    trades = []
+    for r in rows:
+        t = dict(r)
+        t["indicators_at_entry"] = json.loads(t.get("indicators_at_entry_json") or "{}")
+        t["indicators_at_exit"] = json.loads(t.get("indicators_at_exit_json") or "{}")
+        t["partial_fills"] = json.loads(t.get("partial_fills_json") or "[]")
+        trades.append(t)
+    return trades
+
+
+def delete_backtest_run(backtest_id: str) -> bool:
+    """Deletes backtest run and all its associated trades."""
+    safe_execute("DELETE FROM backtest_trades WHERE backtest_id = ?", (backtest_id,))
+    return safe_execute("DELETE FROM backtest_runs WHERE backtest_id = ?", (backtest_id,))
+
+
+def get_backtest_presets() -> List[Dict[str, Any]]:
+    """Fetches all preset backtest configurations."""
+    presets = safe_query("SELECT * FROM backtest_presets ORDER BY name ASC")
+    if not presets:
+        seed_backtest_presets()
+        presets = safe_query("SELECT * FROM backtest_presets ORDER BY name ASC")
+
+    for p in presets:
+        p["config"] = json.loads(p.get("config_json") or "{}")
+    return presets
+
+
+def seed_backtest_presets() -> None:
+    """Seeds default professional backtest preset templates."""
+    now_utc = datetime.now(timezone.utc).isoformat()
+    defaults = [
+        {
+            "id": "preset_balanced_crypto",
+            "name": "Balanced Trend & Momentum (BTC/ETH)",
+            "category": "Trend",
+            "asset_class": "Crypto",
+            "strategy_name": "EMA_MACD_VP",
+            "timeframe": "15m",
+            "description": "Standard 15m multi-indicator balanced swing strategy with 1:2 Risk/Reward and 1% portfolio risk.",
+            "recommended_capital": 10000.0,
+            "config": {
+                "initial_capital": 10000.0,
+                "reserve_cash": 2000.0,
+                "risk_model": "PERCENT_EQUITY",
+                "risk_per_trade_pct": 1.0,
+                "stop_loss_method": "SWING_LOW_HIGH",
+                "take_profit_method": "RISK_REWARD",
+                "risk_reward_ratio": 2.0,
+                "fees_pct": 0.001,
+                "slippage_pct": 0.0005,
+                "allow_shorts": True
+            }
+        },
+        {
+            "id": "preset_conservative_equity",
+            "name": "Conservative Bluechip Swing (NSE/BSE)",
+            "category": "MeanReversion",
+            "asset_class": "Indian Stocks",
+            "strategy_name": "RSI_BB_CONFLUENCE",
+            "timeframe": "1D",
+            "description": "Daily timeframe RSI and Bollinger Band mean-reversion with strict 0.5% risk limit and 1:2.5 RR.",
+            "recommended_capital": 25000.0,
+            "config": {
+                "initial_capital": 25000.0,
+                "reserve_cash": 5000.0,
+                "risk_model": "PERCENT_EQUITY",
+                "risk_per_trade_pct": 0.5,
+                "stop_loss_method": "ATR_MULTIPLIER",
+                "atr_multiplier": 1.5,
+                "take_profit_method": "RISK_REWARD",
+                "risk_reward_ratio": 2.5,
+                "fees_pct": 0.0005,
+                "slippage_pct": 0.0002,
+                "allow_shorts": False
+            }
+        },
+        {
+            "id": "preset_futures_momentum",
+            "name": "Futures Breakout Scalper (Index / MCX)",
+            "category": "Breakout",
+            "asset_class": "Futures",
+            "strategy_name": "SUPER_TREND_BREAKOUT",
+            "timeframe": "5m",
+            "description": "5-minute SuperTrend high-speed breakout strategy with multi-target scaling (TP1 50%, TP2 50%).",
+            "recommended_capital": 15000.0,
+            "config": {
+                "initial_capital": 15000.0,
+                "reserve_cash": 3000.0,
+                "risk_model": "FIXED_RISK",
+                "fixed_risk_amount": 200.0,
+                "stop_loss_method": "FIXED_POINTS",
+                "stop_points": 40.0,
+                "take_profit_method": "MULTI_TARGET",
+                "tp1_points": 60.0,
+                "tp1_pct_size": 50.0,
+                "tp2_points": 100.0,
+                "tp2_pct_size": 50.0,
+                "fees_pct": 0.0008,
+                "slippage_pct": 0.0005,
+                "allow_shorts": True
+            }
+        },
+        {
+            "id": "preset_options_spread",
+            "name": "Options Bull Call Spread (NIFTY/BANKNIFTY)",
+            "category": "Trend",
+            "asset_class": "Options",
+            "strategy_name": "OPTIONS_DELTA_NEUTRAL",
+            "timeframe": "15m",
+            "description": "Defined-risk vertical bull call spread with Greeks monitoring (Delta/Theta/Vega) and weekly expiration.",
+            "recommended_capital": 20000.0,
+            "config": {
+                "initial_capital": 20000.0,
+                "reserve_cash": 5000.0,
+                "risk_model": "PERCENT_EQUITY",
+                "risk_per_trade_pct": 2.0,
+                "stop_loss_method": "FIXED_PERCENT",
+                "stop_loss_pct": 30.0,
+                "take_profit_method": "FIXED_PERCENT",
+                "take_profit_pct": 60.0,
+                "fees_pct": 0.001,
+                "slippage_pct": 0.001,
+                "allow_shorts": False
+            }
+        }
+    ]
+
+    for p in defaults:
+        safe_execute(
+            """
+            INSERT INTO backtest_presets (id, name, category, asset_class, strategy_name, timeframe, description, recommended_capital, config_json, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+                name = excluded.name,
+                category = excluded.category,
+                asset_class = excluded.asset_class,
+                strategy_name = excluded.strategy_name,
+                timeframe = excluded.timeframe,
+                description = excluded.description,
+                recommended_capital = excluded.recommended_capital,
+                config_json = excluded.config_json
+            """,
+            (p["id"], p["name"], p["category"], p["asset_class"], p["strategy_name"], p["timeframe"], p["description"], p["recommended_capital"], json.dumps(p["config"]), now_utc)
+        )
+
+
 
 
 

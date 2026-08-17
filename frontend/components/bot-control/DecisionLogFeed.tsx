@@ -8,14 +8,14 @@ export function DecisionLogFeed() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["decisionLogs"],
     queryFn: async () => {
-      const res = await fetch("/api/decision-logs?limit=15");
+      const res = await fetch("/api/bots/events?limit=15");
       if (!res.ok) throw new Error("Failed to fetch decision logs");
       return res.json();
     },
     refetchInterval: 5000,
   });
 
-  const logs = data?.decision_logs || data?.logs || [];
+  const logs = data?.events || data?.decision_logs || data?.logs || [];
 
   return (
     <div className="bg-[#121824] border border-[#1E293B] rounded-xl p-5 shadow-xl">

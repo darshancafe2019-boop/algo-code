@@ -1,0 +1,174 @@
+2026-08-16 17:04:25,364 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 17:04:25,603 - INFO - SQLite database tables verified/created.
+2026-08-16 17:04:25,621 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 17:04:27,296 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 17:04:27,339 - INFO - Sending Telegram alert...
+2026-08-16 17:04:28,250 - INFO - Telegram alert sent successfully.
+2026-08-16 17:04:28,261 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 17:04:28,270 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786880057624]...
+2026-08-16 17:04:30,960 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: binance does not have market symbol BTC/USDT
+2026-08-16 17:04:30,960 - ERROR - System Error in runner execution cycle: binance does not have market symbol BTC/USDT
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 167, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 4718, in fetch_ohlcv
+    market = self.market(symbol)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 2916, in market
+    raise BadSymbol(self.id + ' does not have market symbol ' + symbol)
+ccxt.base.errors.BadSymbol: binance does not have market symbol BTC/USDT
+2026-08-16 17:04:35,093 - INFO - Sending Telegram alert...
+2026-08-16 17:04:36,403 - INFO - Telegram alert sent successfully.
+2026-08-16 17:04:38,231 - INFO - Logged heartbeat status: ERROR
+2026-08-16 17:04:38,234 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 17:04:38,234 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 17:04:38,234 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 17:04:38,235 - INFO - Scheduler started
+2026-08-16 17:28:23,827 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 17:28:23,891 - INFO - SQLite database tables verified/created.
+2026-08-16 17:28:23,927 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 17:28:25,307 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 17:28:25,748 - INFO - Sending Telegram alert...
+2026-08-16 17:28:26,565 - INFO - Telegram alert sent successfully.
+2026-08-16 17:28:26,777 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 17:28:26,988 - WARNING - Global Kill switch active! Found flag file or config switch.
+2026-08-16 17:28:26,989 - WARNING - Kill switch file active. Skipping cycle.
+2026-08-16 17:28:26,989 - INFO - Sending Telegram alert...
+2026-08-16 17:28:27,800 - INFO - Telegram alert sent successfully.
+2026-08-16 17:28:38,094 - ERROR - Audit batch write failed: database is locked
+2026-08-16 17:28:38,746 - ERROR - Error logging heartbeat to DB: database is locked
+2026-08-16 17:28:48,265 - INFO - Logged heartbeat status: OK
+2026-08-16 17:28:50,660 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 17:28:50,660 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 17:28:50,660 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 17:28:50,660 - INFO - Scheduler started
+2026-08-16 18:12:24,634 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 18:12:24,830 - INFO - SQLite database tables verified/created.
+2026-08-16 18:12:24,924 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:12:26,832 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:12:27,050 - INFO - Sending Telegram alert...
+2026-08-16 18:12:32,786 - INFO - Telegram alert sent successfully.
+2026-08-16 18:12:33,082 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:12:35,959 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786880057624]...
+2026-08-16 18:12:38,680 - INFO - Indicators computed | close=63005.97 ema_9=63011.70 ema_20=63010.55 ema_50=63020.87 ema_200=63056.81 macd=-0.3075 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:12:38,681 - INFO - [test-lifecycle-1786880057624] Evaluating strategy on completed candle: 2026-08-16T12:35:00+00:00 at Close price: 63005.97
+2026-08-16 18:12:38,730 - INFO - Confluence Evaluation | Regime: RANGING (ADX=17.7) | Direction: HOLD | BullScore: 25.8% | BearScore: 25.8% | Active: ['ema', 'macd', 'vp']
+2026-08-16 18:12:38,808 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 26% (HOLD)
+2026-08-16 18:12:39,214 - INFO - Logged heartbeat status: OK
+2026-08-16 18:12:39,221 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:12:39,221 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 18:12:39,222 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:12:39,222 - INFO - Scheduler started
+2026-08-16 18:14:38,927 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 18:14:38,969 - INFO - SQLite database tables verified/created.
+2026-08-16 18:14:38,973 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:14:41,102 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:14:41,110 - INFO - Sending Telegram alert...
+2026-08-16 18:14:41,930 - INFO - Telegram alert sent successfully.
+2026-08-16 18:14:41,937 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:14:41,941 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786880057624]...
+2026-08-16 18:14:43,877 - INFO - Indicators computed | close=62997.78 ema_9=63010.06 ema_20=63009.77 ema_50=63020.54 ema_200=63056.72 macd=-0.9608 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:14:43,878 - INFO - [test-lifecycle-1786880057624] Evaluating strategy on completed candle: 2026-08-16T12:35:00+00:00 at Close price: 63005.97
+2026-08-16 18:14:43,887 - INFO - Confluence Evaluation | Regime: RANGING (ADX=17.7) | Direction: HOLD | BullScore: 25.8% | BearScore: 25.8% | Active: ['ema', 'macd', 'vp']
+2026-08-16 18:14:43,933 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 26% (HOLD)
+2026-08-16 18:14:43,975 - INFO - Logged heartbeat status: OK
+2026-08-16 18:14:43,978 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:14:43,979 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 18:14:43,979 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:14:43,979 - INFO - Scheduler started
+2026-08-16 18:17:51,628 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 18:17:51,714 - INFO - SQLite database tables verified/created.
+2026-08-16 18:17:51,966 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:17:53,971 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:17:54,219 - INFO - Sending Telegram alert...
+2026-08-16 18:17:55,096 - INFO - Telegram alert sent successfully.
+2026-08-16 18:17:55,110 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:17:55,134 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786880057624]...
+2026-08-16 18:18:14,278 - INFO - Indicators computed | close=62998.12 ema_9=63007.67 ema_20=63008.66 ema_50=63019.66 ema_200=63056.14 macd=-1.8330 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:18:14,557 - INFO - [test-lifecycle-1786880057624] Evaluating strategy on completed candle: 2026-08-16T12:40:00+00:00 at Close price: 62997.77
+2026-08-16 18:18:34,183 - ERROR - Error logging bot activity for test-lifecycle-1786880057624: database is locked
+2026-08-16 18:18:34,359 - INFO - Confluence Evaluation | Regime: RANGING (ADX=17.3) | Direction: HOLD | BullScore: 0.0% | BearScore: 25.8% | Active: ['ema', 'macd', 'vp']
+2026-08-16 18:18:37,476 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 26% (HOLD)
+2026-08-16 18:18:38,340 - INFO - Logged heartbeat status: OK
+2026-08-16 18:18:38,344 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:18:38,344 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 18:18:38,344 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:18:38,344 - INFO - Scheduler started
+2026-08-16 18:35:32,405 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 18:35:33,559 - INFO - SQLite database tables verified/created.
+2026-08-16 18:35:34,634 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:35:37,399 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:35:38,398 - INFO - Sending Telegram alert...
+2026-08-16 18:35:49,873 - ERROR - Audit batch write failed: database is locked
+2026-08-16 18:35:50,170 - ERROR - Error logging Telegram event: database is locked
+2026-08-16 18:35:50,170 - INFO - Telegram alert sent successfully.
+2026-08-16 18:35:51,359 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:35:55,630 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786880057624]...
+2026-08-16 18:36:00,011 - INFO - Indicators computed | close=63021.99 ema_9=63015.87 ema_20=63012.97 ema_50=63019.99 ema_200=63054.81 macd=1.6148 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:36:00,013 - INFO - [test-lifecycle-1786880057624] Evaluating strategy on completed candle: 2026-08-16T13:00:00+00:00 at Close price: 63021.99
+2026-08-16 18:36:04,081 - INFO - Confluence Evaluation | Regime: RANGING (ADX=10.3) | Direction: HOLD | BullScore: 25.8% | BearScore: 0.0% | Active: ['ema', 'macd', 'vp']
+2026-08-16 18:36:19,304 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 26% (HOLD)
+2026-08-16 18:36:34,164 - INFO - Logged heartbeat status: OK
+2026-08-16 18:36:34,167 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:36:34,167 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 18:36:34,168 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:36:34,168 - INFO - Scheduler started
+2026-08-16 19:05:52,180 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 19:05:52,244 - INFO - SQLite database tables verified/created.
+2026-08-16 19:05:52,289 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:05:54,197 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 19:05:54,939 - INFO - Sending Telegram alert...
+2026-08-16 19:05:59,062 - INFO - Telegram alert sent successfully.
+2026-08-16 19:05:59,223 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 19:06:05,046 - WARNING - Global Kill switch active! Found flag file or config switch.
+2026-08-16 19:06:05,046 - WARNING - Kill switch file active. Skipping cycle.
+2026-08-16 19:06:05,046 - INFO - Sending Telegram alert...
+2026-08-16 19:06:06,148 - ERROR - Audit batch write failed: database is locked
+2026-08-16 19:06:17,001 - ERROR - Error logging Telegram event: database is locked
+2026-08-16 19:06:17,095 - INFO - Telegram alert sent successfully.
+2026-08-16 19:06:30,184 - ERROR - Error logging bot status: database is locked
+2026-08-16 19:06:47,261 - INFO - Logged heartbeat status: OK
+2026-08-16 19:06:47,283 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 19:06:47,283 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 19:06:47,283 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 19:06:47,283 - INFO - Scheduler started
+2026-08-16 19:11:25,004 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786880057624...
+2026-08-16 19:11:30,069 - INFO - SQLite database tables verified/created.
+2026-08-16 19:11:30,390 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:11:36,265 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 19:11:36,613 - INFO - Sending Telegram alert...
+2026-08-16 19:11:38,505 - INFO - Telegram alert sent successfully.
+2026-08-16 19:11:38,912 - INFO - [test-lifecycle-1786880057624] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 19:11:39,966 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786880057624]...
+2026-08-16 19:11:45,071 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: binance does not have market symbol BTC/USDT
+2026-08-16 19:11:45,071 - ERROR - System Error in runner execution cycle: binance does not have market symbol BTC/USDT
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 167, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 4718, in fetch_ohlcv
+    market = self.market(symbol)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 2916, in market
+    raise BadSymbol(self.id + ' does not have market symbol ' + symbol)
+ccxt.base.errors.BadSymbol: binance does not have market symbol BTC/USDT
+2026-08-16 19:11:56,032 - INFO - Sending Telegram alert...
+2026-08-16 19:11:58,806 - INFO - Telegram alert sent successfully.
+2026-08-16 19:12:21,918 - INFO - Logged heartbeat status: ERROR
+2026-08-16 19:12:22,041 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 19:12:22,041 - INFO - Bot test-lifecycle-1786880057624 scheduled to check every 5 minutes.
+2026-08-16 19:12:22,042 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 19:12:22,042 - INFO - Scheduler started

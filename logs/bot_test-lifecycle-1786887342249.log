@@ -1,0 +1,40 @@
+2026-08-16 19:06:06,855 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786887342249...
+2026-08-16 19:06:11,203 - INFO - SQLite database tables verified/created.
+2026-08-16 19:06:11,856 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:06:14,905 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 19:06:17,051 - INFO - Sending Telegram alert...
+2026-08-16 19:06:29,236 - INFO - Telegram alert sent successfully.
+2026-08-16 19:06:29,636 - INFO - [test-lifecycle-1786887342249] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 19:06:40,999 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786887342249]...
+2026-08-16 19:06:46,033 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: binance does not have market symbol BTC/USDT
+2026-08-16 19:06:46,033 - ERROR - System Error in runner execution cycle: binance does not have market symbol BTC/USDT
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 167, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 4718, in fetch_ohlcv
+    market = self.market(symbol)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 2916, in market
+    raise BadSymbol(self.id + ' does not have market symbol ' + symbol)
+ccxt.base.errors.BadSymbol: binance does not have market symbol BTC/USDT
+2026-08-16 19:06:49,253 - INFO - Sending Telegram alert...
+2026-08-16 19:06:50,136 - INFO - Telegram alert sent successfully.
+2026-08-16 19:06:51,078 - INFO - Logged heartbeat status: ERROR
+2026-08-16 19:06:51,080 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 19:06:51,080 - INFO - Bot test-lifecycle-1786887342249 scheduled to check every 5 minutes.
+2026-08-16 19:06:51,080 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 19:06:51,081 - INFO - Scheduler started
+2026-08-16 19:11:48,117 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786887342249...
+2026-08-16 19:12:07,735 - INFO - SQLite database tables verified/created.
+2026-08-16 19:12:10,272 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:12:14,051 - WARNING - ExecutionEngine: failed to load markets: 
+2026-08-16 19:12:14,051 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+Exception ignored in thread started by <bound method Thread._bootstrap of <Thread(AuditBatchWriter, initial daemon)>>:
+MemoryError: 

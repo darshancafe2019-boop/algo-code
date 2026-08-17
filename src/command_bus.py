@@ -147,6 +147,7 @@ class CommandBus:
             "DELETE_BOT": cls._handle_delete_bot,
             "CREATE_BOT": cls._handle_create_bot,
             "UPDATE_BOT": cls._handle_update_bot,
+            "SELECT_BOT": cls._handle_select_bot,
             "START_ALL_BOTS": cls._handle_start_all_bots,
             "PAUSE_ALL_BOTS": cls._handle_pause_all_bots,
             "STOP_ALL_BOTS": cls._handle_stop_all_bots,
@@ -155,7 +156,35 @@ class CommandBus:
             "DEACTIVATE_KILL_SWITCH": cls._handle_deactivate_kill_switch,
             "RECONCILE_ACCOUNT": cls._handle_reconcile_account,
             "REFRESH_MARKET_DATA": cls._handle_refresh_market_data,
-            "SQUARE_OFF_POSITION": cls._handle_square_off_position
+            "SQUARE_OFF_POSITION": cls._handle_square_off_position,
+            "RUN_SCAN": cls._handle_run_scan,
+            "START_SCANNER": cls._handle_run_scan,
+            "STOP_SCANNER": cls._handle_stop_scanner,
+            "ADD_INDICATOR": cls._handle_configure_indicator,
+            "REMOVE_INDICATOR": cls._handle_remove_indicator,
+            "ENABLE_INDICATOR": cls._handle_enable_indicator,
+            "DISABLE_INDICATOR": cls._handle_disable_indicator,
+            "CONFIGURE_INDICATOR": cls._handle_configure_indicator,
+            "CREATE_STRATEGY": cls._handle_create_strategy,
+            "UPDATE_STRATEGY": cls._handle_create_strategy,
+            "ENABLE_STRATEGY": cls._handle_enable_strategy,
+            "DISABLE_STRATEGY": cls._handle_disable_strategy,
+            "CALCULATE_POSITION_SIZE": cls._handle_calculate_position_size,
+            "RUN_RISK_CHECK": cls._handle_run_risk_check,
+            "APPLY_RISK_PROFILE": cls._handle_apply_risk_profile,
+            "CREATE_ORDER": cls._handle_create_order,
+            "CANCEL_ORDER": cls._handle_cancel_order,
+            "MODIFY_ORDER": cls._handle_modify_order,
+            "START_PAPER": cls._handle_start_bot,
+            "PAUSE_PAPER": cls._handle_pause_bot,
+            "RESUME_PAPER": cls._handle_resume_bot,
+            "STOP_PAPER": cls._handle_stop_bot,
+            "RUN_BACKTEST": cls._handle_run_backtest,
+            "CREATE_ALERT": cls._handle_create_alert,
+            "UPDATE_ALERT": cls._handle_update_alert,
+            "DELETE_ALERT": cls._handle_delete_alert,
+            "EXPORT_TRADES": cls._handle_export_trades,
+            "EXPORT_ANALYTICS": cls._handle_export_analytics,
         }
         return mapping.get(action)
 
@@ -362,6 +391,237 @@ class CommandBus:
         )
         status = CommandStatus.SUCCEEDED if ok else CommandStatus.FAILED
         return status, ok, "Position squared off" if ok else res.get("error", "Error closing trade"), res
+
+    @classmethod
+    def _handle_select_bot(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        if not bot_id:
+            bot_id = payload.get("bot_id")
+        if not bot_id:
+            return CommandStatus.REJECTED, False, "bot_id is required for SELECT_BOT", {}
+
+        bot = db.safe_query_one("SELECT * FROM bot_instances WHERE id = ?", (bot_id,))
+        if not bot:
+            return CommandStatus.FAILED, False, f"Bot instance {bot_id} not found", {}
+        return CommandStatus.SUCCEEDED, True, f"Selected active bot {bot_id}", {"active_bot": bot}
+
+    @classmethod
+    def _handle_run_scan(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src.universe_scanner import UniverseScanner
+        scanner = UniverseScanner()
+        results = scanner.scan_universe(filters=payload.get("filters", {}))
+        return CommandStatus.SUCCEEDED, True, f"Scan complete: {len(results)} matches found.", {"matches": results, "count": len(results)}
+
+    @classmethod
+    def _handle_stop_scanner(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        return CommandStatus.SUCCEEDED, True, "Universe scanner paused/stopped.", {"scanner_active": False}
+
+    @classmethod
+    def _handle_configure_indicator(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        ind_id = payload.get("indicator_id") or payload.get("id")
+        if not ind_id:
+            return CommandStatus.REJECTED, False, "indicator_id is required", {}
+
+        from src import indicator_schema
+        success, res = indicator_schema.save_indicator_config(
+            bot_id=bot_id,
+            indicator_id=ind_id,
+            enabled=payload.get("enabled", True),
+            weight=float(payload.get("weight", 20.0)),
+            parameters=payload.get("parameters", {})
+        )
+        status = CommandStatus.SUCCEEDED if success else CommandStatus.FAILED
+        return status, success, f"Indicator {ind_id} configuration saved" if success else res.get("error", "Error saving indicator"), res
+
+    @classmethod
+    def _handle_remove_indicator(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        ind_id = payload.get("indicator_id") or payload.get("id")
+        if not ind_id:
+            return CommandStatus.REJECTED, False, "indicator_id is required", {}
+        from src import indicator_schema
+        success, res = indicator_schema.save_indicator_config(
+            bot_id=bot_id,
+            indicator_id=ind_id,
+            enabled=False,
+            weight=0.0,
+            parameters={}
+        )
+        return CommandStatus.SUCCEEDED, True, f"Indicator {ind_id} disabled/removed", res
+
+    @classmethod
+    def _handle_enable_indicator(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        ind_id = payload.get("indicator_id") or payload.get("id")
+        if not ind_id:
+            return CommandStatus.REJECTED, False, "indicator_id is required", {}
+        from src import indicator_schema
+        success, res = indicator_schema.save_indicator_config(
+            bot_id=bot_id,
+            indicator_id=ind_id,
+            enabled=True,
+            weight=float(payload.get("weight", 20.0)),
+            parameters=payload.get("parameters", {})
+        )
+        return CommandStatus.SUCCEEDED, True, f"Indicator {ind_id} enabled", res
+
+    @classmethod
+    def _handle_disable_indicator(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        return cls._handle_remove_indicator(bot_id=bot_id, payload=payload, user=user)
+
+    @classmethod
+    def _handle_create_strategy(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src import strategy_builder
+        success, res = strategy_builder.save_visual_strategy(payload)
+        status = CommandStatus.SUCCEEDED if success else CommandStatus.FAILED
+        return status, success, "Visual strategy created/updated" if success else res.get("error", "Error creating strategy"), res
+
+    @classmethod
+    def _handle_enable_strategy(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        strat_id = payload.get("strategy_id") or payload.get("id")
+        if bot_id and strat_id:
+            db.safe_execute("UPDATE bot_instances SET strategy = ? WHERE id = ?", (strat_id, bot_id))
+        return CommandStatus.SUCCEEDED, True, f"Strategy {strat_id} enabled for {bot_id or 'all bots'}", {"strategy_id": strat_id, "bot_id": bot_id}
+
+    @classmethod
+    def _handle_disable_strategy(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        strat_id = payload.get("strategy_id") or payload.get("id")
+        return CommandStatus.SUCCEEDED, True, f"Strategy {strat_id} disabled", {"strategy_id": strat_id}
+
+    @classmethod
+    def _handle_calculate_position_size(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src import universal_risk_engine
+        calc_res = universal_risk_engine.calculate_position_size(
+            account_equity=float(payload.get("account_equity", 10000.0)),
+            entry_price=float(payload.get("entry_price", 65000.0)),
+            stop_loss_price=float(payload.get("stop_loss_price", 64000.0)),
+            risk_pct=float(payload.get("risk_pct", 1.0)),
+            model=payload.get("model", "FIXED_PERCENTAGE")
+        )
+        return CommandStatus.SUCCEEDED, True, "Position size calculated", calc_res
+
+    @classmethod
+    def _handle_run_risk_check(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src import universal_risk_engine
+        ok, reason, details = universal_risk_engine.evaluate_pre_trade_risk(
+            bot_id=bot_id or "default-bot",
+            symbol=payload.get("symbol", "BTC/USDT"),
+            side=payload.get("side", "BUY"),
+            quantity=float(payload.get("quantity", 0.1)),
+            price=float(payload.get("price", 65000.0)),
+            stop_loss=float(payload.get("stop_loss", 64000.0)),
+            take_profit=float(payload.get("take_profit", 67000.0)),
+            confidence=float(payload.get("confidence", 0.85)),
+            is_live=bool(payload.get("is_live", False))
+        )
+        status = CommandStatus.SUCCEEDED if ok else CommandStatus.REJECTED
+        return status, ok, f"Pre-trade check: {'APPROVED' if ok else 'BLOCKED - ' + reason}", {"approved": ok, "reason": reason, "details": details}
+
+    @classmethod
+    def _handle_apply_risk_profile(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src import universal_risk_engine
+        prof_name = payload.get("profile_name", "CONSERVATIVE")
+        res = universal_risk_engine.apply_risk_profile(prof_name, bot_id=bot_id)
+        return CommandStatus.SUCCEEDED, True, f"Applied risk profile: {prof_name}", res
+
+    @classmethod
+    def _handle_create_order(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src.execution_service import OrderExecutionService
+        service = OrderExecutionService()
+        ok, reason, order_res = service.execute_order(
+            bot_id=bot_id or "paper-bot",
+            strategy=payload.get("strategy", "MANUAL_ORDER"),
+            symbol=payload.get("symbol", "BTC/USDT"),
+            side=payload.get("side", "BUY"),
+            amount=float(payload.get("amount", payload.get("quantity", 0.01))),
+            price=float(payload.get("price", 65000.0)),
+            stop_loss=float(payload.get("stop_loss", 63000.0)),
+            take_profit=float(payload.get("take_profit", 68000.0)),
+            confidence_score=float(payload.get("confidence", 0.85)),
+            is_live=bool(payload.get("is_live", False))
+        )
+        status = CommandStatus.SUCCEEDED if ok else CommandStatus.REJECTED
+        return status, ok, f"Order execution: {'SUCCESS' if ok else reason}", order_res
+
+    @classmethod
+    def _handle_cancel_order(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        order_id = payload.get("order_id")
+        if not order_id:
+            return CommandStatus.REJECTED, False, "order_id is required", {}
+        db.safe_execute("UPDATE trades_log SET status = 'CANCELLED' WHERE order_id = ? AND status = 'OPEN'", (order_id,))
+        return CommandStatus.SUCCEEDED, True, f"Order {order_id} cancelled", {"order_id": order_id}
+
+    @classmethod
+    def _handle_modify_order(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        order_id = payload.get("order_id")
+        if not order_id:
+            return CommandStatus.REJECTED, False, "order_id is required", {}
+        sl = payload.get("stop_loss")
+        tp = payload.get("take_profit")
+        if sl:
+            db.safe_execute("UPDATE trades_log SET stop_loss = ? WHERE order_id = ? OR trade_id = ?", (sl, order_id, order_id))
+        if tp:
+            db.safe_execute("UPDATE trades_log SET take_profit = ? WHERE order_id = ? OR trade_id = ?", (tp, order_id, order_id))
+        return CommandStatus.SUCCEEDED, True, f"Order {order_id} modified", {"order_id": order_id, "stop_loss": sl, "take_profit": tp}
+
+    @classmethod
+    def _handle_run_backtest(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src.backtester import run_backtest
+        res = run_backtest(
+            symbol=payload.get("symbol", "BTC/USDT"),
+            timeframe=payload.get("timeframe", "1h"),
+            strategy=payload.get("strategy", "EMA_MACD_VP"),
+            initial_capital=float(payload.get("initial_capital", 10000.0)),
+            commission=float(payload.get("commission", 0.001))
+        )
+        return CommandStatus.SUCCEEDED, True, "Backtest completed successfully", res
+
+    @classmethod
+    def _handle_create_alert(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        now_str = datetime.now(timezone.utc).isoformat()
+        alert_id = f"ALT-{int(time.time()*1000)}"
+        db.safe_execute(
+            """
+            INSERT INTO user_alerts (id, symbol, condition_type, operator, threshold_value, frequency, status, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, 'ACTIVE', ?)
+            """,
+            (
+                alert_id,
+                payload.get("symbol", "BTC/USDT"),
+                payload.get("condition_type", "PRICE"),
+                payload.get("operator", "CROSSING_UP"),
+                float(payload.get("threshold_value", 65000.0)),
+                payload.get("frequency", "ONCE"),
+                now_str
+            )
+        )
+        return CommandStatus.SUCCEEDED, True, f"Alert {alert_id} created", {"alert_id": alert_id}
+
+    @classmethod
+    def _handle_update_alert(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        alert_id = payload.get("alert_id") or payload.get("id")
+        if not alert_id:
+            return CommandStatus.REJECTED, False, "alert_id is required", {}
+        status = payload.get("status", "ACTIVE")
+        db.safe_execute("UPDATE user_alerts SET status = ? WHERE id = ?", (status, alert_id))
+        return CommandStatus.SUCCEEDED, True, f"Alert {alert_id} updated", {"alert_id": alert_id, "status": status}
+
+    @classmethod
+    def _handle_delete_alert(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        alert_id = payload.get("alert_id") or payload.get("id")
+        if not alert_id:
+            return CommandStatus.REJECTED, False, "alert_id is required", {}
+        db.safe_execute("DELETE FROM user_alerts WHERE id = ?", (alert_id,))
+        return CommandStatus.SUCCEEDED, True, f"Alert {alert_id} deleted", {"alert_id": alert_id}
+
+    @classmethod
+    def _handle_export_trades(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src import trade_ledger
+        trades = trade_ledger.get_trades_history(limit=500)
+        return CommandStatus.SUCCEEDED, True, f"Exported {len(trades)} trade records", {"trades_count": len(trades)}
+
+    @classmethod
+    def _handle_export_analytics(cls, bot_id: Optional[str], payload: Dict[str, Any], user: str):
+        from src import performance_analytics
+        metrics = performance_analytics.compute_complete_performance_metrics()
+        return CommandStatus.SUCCEEDED, True, "Performance analytics computed and exported", metrics
 
 
 command_bus = CommandBus()

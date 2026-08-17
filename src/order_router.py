@@ -28,8 +28,9 @@ class MultiAssetOrderRouter:
         if inst:
             if is_live and not inst.get("live_enabled", False):
                 return False, f"Live trading disabled for instrument '{symbol}'. Must explicitly activate Live control.", {}
-            if not inst.get("execution_available", False):
+            if inst.get("tradability") == "DATA_ONLY":
                 return False, f"Instrument '{symbol}' is DATA ONLY. Execution adapter unavailable.", {}
+
 
         # Safety Check 2: Global & Asset-Class Safety Flags
         master_live = getattr(config, "MASTER_LIVE_TRADING", False)

@@ -1,0 +1,21 @@
+2026-08-16 20:35:38,016 - INFO - Initializing scheduled trading bot live runner for bot-1786892725841-9a84...
+2026-08-16 20:35:38,040 - INFO - SQLite database tables verified/created.
+2026-08-16 20:35:38,047 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 20:35:39,342 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 20:35:39,534 - INFO - Sending Telegram alert...
+2026-08-16 20:35:50,920 - ERROR - Audit batch write failed: database is locked
+2026-08-16 20:35:51,646 - ERROR - Error logging Telegram event: database is locked
+2026-08-16 20:35:51,745 - INFO - Telegram alert sent successfully.
+2026-08-16 20:35:52,123 - INFO - [bot-1786892725841-9a84] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 20:35:53,414 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786892725841-9a84]...
+2026-08-16 20:35:57,703 - INFO - Indicators computed | close=63114.00 ema_9=63100.52 ema_20=63084.16 ema_50=63060.07 ema_200=63060.59 macd=18.7933 poc=63050.0 val=62600.0 vah=63375.0
+2026-08-16 20:35:57,703 - INFO - [bot-1786892725841-9a84] Evaluating strategy on completed candle: 2026-08-16T15:00:00+00:00 at Close price: 63113.99
+2026-08-16 20:36:08,002 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=61.3) | Direction: LONG | BullScore: 100.0% | BearScore: 0.0% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 20:36:11,848 - INFO - Capping position size 3.781671 BTC to available cash equivalent 0.237665 BTC.
+2026-08-16 20:36:15,812 - INFO - Created pending signal approval ID 243 for bot bot-1786892725841-9a84 (LONG @ $63113.99, status: WAITING_APPROVAL)
+2026-08-16 20:36:17,069 - INFO - [bot-1786892725841-9a84] Signal LONG generated (ID: 243). Waiting for manual user approval.
+2026-08-16 20:36:17,311 - INFO - Logged heartbeat status: OK
+2026-08-16 20:36:17,312 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 20:36:17,312 - INFO - Bot bot-1786892725841-9a84 scheduled to check every 5 minutes.
+2026-08-16 20:36:17,313 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 20:36:17,313 - INFO - Scheduler started

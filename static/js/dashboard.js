@@ -61,7 +61,9 @@ function initApp() {
     renderActiveBotsGrid();
     fetchBotHistoryLog();
     initBotEventsStream();
+    fetchIndicatorDashboardData();
 }
+
 
 // --------------------------------------------------------------------------
 // SECTION 1: LIVE SSE STREAMING & STALENESS WATCHDOG
@@ -187,45 +189,8 @@ function startPolling() {
     setInterval(checkConnectionStaleness, 1000); // 1s staleness check
 }
 
-// Tab Navigation
-function switchTab(tabId) {
-    const activeTab = tabId || "control";
-    document.querySelectorAll(".nav-item").forEach(btn => {
-        btn.classList.toggle("active", btn.getAttribute("data-tab") === activeTab);
-    });
+// (Authoritative switchTab and routing defined in Centralized Navigation Router section below)
 
-    document.querySelectorAll(".tab-content").forEach(tab => {
-        tab.classList.toggle("active", tab.id === `tab-${activeTab}`);
-    });
-
-    if (activeTab === "analytics") {
-        fetchAnalytics();
-        fetchBotComparison();
-        setTimeout(() => {
-            if (typeof chartInstances !== 'undefined') {
-                Object.values(chartInstances).forEach(chart => {
-                    if (chart && typeof chart.resize === 'function') {
-                        chart.resize();
-                        chart.update();
-                    }
-                });
-            }
-        }, 50);
-    } else if (activeTab === "control") {
-        fetchBotComparison();
-        fetchBotInstances();
-    } else if (activeTab === "risk") {
-        initUniversalRiskCenter();
-    } else if (activeTab === "indicators") {
-        fetchIndicatorDashboardData();
-    } else if (activeTab === "universe") {
-        fetchMarketUniverseDashboard();
-    } else if (activeTab === "audit") {
-        fetchAuditEvents();
-    } else if (activeTab === "logs") {
-        fetchLogs();
-    }
-}
 
 // Timeframe Switcher
 function setTimeframe(tf) {
@@ -3465,13 +3430,22 @@ let currentSearchQuery = "";
 let currentIndConfigId = null;
 
 async function fetchIndicatorDashboardData() {
+    const container = document.getElementById("indicators-grid-container");
+    if (container && (!indicatorCatalogCache || indicatorCatalogCache.length === 0)) {
+        container.innerHTML = '<div class="text-center text-muted" style="grid-column: span 3; padding:40px;"><div class="spinner-border spinner-border-sm text-primary" role="status" style="margin-right:8px;"></div> ⏳ Loading indicator library and live calculated values...</div>';
+    }
+
     try {
         const botId = activeBotId || "bot-1";
         const [resStatus, resList, resProfiles] = await Promise.all([
             fetch(`/api/indicators/status?bot_id=${botId}`),
-            fetch("/api/indicators"),
+            fetch(`/api/indicators?bot_id=${botId}`),
             fetch("/api/indicators/profiles")
         ]);
+
+        if (!resList.ok) {
+            throw new Error(`Indicator API error (HTTP ${resList.status})`);
+        }
 
         const statusJson = await resStatus.json();
         const listJson = await resList.json();
@@ -3479,7 +3453,7 @@ async function fetchIndicatorDashboardData() {
 
         if (statusJson.status === "success") {
             const s = statusJson;
-            if (document.getElementById("ind-dash-active-count")) document.getElementById("ind-dash-active-count").textContent = s.active_indicators_count || 7;
+            if (document.getElementById("ind-dash-active-count")) document.getElementById("ind-dash-active-count").textContent = s.active_indicators_count ?? 7;
             if (document.getElementById("ind-dash-regime")) document.getElementById("ind-dash-regime").textContent = s.current_market_regime || "TRENDING";
             if (document.getElementById("ind-dash-profile")) document.getElementById("ind-dash-profile").textContent = s.active_profile_name || "BTC 15m Trend";
             if (document.getElementById("ind-dash-conf")) document.getElementById("ind-dash-conf").textContent = `${s.signal_confidence_pct || 78}%`;
@@ -3504,6 +3478,15 @@ async function fetchIndicatorDashboardData() {
         renderIndicatorCardsGrid();
     } catch (e) {
         console.error("Fetch indicator dashboard error:", e);
+        if (container) {
+            container.innerHTML = `
+                <div class="text-center text-danger" style="grid-column: span 3; padding:40px; background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.2); border-radius:8px;">
+                    <h4 style="color:#ef4444; margin-bottom:8px;">⚠️ INDICATOR DATA ERROR</h4>
+                    <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Reason: ${escapeHtml(e.message || String(e))}</div>
+                    <button class="btn btn-primary btn-sm" onclick="fetchIndicatorDashboardData()">🔄 Retry</button>
+                </div>
+            `;
+        }
     }
 }
 
@@ -3512,9 +3495,10 @@ function renderIndicatorCardsGrid() {
     if (!container) return;
 
     if (!indicatorCatalogCache || indicatorCatalogCache.length === 0) {
-        container.innerHTML = '<div class="text-center text-muted" style="grid-column: span 3; padding:40px;">No indicators found in library.</div>';
+        container.innerHTML = '<div class="text-center text-muted" style="grid-column: span 3; padding:40px;">NO INDICATORS AVAILABLE</div>';
         return;
     }
+
 
     let filtered = indicatorCatalogCache.filter(item => {
         const isEnabled = item.enabled !== false;
@@ -3550,6 +3534,17 @@ function renderIndicatorCardsGrid() {
         const tf = item.timeframe || activeTimeframe || "15m";
         const longEn = item.long_enabled !== false;
         const shortEn = item.short_enabled !== false;
+        const effSource = item.effective_source || "GLOBAL DEFAULT";
+
+        let sourceBadgeColor = "var(--text-muted)";
+        let sourceBadgeBg = "rgba(255,255,255,0.05)";
+        if (effSource === "BOT OVERRIDE") {
+            sourceBadgeColor = "#3b82f6";
+            sourceBadgeBg = "rgba(59,130,246,0.15)";
+        } else if (effSource === "BOT PROFILE") {
+            sourceBadgeColor = "#a855f7";
+            sourceBadgeBg = "rgba(168,85,247,0.15)";
+        }
 
         const paramsObj = item.parameters || item.params || {};
         const paramsStr = Object.entries(paramsObj)
@@ -3577,7 +3572,10 @@ function renderIndicatorCardsGrid() {
                 <div>
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
                         <div>
-                            <span class="badge badge-secondary" style="font-size:10px; margin-bottom:4px; display:inline-block;">${escapeHtml(item.category)}</span>
+                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                                <span class="badge badge-secondary" style="font-size:10px; display:inline-block;">${escapeHtml(item.category)}</span>
+                                <span class="badge" style="font-size:9px; background:${sourceBadgeBg}; color:${sourceBadgeColor}; border:1px solid ${sourceBadgeColor}40; font-weight:700;">${escapeHtml(effSource)}</span>
+                            </div>
                             <h4 style="margin:0; font-size:14px; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:6px;">
                                 <button onclick="toggleIndicatorFavorite('${item.id}')" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0;">${favStar}</button>
                                 ${escapeHtml(item.name)}
@@ -3647,15 +3645,16 @@ async function toggleIndicatorStatus(indicatorId) {
     const item = indicatorCatalogCache.find(x => x.id === indicatorId);
     if (!item) return;
 
+    const botId = activeBotId || "bot-1";
     const newStatus = !(item.enabled !== false);
-    const endpoint = newStatus ? `/api/indicators/${indicatorId}/enable` : `/api/indicators/${indicatorId}/disable`;
+    const endpoint = newStatus ? `/api/indicators/${indicatorId}/enable?bot_id=${botId}` : `/api/indicators/${indicatorId}/disable?bot_id=${botId}`;
 
     try {
         const res = await fetch(endpoint, { method: "POST" });
         const json = await res.json();
         if (json.status === "success") {
             item.enabled = newStatus;
-            renderIndicatorCardsGrid();
+            fetchIndicatorDashboardData();
         }
     } catch (e) {
         console.error("Error toggling status:", e);
@@ -3679,6 +3678,10 @@ function switchIndModalTab(tabName) {
     document.querySelectorAll(".ind-modal-tab-pane").forEach(pane => {
         pane.style.display = pane.id === `ind-tab-pane-${tabName}` ? "block" : "none";
     });
+
+    if (tabName === "history" && currentIndConfigId) {
+        loadIndicatorHistoryTab(currentIndConfigId);
+    }
 }
 
 function openIndConfigModal(indicatorId) {
@@ -3686,8 +3689,11 @@ function openIndConfigModal(indicatorId) {
     if (!item) return;
 
     currentIndConfigId = indicatorId;
+    const botId = activeBotId || "bot-1";
     const titleEl = document.getElementById("ind-config-modal-title");
     const subTitleEl = document.getElementById("ind-config-modal-subtitle");
+    const botBadgeEl = document.getElementById("ind-config-bot-badge");
+    const sourceBadgeEl = document.getElementById("ind-config-source-badge");
     const versionEl = document.getElementById("ind-config-version-badge");
     const bodyEl = document.getElementById("ind-config-form-body");
     const hiddenId = document.getElementById("ind-config-id");
@@ -3696,6 +3702,8 @@ function openIndConfigModal(indicatorId) {
     if (hiddenId) hiddenId.value = indicatorId;
     if (titleEl) titleEl.textContent = `⚙️ Configure ${item.name}`;
     if (subTitleEl) subTitleEl.textContent = `Category: ${item.category} | ${item.description || 'TradingView Standard Settings & Rules'}`;
+    if (botBadgeEl) botBadgeEl.textContent = `🤖 Bot: ${botId}`;
+    if (sourceBadgeEl) sourceBadgeEl.textContent = `Source: ${item.effective_source || 'GLOBAL DEFAULT'}`;
     if (versionEl) versionEl.textContent = `v${item.version || '1.0.0'}`;
     if (validMsgEl) validMsgEl.style.display = "none";
 
@@ -3717,9 +3725,12 @@ function openIndConfigModal(indicatorId) {
     const paramsObj = item.parameters || item.params || {};
     const schemaList = item.parameter_schema || [];
 
-    // TAB 1: INPUTS (Generated dynamically from schema)
+    // TAB 1: INPUTS
     let inputsHtml = `<div class="ind-modal-tab-pane" id="ind-tab-pane-inputs" style="display:block;">
-        <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Define quantitative calculation parameters, lookback lengths, and source series:</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="font-size:12px; color:var(--text-muted);">Define quantitative calculation parameters, lookback lengths, and source series:</div>
+            <span class="badge" style="font-size:10px; background:rgba(59,130,246,0.15); color:#3b82f6;">Target Bot: ${escapeHtml(botId)}</span>
+        </div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;" id="cfg-params-grid">`;
 
     if (schemaList.length > 0) {
@@ -3912,7 +3923,15 @@ function openIndConfigModal(indicatorId) {
         </div>
     </div>`;
 
-    bodyEl.innerHTML = inputsHtml + signalHtml + timeframeHtml + displayHtml + advancedHtml;
+    // TAB 6: HISTORY TAB CONTAINER
+    const historyHtml = `<div class="ind-modal-tab-pane" id="ind-tab-pane-history" style="display:none;">
+        <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Audit trail of parameter modifications for <b>${escapeHtml(item.name)}</b> on bot <b>${escapeHtml(botId)}</b>:</div>
+        <div id="ind-history-list-container" style="max-height:300px; overflow-y:auto;">
+            <div class="text-muted" style="padding:20px; text-align:center;">Loading history logs...</div>
+        </div>
+    </div>`;
+
+    bodyEl.innerHTML = inputsHtml + signalHtml + timeframeHtml + displayHtml + advancedHtml + historyHtml;
 
     // Load available presets into modal preset selector
     loadPresetsIntoModalSelector();
@@ -3922,6 +3941,52 @@ function openIndConfigModal(indicatorId) {
 
     const modal = document.getElementById("ind-config-modal");
     if (modal) modal.style.display = "flex";
+}
+
+async function loadIndicatorHistoryTab(indicatorId) {
+    const listEl = document.getElementById("ind-history-list-container");
+    if (!listEl) return;
+
+    const botId = activeBotId || "bot-1";
+    try {
+        const res = await fetch(`/api/indicators/${indicatorId}/history?bot_id=${botId}`);
+        const json = await res.json();
+        if (json.status === "success" && json.history && json.history.length > 0) {
+            listEl.innerHTML = json.history.map(h => {
+                const dt = h.timestamp ? new Date(h.timestamp).toLocaleString() : "Unknown date";
+                return `
+                    <div style="background:var(--bg-card-subtle); padding:10px 14px; border-radius:6px; border:1px solid var(--border-color); margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div style="font-size:11px; font-weight:700; color:var(--text-primary);">${escapeHtml(h.action)} · <span style="color:var(--text-muted); font-weight:normal;">${dt}</span></div>
+                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">User: ${escapeHtml(h.user_source || 'Dashboard')} | Bot: ${escapeHtml(h.bot_id || botId)}</div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="restoreHistoryConfig(${h.id})" style="font-size:10px; padding:3px 8px;">🔄 Restore</button>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            listEl.innerHTML = `<div style="font-size:12px; color:var(--text-muted); text-align:center; padding:30px;">No historical modifications recorded for this indicator.</div>`;
+        }
+    } catch (e) {
+        listEl.innerHTML = `<div style="font-size:12px; color:#ef4444; padding:20px;">Failed to load history: ${escapeHtml(String(e))}</div>`;
+    }
+}
+
+async function restoreHistoryConfig(historyId) {
+    if (!confirm(`Are you sure you want to restore this historical indicator configuration?`)) return;
+    try {
+        const res = await fetch(`/api/indicators/history/${historyId}/restore`, { method: "POST" });
+        const json = await res.json();
+        if (json.status === "success") {
+            alert("✅ Configuration restored successfully!");
+            closeIndConfigModal();
+            fetchIndicatorDashboardData();
+        } else {
+            alert("⚠️ Restore failed: " + json.message);
+        }
+    } catch (e) {
+        alert("Error restoring history: " + e);
+    }
 }
 
 function runClientIndicatorValidation() {
@@ -4093,6 +4158,7 @@ async function handleSaveIndConfig(e) {
     const item = indicatorCatalogCache.find(x => x.id === currentIndConfigId);
     if (!item) return;
 
+    const botId = activeBotId || "bot-1";
     const isEnabled = document.getElementById("cfg-enabled").value === "true";
     const weight = parseFloat(document.getElementById("cfg-weight").value || 15);
     const tf = document.getElementById("cfg-tf").value;
@@ -4112,6 +4178,7 @@ async function handleSaveIndConfig(e) {
     const payload = {
         id: currentIndConfigId,
         indicator_id: currentIndConfigId,
+        bot_id: botId,
         name: item.name,
         category: item.category,
         enabled: isEnabled,
@@ -4133,8 +4200,8 @@ async function handleSaveIndConfig(e) {
     };
 
     try {
-        const res = await fetch(`/api/indicators/${currentIndConfigId}/apply`, {
-            method: "POST",
+        const res = await fetch(`/api/indicators/${currentIndConfigId}?bot_id=${botId}`, {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
@@ -4142,8 +4209,11 @@ async function handleSaveIndConfig(e) {
         if (json.status === "success") {
             closeIndConfigModal();
             fetchIndicatorDashboardData();
-            const sigMsg = json.signal ? ` Real Signal: ${json.signal.current_signal}` : '';
-            alert(`✅ ${item.name} settings applied & live signal recalculated!${sigMsg}`);
+            if (typeof showToast === "function") {
+                showToast(`✅ ${item.name} settings saved for bot ${botId}!`);
+            } else {
+                alert(`✅ ${item.name} settings saved for bot ${botId}!`);
+            }
         } else {
             alert(`⚠️ Save failed: ${json.message}`);
         }
@@ -4154,13 +4224,14 @@ async function handleSaveIndConfig(e) {
 
 async function resetCurrentIndDefaults() {
     if (!currentIndConfigId) return;
+    const botId = activeBotId || "bot-1";
     try {
-        const res = await fetch(`/api/indicators/${currentIndConfigId}/reset`, { method: "POST" });
+        const res = await fetch(`/api/indicators/${currentIndConfigId}/reset?bot_id=${botId}`, { method: "POST" });
         const json = await res.json();
         if (json.status === "success") {
             closeIndConfigModal();
             fetchIndicatorDashboardData();
-            alert(`✅ Indicator reset to default TradingView parameters.`);
+            alert(`✅ Indicator reset to profile / default parameters for bot ${botId}.`);
         }
     } catch (e) {
         console.error("Reset error:", e);
@@ -4209,52 +4280,89 @@ async function confirmApplyPreset() {
 }
 
 async function enableAllIndicators() {
-    for (let item of indicatorCatalogCache) {
-        if (!item.enabled) {
-            await fetch(`/api/indicators/${item.id}/enable`, { method: "POST" });
+    const botId = activeBotId || "bot-1";
+    try {
+        if (typeof showToast === "function") showToast(`Enabling all indicators for bot ${botId}...`);
+        const res = await fetch(`/api/indicators/enable-all?bot_id=${botId}`, { method: "POST" });
+        const json = await res.json();
+        if (json.status === "success") {
+            if (typeof showToast === "function") showToast(`✅ All indicators enabled for bot ${botId}.`);
+            await fetchIndicatorDashboardData();
+        } else {
+            alert("Error enabling all indicators: " + json.message);
         }
+    } catch (e) {
+        alert("Network error enabling all indicators: " + e);
     }
-    fetchIndicatorDashboardData();
 }
 
 async function disableAllIndicators() {
-    for (let item of indicatorCatalogCache) {
-        if (item.enabled) {
-            await fetch(`/api/indicators/${item.id}/disable`, { method: "POST" });
+    const botId = activeBotId || "bot-1";
+    try {
+        if (typeof showToast === "function") showToast(`Disabling all indicators for bot ${botId}...`);
+        const res = await fetch(`/api/indicators/disable-all?bot_id=${botId}`, { method: "POST" });
+        const json = await res.json();
+        if (json.status === "success") {
+            if (typeof showToast === "function") showToast(`✅ All indicators disabled for bot ${botId}.`);
+            await fetchIndicatorDashboardData();
+        } else {
+            alert("Error disabling all indicators: " + json.message);
         }
+    } catch (e) {
+        alert("Network error disabling all indicators: " + e);
     }
-    fetchIndicatorDashboardData();
 }
 
 async function confirmResetAllIndicators() {
-    if (!confirm("⚠️ Are you sure you want to RESET ALL indicators to factory defaults? All custom parameters, weights, and timeframes will be restored to defaults.")) {
+    const botId = activeBotId || "bot-1";
+    if (!confirm(`⚠️ Are you sure you want to RESET ALL indicators for bot '${botId}'? All custom bot overrides will be restored to profile/defaults.`)) {
         return;
     }
 
     try {
-        const res = await fetch("/api/indicators/reset-all", { method: "POST" });
+        const res = await fetch(`/api/indicators/reset-all?bot_id=${botId}`, { method: "POST" });
         const json = await res.json();
         if (json.status === "success") {
             fetchIndicatorDashboardData();
-            alert("✅ All indicators reset to factory TradingView defaults.");
+            alert(`✅ All indicators for bot '${botId}' reset to profile defaults.`);
         }
     } catch (e) {
         alert("Error resetting all indicators: " + e);
     }
 }
 
+
 async function loadSelectedIndicatorProfile(profileId) {
+    if (!profileId) return;
     try {
         const res = await fetch(`/api/indicators/profiles/${profileId}`);
         const json = await res.json();
         if (json.status === "success" && json.profile) {
-            fetchIndicatorDashboardData();
-            if (document.getElementById("ind-dash-profile")) document.getElementById("ind-dash-profile").textContent = json.profile.name;
+            const p = json.profile;
+            if (document.getElementById("ind-dash-profile")) document.getElementById("ind-dash-profile").textContent = p.name;
+            if (document.getElementById("ind-scenario-select") && p.market_regime) document.getElementById("ind-scenario-select").value = p.market_regime;
+            if (document.getElementById("ind-adaptive-mode") && p.adaptive_mode) document.getElementById("ind-adaptive-mode").value = p.adaptive_mode;
+            if (document.getElementById("ind-thresh-long") && p.signal_threshold_long) document.getElementById("ind-thresh-long").value = p.signal_threshold_long;
+            if (document.getElementById("ind-thresh-short") && p.signal_threshold_short) document.getElementById("ind-thresh-short").value = p.signal_threshold_short;
+
+            if (p.config && typeof p.config === "object") {
+                indicatorCatalogCache.forEach(item => {
+                    const cfg = p.config[item.id] || p.config[item.indicator_id];
+                    if (cfg) {
+                        item.enabled = cfg.enabled !== false;
+                        if (cfg.parameters) item.parameters = cfg.parameters;
+                        if (cfg.weight) item.weight = cfg.weight;
+                        if (cfg.timeframe) item.timeframe = cfg.timeframe;
+                    }
+                });
+                renderIndicatorCardsGrid();
+            }
         }
     } catch (e) {
         console.error("Load indicator profile error:", e);
     }
 }
+
 
 function openSaveProfileModal() {
     const modal = document.getElementById("save-profile-modal");
@@ -5555,8 +5663,9 @@ function switchTab(tabId, updateUrl = true) {
     } else if (tabId === "risk") {
         if (typeof fetchRiskOverview === "function") fetchRiskOverview();
     } else if (tabId === "indicators") {
-        if (typeof fetchIndicatorConfigs === "function") fetchIndicatorConfigs();
+        fetchIndicatorDashboardData();
     } else if (tabId === "universe") {
+
         if (typeof fetchUniverseSummary === "function") fetchUniverseSummary();
     } else if (tabId === "analytics") {
         if (typeof fetchAnalytics === "function") fetchAnalytics();
@@ -5696,6 +5805,8 @@ function filterCommandPalette() {
         { name: "Emergency Kill Switch", cat: "Emergency", action: () => promptKillSwitch() },
 
         // Navigation Views
+        { name: "How to Use Algo Bot (12-Step Guided Walkthrough)", cat: "Guidance", action: () => openTutorialModal() },
+        { name: "Open Visual Strategy Builder (IF / AND / OR / THEN)", cat: "Strategy", action: () => openVisualStrategyModal() },
         { name: "Go to Bot Overview", cat: "Navigation", action: () => switchCtrlSubtab("overview") },
         { name: "Go to Create Bot (10-Step Wizard)", cat: "Navigation", action: () => switchCtrlSubtab("create-bot") },
         { name: "Go to Bot Templates Catalog", cat: "Navigation", action: () => switchCtrlSubtab("templates") },
@@ -5711,6 +5822,7 @@ function filterCommandPalette() {
         { name: "Go to Backtesting Lab", cat: "Navigation", action: () => switchTab("backtest") },
         { name: "Go to Audit & Event Ledger", cat: "Navigation", action: () => switchTab("audit") },
         { name: "Go to System Logs & Diagnostics", cat: "Navigation", action: () => switchTab("logs") }
+
     ];
 
     paletteFilteredCommands = commands.filter(c => c.name.toLowerCase().includes(query) || c.cat.toLowerCase().includes(query));
@@ -5743,15 +5855,43 @@ function executePaletteCommand(idx) {
     }
 }
 
-// Global Keyboard Shortcuts (Ctrl+K, Cmd+K, Esc, Arrows, Enter)
+// Global Keyboard Shortcuts (Ctrl+K, Ctrl+B, Ctrl+P, Ctrl+I, Ctrl+R, Esc, Arrows, Enter)
 document.addEventListener("keydown", (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        openCommandPalette();
-    } else if (e.key === "Escape") {
+    // Check for modifier keys
+    if (e.ctrlKey || e.metaKey) {
+        const k = e.key.toLowerCase();
+        if (k === "k") {
+            e.preventDefault();
+            openCommandPalette();
+            return;
+        } else if (k === "b") {
+            e.preventDefault();
+            switchTab("control");
+            return;
+        } else if (k === "p") {
+            e.preventDefault();
+            switchTab("analytics");
+            return;
+        } else if (k === "i") {
+            e.preventDefault();
+            switchTab("indicators");
+            return;
+        } else if (k === "r") {
+            e.preventDefault();
+            switchTab("risk");
+            return;
+        }
+    }
+
+    if (e.key === "Escape") {
         closeCommandPalette();
         closeSmartConfirmModal();
         closeTradeTraceModal();
+        if (typeof closeDrilldownModal === "function") closeDrilldownModal();
+        if (typeof closeIntegrityReportModal === "function") closeIntegrityReportModal();
+        if (typeof closeTutorialModal === "function") closeTutorialModal();
+        if (typeof closeVisualStrategyModal === "function") closeVisualStrategyModal();
+        if (typeof closeContextHelpModal === "function") closeContextHelpModal();
     } else {
         const paletteModal = document.getElementById("command-palette-modal");
         if (paletteModal && paletteModal.style.display === "flex") {
@@ -5770,6 +5910,11 @@ document.addEventListener("keydown", (e) => {
         }
     }
 });
+
+function exportTradesJSON() {
+    window.location.href = "/api/trades/export-json";
+}
+
 
 // ============================================================================
 // BOT INSTANCE ACTIONS & HERO CONTROLS
@@ -6889,9 +7034,50 @@ async function fetchBotSummaryMetrics() {
             todayPnlEl.style.color = val >= 0 ? "#00c076" : "#ff3b69";
         }
 
-        // Also synchronize sidebar trade metrics
+        // Synchronize Left Sidebar Performance Summary
+        const sbTotalPnl = document.getElementById("sb-total-pnl");
+        if (sbTotalPnl) {
+            const val = parseFloat(m.total_pnl || 0);
+            sbTotalPnl.textContent = `${val >= 0 ? '+' : ''}$${val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            sbTotalPnl.style.color = val >= 0 ? "#00c076" : "#ff3b69";
+        }
+
+        const sbWinCount = document.getElementById("sb-win-count");
+        if (sbWinCount) {
+            sbWinCount.textContent = `${m.wins ?? 0} Wins (${m.win_rate_pct ?? 0}%)`;
+        }
+
+        const sbStartBal = document.getElementById("sb-start-bal");
+        if (sbStartBal) {
+            const val = parseFloat(m.start_balance || 10000);
+            sbStartBal.textContent = `$${val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+
+        const sbCurrBal = document.getElementById("sb-curr-bal");
+        if (sbCurrBal) {
+            const val = parseFloat(m.current_balance || 10000);
+            sbCurrBal.textContent = `$${val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+
+        const sbTotalTrades = document.getElementById("sb-total-trades");
+        if (sbTotalTrades) {
+            sbTotalTrades.textContent = (m.total_trades !== undefined && m.total_trades !== null) ? m.total_trades : "No trades yet";
+        }
+
         const sbOpenTrades = document.getElementById("sb-open-trades");
-        if (sbOpenTrades) sbOpenTrades.textContent = m.open_trades ?? "0";
+        if (sbOpenTrades) {
+            sbOpenTrades.textContent = m.open_trades ?? "0";
+        }
+
+        const sbWinrate = document.getElementById("sb-winrate");
+        if (sbWinrate) {
+            sbWinrate.textContent = `${m.win_rate_pct ?? 0}%`;
+        }
+
+        const sbWLBe = document.getElementById("sb-w-l-be");
+        if (sbWLBe) {
+            sbWLBe.textContent = m.w_l_be ?? "0 / 0 / 0";
+        }
 
         // Query system health
         fetchSystemHealthBadge();
@@ -6900,6 +7086,8 @@ async function fetchBotSummaryMetrics() {
         console.error("fetchBotSummaryMetrics error:", e);
         const totalBotsEl = document.getElementById("summary-total-bots");
         if (totalBotsEl) totalBotsEl.textContent = "DATA UNAVAILABLE";
+        const sbTotalPnl = document.getElementById("sb-total-pnl");
+        if (sbTotalPnl) sbTotalPnl.textContent = "DATA UNAVAILABLE";
     }
 }
 
@@ -7148,6 +7336,501 @@ document.addEventListener("DOMContentLoaded", () => {
     initBotEventsStream();
     AnalyticsDataManager.fetchAnalytics();
 });
+
+
+// ============================================================================
+// HOW TO USE ALGO BOT - 12-STEP GUIDED TUTORIAL CONTROLLER
+// ============================================================================
+
+const TUTORIAL_STEPS = [
+    {
+        step: 1,
+        title: "Step 1: Choose Your Asset Class",
+        category: "Asset Selection",
+        what: "Select the financial market domain you intend to trade (Crypto, Indian Equities, Global Indices, or Forex).",
+        why: "Different asset classes have unique volatility characteristics, trading hours, margin requirements, and tick sizes.",
+        configure: "In the Bot Wizard or Market Universe tab, pick 'Crypto' (24/7 trading) or 'Indian Equities' (NSE/BSE).",
+        example: "Selecting 'Crypto' enables high-liquidity digital asset pairs like BTC/USDT and ETH/USDT.",
+        action: "Go to Bot Wizard (Step 1)"
+    },
+    {
+        step: 2,
+        title: "Step 2: Select Market / Symbol",
+        category: "Symbol Selection",
+        what: "Choose the exact tradable instrument pair.",
+        why: "Trading high-volume, liquid symbols ensures tight spreads and minimizes slippage during execution.",
+        configure: "Pick from vetted symbols such as BTC/USDT, ETH/USDT, SOL/USDT, or scan via the Market Screener.",
+        example: "BTC/USDT provides deep order book liquidity and reliable technical structure across multiple timeframes.",
+        action: "View Market Universe"
+    },
+    {
+        step: 3,
+        title: "Step 3: Choose Timeframe",
+        category: "Timeframe Selection",
+        what: "Select the candle interval evaluated by the strategy engine (e.g. 5m, 15m, 1h).",
+        why: "Lower timeframes (1m-5m) generate more frequent scalp signals; higher timeframes (1h-1d) produce higher-probability swing trends.",
+        configure: "For active scalping choose 5m or 15m; for trend-following choose 1h or 4h.",
+        example: "The 15m timeframe balances signal frequency with noise reduction for EMA and MACD confluence.",
+        action: "Set Timeframe"
+    },
+    {
+        step: 4,
+        title: "Step 4: Select Trading Strategy",
+        category: "Strategy Selection",
+        what: "Choose the mathematical confluence logic governing entry and exit signals.",
+        why: "A disciplined strategy eliminates emotional bias by requiring multiple confirming indicators before placing an order.",
+        configure: "Choose EMA + MACD + Volume Profile (EMA_MACD_VP) or design a custom strategy in the Visual Strategy Builder.",
+        example: "EMA_MACD_VP requires price above EMA 200 (trend), EMA 9/20 crossover (timing), and MACD histogram expansion (momentum).",
+        action: "Open Strategy Builder"
+    },
+    {
+        step: 5,
+        title: "Step 5: Configure Universal Indicators",
+        category: "Technical Indicators",
+        what: "Fine-tune the indicator parameters, periods, and signal weights across 27+ universal indicators.",
+        why: "Customizing indicator sensitivity adapts the bot to trending vs ranging market regimes.",
+        configure: "In the Indicators tab, click 'Configure' on RSI, EMA, MACD, or Supertrend to modify periods and overbought/oversold levels.",
+        example: "Setting RSI(14) with overbought=70 and oversold=30 prevents buying at local exhaustion points.",
+        action: "Open Indicators Tab"
+    },
+    {
+        step: 6,
+        title: "Step 6: Configure Risk & Position Sizing",
+        category: "Risk Management",
+        what: "Define maximum capital risk per trade, stop-loss distance, and daily drawdown limits.",
+        why: "Capital preservation is the cornerstone of quantitative trading; uncontrolled sizing leads to ruin.",
+        configure: "In the Risk Management tab, set Risk per Trade to 1.0%-2.0%, Stop-Loss to 1.5%, and Daily Loss Limit to 5.0%.",
+        example: "On a $10,000 account, a 1.0% risk limit caps the maximum loss on any single trade to exactly $100.",
+        action: "Open Risk Center"
+    },
+    {
+        step: 7,
+        title: "Step 7: Run Backtesting Verification",
+        category: "Backtesting",
+        what: "Simulate strategy rules against historical candle data to verify statistical edge before trading.",
+        why: "Backtesting reveals maximum drawdown, profit factor, win rate, and expectancy across past market cycles.",
+        configure: "In the Backtesting Lab, select your symbol, date range, and click 'Run Backtest'.",
+        example: "A verified backtest with Profit Factor > 1.5 and Max Drawdown < 10% confirms viable strategy expectancy.",
+        action: "Go to Backtesting Lab"
+    },
+    {
+        step: 8,
+        title: "Step 8: Start Paper Trading Simulation",
+        category: "Paper Trading",
+        what: "Deploy your bot instance into the zero-risk simulated sandbox environment with $10,000 virtual balance.",
+        why: "Paper trading validates execution timing, fill slippage, order routing, and real-time confluence without risking capital.",
+        configure: "Set Execution Mode = 'PAPER', click 'Create Bot', and press 'START'.",
+        example: "Bot instance 'bot-1 Alpha BTC Scalper' runs in real-time on live Binance feeds using simulated orders.",
+        action: "Launch Paper Bot"
+    },
+    {
+        step: 9,
+        title: "Step 9: Review Real-Time Signals",
+        category: "Signal Monitoring",
+        what: "Observe live candle evaluations, confluence scoring (0-100%), and condition pass/fail logs.",
+        why: "Ensures that all entry filters (trend, timing, momentum, location) are triggering as intended.",
+        configure: "Check the Live Decision Logs and Confluence Score gauge on the Bot Overview card.",
+        example: "A Confluence Score of 85% with all 4 filters green indicates high-conviction entry conditions.",
+        action: "View Decision Logs"
+    },
+    {
+        step: 10,
+        title: "Step 10: Review Trade Ledger & Order Fills",
+        category: "Trade Journal",
+        what: "Inspect itemized execution timestamps, entry/exit prices, fees, slippage, and net P&L records.",
+        why: "Full trade traceability ensures auditability and mathematical consistency across all positions.",
+        configure: "Open the Trade Journal table in the Analytics tab or click any trade row to view the complete order trace.",
+        example: "Trade #100875 shows entry @ $63,061.02, exit @ $64,250.00, fee $1.50, net P&L +$117.48.",
+        action: "Open Trade Journal"
+    },
+    {
+        step: 11,
+        title: "Step 11: Monitor Performance Analytics",
+        category: "Performance Metrics",
+        what: "Track cumulative equity curve, win/loss ratio, profit factor, drawdown, and strategy breakdowns.",
+        why: "Continuous statistical monitoring indicates whether a bot's real performance matches its backtested parameters.",
+        configure: "Filter analytics by bot instance, timeframe, or date range in the Performance Analytics tab.",
+        example: "The Win/Loss donut and cumulative equity chart visualize ongoing portfolio growth and risk metrics.",
+        action: "View Analytics"
+    },
+    {
+        step: 12,
+        title: "Step 12: Live Trading Safety Checklist",
+        category: "Live Execution Safety",
+        what: "Mandatory safety verification before considering live capital deployment.",
+        why: "Live execution introduces real financial risk, exchange connectivity variance, and margin requirements.",
+        configure: "Ensure: (1) Paper testing showed consistent profitability; (2) API keys configured securely; (3) Kill switch armed; (4) Risk limits strictly verified.",
+        example: "Live trading requires dual confirmation and 2FA lockout to prevent unauthorized order execution.",
+        action: "Review Safety Panel"
+    }
+];
+
+let currentTutorialStepIndex = 0;
+
+function openTutorialModal(stepNum = 1) {
+    const modal = document.getElementById("tutorial-modal");
+    if (!modal) return;
+    modal.style.display = "flex";
+    currentTutorialStepIndex = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, stepNum - 1));
+    renderTutorialStep();
+}
+
+function closeTutorialModal() {
+    const modal = document.getElementById("tutorial-modal");
+    if (modal) modal.style.display = "none";
+}
+
+function renderTutorialStep() {
+    const data = TUTORIAL_STEPS[currentTutorialStepIndex];
+    if (!data) return;
+
+    // Render Pills
+    const pillsContainer = document.getElementById("tutorial-step-pills");
+    if (pillsContainer) {
+        pillsContainer.innerHTML = TUTORIAL_STEPS.map((s, idx) => `
+            <button class="btn btn-sm ${idx === currentTutorialStepIndex ? 'btn-primary' : 'btn-secondary'}" style="font-size:11px; padding:3px 8px; white-space:nowrap; border-radius:12px;" onclick="setTutorialStep(${idx + 1})">
+                ${s.step}. ${s.category}
+            </button>
+        `).join("");
+    }
+
+    // Render Body
+    const contentContainer = document.getElementById("tutorial-step-content");
+    if (contentContainer) {
+        contentContainer.innerHTML = `
+            <div style="background:linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(168, 85, 247, 0.05)); border:1px solid rgba(56, 189, 248, 0.2); border-radius:8px; padding:16px; margin-bottom:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.5px;">${data.category}</span>
+                    <span class="badge" style="font-size:11px; background:rgba(56, 189, 248, 0.2); color:var(--accent-blue);">Step ${data.step} of 12</span>
+                </div>
+                <h3 style="font-size:1.25rem; font-weight:700; color:var(--text-primary); margin:0 0 8px 0;">${data.title}</h3>
+                <p style="font-size:13px; color:var(--text-secondary); line-height:1.5; margin:0;">${data.what}</p>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+                <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:6px; padding:12px;">
+                    <div style="font-size:11px; font-weight:700; color:var(--accent-yellow); margin-bottom:4px;">🎯 WHY IT MATTERS</div>
+                    <div style="font-size:12px; color:var(--text-primary); line-height:1.4;">${data.why}</div>
+                </div>
+                <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:6px; padding:12px;">
+                    <div style="font-size:11px; font-weight:700; color:var(--accent-green); margin-bottom:4px;">⚙️ WHAT TO CONFIGURE</div>
+                    <div style="font-size:12px; color:var(--text-primary); line-height:1.4;">${data.configure}</div>
+                </div>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.2); border-left:3px solid var(--accent-blue); padding:10px 14px; border-radius:0 6px 6px 0; margin-bottom:12px;">
+                <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">💡 Practical Example: </span>
+                <span style="font-size:12px; color:var(--text-primary);">${data.example}</span>
+            </div>
+        `;
+    }
+
+    // Update Counter & Buttons
+    const counter = document.getElementById("tut-step-counter");
+    if (counter) counter.textContent = `Step ${data.step} of 12`;
+
+    const prevBtn = document.getElementById("tut-prev-btn");
+    if (prevBtn) prevBtn.disabled = (currentTutorialStepIndex === 0);
+
+    const nextBtn = document.getElementById("tut-next-btn");
+    const finishBtn = document.getElementById("tut-finish-btn");
+    if (currentTutorialStepIndex === TUTORIAL_STEPS.length - 1) {
+        if (nextBtn) nextBtn.style.display = "none";
+        if (finishBtn) finishBtn.style.display = "block";
+    } else {
+        if (nextBtn) nextBtn.style.display = "block";
+        if (finishBtn) finishBtn.style.display = (currentTutorialStepIndex >= 7 ? "block" : "none");
+    }
+}
+
+function setTutorialStep(stepNum) {
+    currentTutorialStepIndex = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, stepNum - 1));
+    renderTutorialStep();
+}
+
+function nextTutorialStep() {
+    if (currentTutorialStepIndex < TUTORIAL_STEPS.length - 1) {
+        currentTutorialStepIndex++;
+        renderTutorialStep();
+    }
+}
+
+function prevTutorialStep() {
+    if (currentTutorialStepIndex > 0) {
+        currentTutorialStepIndex--;
+        renderTutorialStep();
+    }
+}
+
+function launchPaperBotFromTutorial() {
+    closeTutorialModal();
+    switchCtrlSubtab("create-bot");
+    if (typeof wizardSetStep === "function") {
+        wizardSetStep(1);
+    }
+}
+
+
+// ============================================================================
+// VISUAL STRATEGY BUILDER (IF / AND / OR / THEN) CONTROLLER
+// ============================================================================
+
+let visualStrategyRules = [
+    { left: "ema_9", op: ">", right: "ema_20" },
+    { left: "rsi_14", op: ">", right: "50" },
+    { left: "close", op: ">", right: "ema_200" }
+];
+
+function openVisualStrategyModal() {
+    const modal = document.getElementById("visual-strategy-modal");
+    if (!modal) return;
+    modal.style.display = "flex";
+    renderVisualStrategyRuleRows();
+    updateVisualStrategyPreview();
+}
+
+function closeVisualStrategyModal() {
+    const modal = document.getElementById("visual-strategy-modal");
+    if (modal) modal.style.display = "none";
+}
+
+function renderVisualStrategyRuleRows() {
+    const container = document.getElementById("vsb-rules-list");
+    if (!container) return;
+
+    const leftOptions = [
+        { val: "ema_9", label: "EMA (9)" },
+        { val: "ema_20", label: "EMA (20)" },
+        { val: "ema_50", label: "EMA (50)" },
+        { val: "ema_200", label: "EMA (200)" },
+        { val: "close", label: "Close Price" },
+        { val: "rsi_14", label: "RSI (14)" },
+        { val: "macd_line", label: "MACD Line" },
+        { val: "macd_signal", label: "MACD Signal" },
+        { val: "adx_14", label: "ADX (14)" },
+        { val: "vah", label: "Volume Profile VAH" },
+        { val: "val", label: "Volume Profile VAL" },
+        { val: "poc", label: "Volume Profile POC" }
+    ];
+
+    const operators = [
+        { val: ">", label: "> (Greater than)" },
+        { val: "<", label: "< (Less than)" },
+        { val: ">=", label: ">= (Greater or equal)" },
+        { val: "<=", label: "<= (Less or equal)" },
+        { val: "==", label: "== (Equals)" }
+    ];
+
+    container.innerHTML = visualStrategyRules.map((rule, idx) => `
+        <div style="display:grid; grid-template-columns: 2fr 1.5fr 2fr 40px; gap:8px; align-items:center; background:var(--bg-card-subtle); padding:8px 12px; border-radius:6px; border:1px solid var(--border-color);" id="vsb-row-${idx}">
+            <select class="form-control" onchange="updateRuleLeft(${idx}, this.value)">
+                ${leftOptions.map(opt => `<option value="${opt.val}" ${opt.val === rule.left ? 'selected' : ''}>${opt.label}</option>`).join("")}
+            </select>
+            <select class="form-control" onchange="updateRuleOp(${idx}, this.value)">
+                ${operators.map(op => `<option value="${op.val}" ${op.val === rule.op ? 'selected' : ''}>${op.label}</option>`).join("")}
+            </select>
+            <input type="text" class="form-control" value="${rule.right}" placeholder="e.g. 50 or ema_200" oninput="updateRuleRight(${idx}, this.value)">
+            <button class="btn btn-danger btn-sm" onclick="removeVisualStrategyRuleRow(${idx})" title="Remove Condition" style="padding:4px 8px;">✖</button>
+        </div>
+    `).join("");
+}
+
+function addVisualStrategyRuleRow(left = "rsi_14", op = "<", right = "30") {
+    visualStrategyRules.push({ left, op, right });
+    renderVisualStrategyRuleRows();
+    updateVisualStrategyPreview();
+}
+
+function removeVisualStrategyRuleRow(idx) {
+    if (visualStrategyRules.length <= 1) {
+        alert("A strategy must contain at least one condition rule.");
+        return;
+    }
+    visualStrategyRules.splice(idx, 1);
+    renderVisualStrategyRuleRows();
+    updateVisualStrategyPreview();
+}
+
+function updateRuleLeft(idx, val) {
+    if (visualStrategyRules[idx]) visualStrategyRules[idx].left = val;
+    updateVisualStrategyPreview();
+}
+
+function updateRuleOp(idx, val) {
+    if (visualStrategyRules[idx]) visualStrategyRules[idx].op = val;
+    updateVisualStrategyPreview();
+}
+
+function updateRuleRight(idx, val) {
+    if (visualStrategyRules[idx]) visualStrategyRules[idx].right = val.trim();
+    updateVisualStrategyPreview();
+}
+
+function updateVisualStrategyPreview() {
+    const conj = document.getElementById("vsb-conjunction")?.value || "AND";
+    const sig = document.getElementById("vsb-target-signal")?.value || "BUY";
+    const previewEl = document.getElementById("vsb-compiled-preview");
+    if (!previewEl) return;
+
+    const expr = visualStrategyRules.map(r => `${r.left} ${r.op} ${r.right}`).join(` ${conj} `);
+    previewEl.textContent = `IF (${expr}) THEN ${sig}`;
+}
+
+async function testVisualStrategyRules() {
+    const conj = document.getElementById("vsb-conjunction")?.value || "AND";
+    const sig = document.getElementById("vsb-target-signal")?.value || "BUY";
+    const resultBox = document.getElementById("vsb-test-result-box");
+
+    try {
+        const res = await fetch("/api/strategies/visual/test", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                strategy: {
+                    rules: visualStrategyRules,
+                    conjunction: conj,
+                    target_signal: sig
+                }
+            })
+        });
+        const data = await res.json();
+
+        if (resultBox) {
+            resultBox.style.display = "block";
+            if (data.triggered) {
+                resultBox.style.background = "rgba(34, 197, 94, 0.15)";
+                resultBox.style.border = "1px solid rgba(34, 197, 94, 0.3)";
+                resultBox.style.color = "var(--accent-green)";
+                resultBox.innerHTML = `✅ <b>STRATEGY TRIGGERED (${data.signal})</b> — All conditions matched live indicator snapshot.<br><small>${data.conditions.map(c => `${c.condition}: ${c.left_val} vs ${c.right_val} (${c.passed ? 'PASS' : 'FAIL'})`).join(' | ')}</small>`;
+            } else {
+                resultBox.style.background = "rgba(234, 179, 8, 0.15)";
+                resultBox.style.border = "1px solid rgba(234, 179, 8, 0.3)";
+                resultBox.style.color = "var(--accent-yellow)";
+                resultBox.innerHTML = `⚠️ <b>SIGNAL: HOLD</b> — Conditions not currently met on live indicators.<br><small>${data.conditions.map(c => `${c.condition}: ${c.left_val} vs ${c.right_val} (${c.passed ? 'PASS' : 'FAIL'})`).join(' | ')}</small>`;
+            }
+        }
+    } catch (e) {
+        alert(`Rule evaluation test error: ${e}`);
+    }
+}
+
+async function saveVisualStrategyFromModal() {
+    const name = (document.getElementById("vsb-strat-name")?.value || "").trim();
+    if (!name) {
+        alert("Please enter a name for your strategy.");
+        return;
+    }
+    const conj = document.getElementById("vsb-conjunction")?.value || "AND";
+    const sig = document.getElementById("vsb-target-signal")?.value || "BUY";
+
+    try {
+        const res = await fetch("/api/strategies/visual/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: name,
+                target_signal: sig,
+                conjunction: conj,
+                rules: visualStrategyRules
+            })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+            alert(`Strategy '${name}' compiled and saved successfully!`);
+            closeVisualStrategyModal();
+        } else {
+            alert(data.message || "Failed to save strategy.");
+        }
+    } catch (e) {
+        alert(`Strategy save error: ${e}`);
+    }
+}
+
+
+// ============================================================================
+// CONTEXTUAL HELP & EDUCATIONAL GUIDANCE CONTROLLER
+// ============================================================================
+
+const HELP_DICTIONARY = {
+    "rsi_length": {
+        title: "RSI Period Length",
+        what: "The number of historical candles used to calculate relative momentum.",
+        why: "Shorter periods increase sensitivity; standard 14-period balances responsiveness with noise reduction.",
+        effect: "Alters overbought (>70) and oversold (<30) oscillator levels.",
+        safeRange: "7 to 21 candles (Default: 14)",
+        example: "RSI(14) on 15m timeframe evaluates momentum across the preceding 3.5 hours."
+    },
+    "risk_pct_per_trade": {
+        title: "Risk Percentage per Trade",
+        what: "The maximum fraction of total portfolio equity risked on any single trade.",
+        why: "Limits exposure to negative variance and prevents severe drawdown during losing streaks.",
+        effect: "Scales order position size inversely to stop-loss distance.",
+        safeRange: "0.5% to 2.0% of account equity (Default: 1.0%)",
+        example: "At 1.0% risk on a $10,000 balance, maximum loss is capped at exactly $100."
+    },
+    "fixed_stop_loss_pct": {
+        title: "Fixed Stop Loss Percentage",
+        what: "The price drop percentage below entry that triggers an automatic market exit.",
+        why: "Protects account balance against unexpected market flash-crashes and invalidations.",
+        effect: "Positions are immediately squared off when market price reaches or breaches this threshold.",
+        safeRange: "0.5% to 3.0% (Default: 1.5%)",
+        example: "With a 1.5% SL on BTC @ $60,000, exit order triggers if price falls to $59,100."
+    },
+    "daily_loss_limit_pct": {
+        title: "Daily Loss Limit Percentage",
+        what: "Maximum allowable cumulative portfolio loss within a rolling 24-hour window.",
+        why: "Halts trading algorithms on days experiencing adverse market regimes or abnormal volatility.",
+        effect: "When breached, trading engine transitions to PAUSED and blocks new orders until next session.",
+        safeRange: "2.0% to 5.0% (Default: 3.0%)",
+        example: "If daily P&L drops by -$300 on a $10,000 account, the bot automatically pauses execution."
+    }
+};
+
+function openContextHelp(topicKey) {
+    const modal = document.getElementById("context-help-modal");
+    const titleEl = document.getElementById("help-modal-title");
+    const bodyEl = document.getElementById("help-modal-body");
+    if (!modal || !bodyEl) return;
+
+    const data = HELP_DICTIONARY[topicKey] || {
+        title: "Trading Parameter Guidance",
+        what: "Standard algorithmic parameter regulating trade evaluation.",
+        why: "Maintains systematic discipline across order execution.",
+        effect: "Directly affects signal generation or position sizing.",
+        safeRange: "Consult strategy risk specifications.",
+        example: "Always test parameter changes in Paper Trading before deploying."
+    };
+
+    if (titleEl) titleEl.textContent = data.title;
+    bodyEl.innerHTML = `
+        <div style="background:var(--bg-card-subtle); border-radius:6px; padding:12px; margin-bottom:12px;">
+            <div style="font-size:11px; font-weight:700; color:var(--accent-blue); text-transform:uppercase; margin-bottom:4px;">Definition (WHAT)</div>
+            <div style="font-size:13px; color:var(--text-primary);">${data.what}</div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div style="background:var(--bg-card-subtle); border-radius:6px; padding:10px;">
+                <div style="font-size:11px; font-weight:700; color:var(--accent-yellow); margin-bottom:4px;">PURPOSE (WHY)</div>
+                <div style="font-size:12px; color:var(--text-secondary);">${data.why}</div>
+            </div>
+            <div style="background:var(--bg-card-subtle); border-radius:6px; padding:10px;">
+                <div style="font-size:11px; font-weight:700; color:var(--accent-green); margin-bottom:4px;">SAFE RANGE</div>
+                <div style="font-size:12px; color:var(--text-primary); font-weight:600;">${data.safeRange}</div>
+            </div>
+        </div>
+        <div style="background:rgba(0,0,0,0.25); border-left:3px solid var(--accent-cyan); padding:10px 12px; border-radius:0 6px 6px 0;">
+            <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:2px;">PRACTICAL EXAMPLE</div>
+            <div style="font-size:12px; color:var(--text-primary);">${data.example}</div>
+        </div>
+    `;
+
+    modal.style.display = "flex";
+}
+
+function closeContextHelpModal() {
+    const modal = document.getElementById("context-help-modal");
+    if (modal) modal.style.display = "none";
+}
+
 
 
 

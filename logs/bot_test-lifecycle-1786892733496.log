@@ -1,0 +1,20 @@
+2026-08-16 20:35:38,030 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786892733496...
+2026-08-16 20:35:38,040 - INFO - SQLite database tables verified/created.
+2026-08-16 20:35:38,047 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 20:35:39,055 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 20:35:39,149 - INFO - Sending Telegram alert...
+2026-08-16 20:35:52,126 - INFO - Telegram alert sent successfully.
+2026-08-16 20:35:52,466 - INFO - [test-lifecycle-1786892733496] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 20:35:55,003 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786892733496]...
+2026-08-16 20:35:57,857 - INFO - Indicators computed | close=63114.00 ema_9=63100.52 ema_20=63084.16 ema_50=63060.07 ema_200=63060.59 macd=18.7933 poc=63050.0 val=62600.0 vah=63375.0
+2026-08-16 20:35:57,858 - INFO - [test-lifecycle-1786892733496] Evaluating strategy on completed candle: 2026-08-16T15:00:00+00:00 at Close price: 63113.99
+2026-08-16 20:36:09,574 - ERROR - Error logging bot activity for test-lifecycle-1786892733496: database is locked
+2026-08-16 20:36:10,499 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=61.3) | Direction: LONG | BullScore: 78.9% | BearScore: 21.1% | Active: ['ema', 'macd', 'vp']
+2026-08-16 20:36:15,959 - INFO - Capping position size 2.521114 BTC to available cash equivalent 0.158443 BTC.
+2026-08-16 20:36:15,969 - INFO - Created pending signal approval ID 247 for bot test-lifecycle-1786892733496 (LONG @ $63113.99, status: WAITING_APPROVAL)
+2026-08-16 20:36:17,271 - INFO - [test-lifecycle-1786892733496] Signal LONG generated (ID: 247). Waiting for manual user approval.
+2026-08-16 20:36:17,355 - INFO - Logged heartbeat status: OK
+2026-08-16 20:36:17,358 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 20:36:17,358 - INFO - Bot test-lifecycle-1786892733496 scheduled to check every 5 minutes.
+2026-08-16 20:36:17,358 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 20:36:17,358 - INFO - Scheduler started

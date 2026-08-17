@@ -1,0 +1,19 @@
+2026-08-16 13:27:41,660 - INFO - Initializing scheduled trading bot live runner for bot-1786867055792-13ee...
+2026-08-16 13:27:41,693 - INFO - SQLite database tables verified/created.
+2026-08-16 13:27:41,722 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 13:27:43,885 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 13:27:43,907 - INFO - Sending Telegram alert...
+2026-08-16 13:27:44,884 - INFO - Telegram alert sent successfully.
+2026-08-16 13:27:44,895 - INFO - [bot-1786867055792-13ee] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 13:27:44,904 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786867055792-13ee]...
+2026-08-16 13:27:55,116 - INFO - Indicators computed | close=63061.03 ema_9=63060.94 ema_20=63063.21 ema_50=63075.00 ema_200=63082.96 macd=-4.4922 poc=63050.0 val=62600.0 vah=63425.0
+2026-08-16 13:27:55,116 - INFO - [bot-1786867055792-13ee] Evaluating strategy on completed candle: 2026-08-16T07:50:00+00:00 at Close price: 63061.03
+2026-08-16 13:28:03,845 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=27.8) | Direction: SHORT | BullScore: 11.8% | BearScore: 88.2% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 13:28:14,649 - INFO - Capping position size 3.074085 BTC to available cash equivalent 0.158577 BTC.
+2026-08-16 13:28:14,705 - INFO - Created pending signal approval ID 198 for bot bot-1786867055792-13ee (SHORT @ $63061.03, status: WAITING_APPROVAL)
+2026-08-16 13:28:15,385 - INFO - [bot-1786867055792-13ee] Signal SHORT generated (ID: 198). Waiting for manual user approval.
+2026-08-16 13:28:15,438 - INFO - Logged heartbeat status: OK
+2026-08-16 13:28:15,443 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 13:28:15,443 - INFO - Bot bot-1786867055792-13ee scheduled to check every 5 minutes.
+2026-08-16 13:28:15,443 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 13:28:15,443 - INFO - Scheduler started

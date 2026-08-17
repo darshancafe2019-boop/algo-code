@@ -1,0 +1,20 @@
+2026-08-16 13:27:23,424 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786867037597...
+2026-08-16 13:27:23,435 - INFO - SQLite database tables verified/created.
+2026-08-16 13:27:23,442 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 13:27:41,681 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786867037597...
+2026-08-16 13:27:41,705 - INFO - SQLite database tables verified/created.
+2026-08-16 13:27:41,727 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 13:27:43,814 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 13:27:43,843 - INFO - Sending Telegram alert...
+2026-08-16 13:27:44,818 - INFO - Telegram alert sent successfully.
+2026-08-16 13:27:44,827 - INFO - [test-lifecycle-1786867037597] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 13:27:44,836 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786867037597]...
+2026-08-16 13:27:55,108 - INFO - Indicators computed | close=63061.03 ema_9=63060.94 ema_20=63063.21 ema_50=63075.00 ema_200=63082.96 macd=-4.4922 poc=63050.0 val=62600.0 vah=63425.0
+2026-08-16 13:27:55,109 - INFO - [test-lifecycle-1786867037597] Evaluating strategy on completed candle: 2026-08-16T07:50:00+00:00 at Close price: 63061.03
+2026-08-16 13:27:57,827 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=27.8) | Direction: HOLD | BullScore: 0.0% | BearScore: 39.5% | Active: ['ema', 'macd', 'vp']
+2026-08-16 13:28:06,408 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 40% (HOLD)
+2026-08-16 13:28:13,577 - INFO - Logged heartbeat status: OK
+2026-08-16 13:28:13,589 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 13:28:13,596 - INFO - Bot test-lifecycle-1786867037597 scheduled to check every 5 minutes.
+2026-08-16 13:28:13,596 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 13:28:13,596 - INFO - Scheduler started

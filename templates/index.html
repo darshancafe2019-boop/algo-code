@@ -80,6 +80,12 @@
                 <button class="btn btn-secondary btn-sm" id="btn-manual-refresh" onclick="refreshAllDataNow()" title="Manually trigger immediate refresh of all dashboard components">
                     🔄 Refresh Now
                 </button>
+                <button class="btn btn-secondary btn-sm" id="btn-tutorial" onclick="openTutorialModal()" title="How to Use Algo Bot - 12-Step Guided Walkthrough">
+                    📘 How to Use
+                </button>
+                <button class="btn btn-secondary btn-sm" id="btn-open-strat-builder" onclick="openVisualStrategyModal()" title="Visual Strategy Builder (IF / AND / OR / THEN)">
+                    🛠️ Strategy Builder
+                </button>
                 <button class="btn btn-secondary btn-sm" id="btn-cmd-palette" onclick="openCommandPalette()" title="Open Quick Command Palette (Ctrl + K)">
                     🔍 Quick Command <kbd style="background:rgba(255,255,255,0.15); padding:1px 5px; border-radius:3px; font-size:10px;">Ctrl+K</kbd>
                 </button>
@@ -89,6 +95,7 @@
                 <button class="btn btn-icon" id="theme-toggle" title="Toggle Light/Dark Theme" onclick="toggleTheme()">
                     🌙
                 </button>
+
             </div>
         </header>
 
@@ -193,13 +200,13 @@
                 </nav>
 
                 <!-- TRADE SUMMARY PANEL (LEFT SIDEBAR TRADE-JOURNAL SUMMARY) -->
-                <div class="trade-summary-card">
-                    <div class="summary-card-header">
+                <div class="trade-summary-card" style="cursor:default;">
+                    <div class="summary-card-header" style="display:flex; justify-content:space-between; align-items:center;">
                         <span>PERFORMANCE SUMMARY</span>
-                        <span class="summary-badge" id="sb-win-count">--</span>
+                        <span class="summary-badge" id="sb-win-count" style="font-size:10px; cursor:pointer;" onclick="switchTab('analytics')" title="Click to view detailed win/loss performance">--</span>
                     </div>
-                    <div class="summary-main-pnl">
-                        <div class="sm-label">NET P&L</div>
+                    <div class="summary-main-pnl" onclick="switchTab('analytics')" style="cursor:pointer;" title="Click to open Performance Analytics & P&L Details">
+                        <div class="sm-label">NET P&L ↗</div>
                         <div class="sm-value" id="sb-total-pnl">--</div>
                     </div>
                     <div class="summary-grid">
@@ -207,28 +214,29 @@
                             <span class="lbl">Start Balance</span>
                             <b class="val" id="sb-start-bal">$10,000.00</b>
                         </div>
-                        <div class="sum-item">
-                            <span class="lbl">Current Balance</span>
+                        <div class="sum-item" onclick="switchTab('analytics')" style="cursor:pointer;" title="Click to open Performance Equity Curve">
+                            <span class="lbl">Current Balance ↗</span>
                             <b class="val" id="sb-curr-bal">--</b>
                         </div>
-                        <div class="sum-item">
-                            <span class="lbl">Total Trades</span>
+                        <div class="sum-item" onclick="switchTab('analytics')" style="cursor:pointer;" title="Click to open Trade Journal filtered to all trades">
+                            <span class="lbl">Total Trades ↗</span>
                             <b class="val" id="sb-total-trades">--</b>
                         </div>
-                        <div class="sum-item">
-                            <span class="lbl">Open Trades</span>
+                        <div class="sum-item" onclick="switchCtrlSubtab('overview')" style="cursor:pointer;" title="Click to view Open Positions in Bot Overview">
+                            <span class="lbl">Open Trades ↗</span>
                             <b class="val" id="sb-open-trades">--</b>
                         </div>
-                        <div class="sum-item">
-                            <span class="lbl">Win Rate</span>
+                        <div class="sum-item" onclick="switchTab('analytics')" style="cursor:pointer;" title="Click to open Win Rate & Expectancy Analysis">
+                            <span class="lbl">Win Rate ↗</span>
                             <b class="val" id="sb-winrate">--</b>
                         </div>
-                        <div class="sum-item">
-                            <span class="lbl">W / L / BE</span>
+                        <div class="sum-item" onclick="switchTab('analytics')" style="cursor:pointer;" title="Click to open Win / Loss / Breakeven distribution">
+                            <span class="lbl">W / L / BE ↗</span>
                             <b class="val" id="sb-w-l-be">--</b>
                         </div>
                     </div>
                 </div>
+
 
                 <div class="sidebar-footer">
                     <div class="mode-badge" id="mode-badge">🟡 PAPER TRADING</div>
@@ -1697,7 +1705,9 @@
                                     <option value="SHORT">SHORT</option>
                                 </select>
                                 <input type="text" class="search-input" id="trade-search" placeholder="Search symbol or remarks..." onkeyup="fetchTrades()">
-                                <button class="btn btn-secondary" onclick="exportTradesCSV()">📥 Export CSV</button>
+                                <button class="btn btn-secondary" onclick="exportTradesCSV()" title="Download trade history as CSV">📥 Export CSV</button>
+                                <button class="btn btn-secondary" onclick="exportTradesJSON()" title="Download trade history as JSON">📥 Export JSON</button>
+
                             </div>
 
                         </div>
@@ -2787,14 +2797,18 @@
 
     <!-- TRADINGVIEW-STYLE UNIVERSAL INDICATOR CONFIGURATION DRAWER / MODAL -->
     <div class="modal-overlay" id="ind-config-modal" style="display:none;">
-        <div class="modal-card modal-lg" style="max-width:760px; max-height:90vh; display:flex; flex-direction:column;">
+        <div class="modal-card modal-lg" style="max-width:780px; max-height:90vh; display:flex; flex-direction:column;">
             <div class="modal-header" style="padding:16px 20px; border-bottom:1px solid var(--border-color); background:var(--bg-card-subtle);">
                 <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
                     <div style="display:flex; align-items:center; gap:10px;">
                         <span style="font-size:1.5rem;" id="ind-config-icon">⚙️</span>
                         <div>
-                            <div class="modal-title" id="ind-config-modal-title" style="font-size:1.1rem; font-weight:700;">Configure Indicator</div>
-                            <div style="font-size:11px; color:var(--text-muted);" id="ind-config-modal-subtitle">TradingView Standard Settings & Rules Engine</div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <div class="modal-title" id="ind-config-modal-title" style="font-size:1.1rem; font-weight:700;">Configure Indicator</div>
+                                <span class="badge" id="ind-config-bot-badge" style="background:rgba(0,192,118,0.15); color:#00c076; font-size:11px; font-weight:700; border:1px solid rgba(0,192,118,0.3);">🤖 Bot: bot-1</span>
+                                <span class="badge" id="ind-config-source-badge" style="background:rgba(59,130,246,0.15); color:#3b82f6; font-size:11px; font-weight:700; border:1px solid rgba(59,130,246,0.3);">Source: BOT OVERRIDE</span>
+                            </div>
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;" id="ind-config-modal-subtitle">TradingView Standard Settings & Rules Engine</div>
                         </div>
                     </div>
                     <div style="display:flex; align-items:center; gap:8px;">
@@ -2807,12 +2821,13 @@
             <!-- PRESET TOOLBAR & MODAL TABS -->
             <div style="padding:10px 20px; background:var(--bg-card); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <!-- MODAL TABS -->
-                <div class="modal-tabs" id="ind-modal-subtabs" style="display:flex; gap:6px;">
+                <div class="modal-tabs" id="ind-modal-subtabs" style="display:flex; gap:6px; flex-wrap:wrap;">
                     <button type="button" class="btn btn-sm btn-primary ind-tab-btn active" data-tab="inputs" onclick="switchIndModalTab('inputs')">📥 Inputs</button>
                     <button type="button" class="btn btn-sm btn-secondary ind-tab-btn" data-tab="signal" onclick="switchIndModalTab('signal')">⚡ Signal Settings</button>
-                    <button type="button" class="btn btn-sm btn-secondary ind-tab-btn" data-tab="timeframe" onclick="switchIndModalTab('timeframe')">⏱️ Timeframe</button>
+                    <button type="button" class="btn btn-sm btn-secondary ind-tab-btn" data-tab="timeframe" onclick="switchIndModalTab('timeframe')">⏱️ Timeframe & Exec</button>
                     <button type="button" class="btn btn-sm btn-secondary ind-tab-btn" data-tab="display" onclick="switchIndModalTab('display')">🎨 Display & Style</button>
-                    <button type="button" class="btn btn-sm btn-secondary ind-tab-btn" data-tab="advanced" onclick="switchIndModalTab('advanced')">⚙️ Advanced & Weight</button>
+                    <button type="button" class="btn btn-sm btn-secondary ind-tab-btn" data-tab="advanced" onclick="switchIndModalTab('advanced')">⚖️ Risk & Weight</button>
+                    <button type="button" class="btn btn-sm btn-secondary ind-tab-btn" data-tab="history" onclick="switchIndModalTab('history')">📜 Edit History</button>
                 </div>
 
                 <!-- PRESET CONTROLS -->
@@ -2835,16 +2850,17 @@
 
                 <div class="modal-footer" style="padding:14px 20px; border-top:1px solid var(--border-color); background:var(--bg-card-subtle); display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="resetCurrentIndDefaults()">🔄 Reset to Defaults</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="resetCurrentIndDefaults()">🔄 Reset to Profile / Defaults</button>
                     </div>
                     <div style="display:flex; gap:10px;">
                         <button type="button" class="btn btn-secondary btn-sm" onclick="closeIndConfigModal()">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm" style="font-weight:700;">💾 APPLY CONFIGURATION</button>
+                        <button type="submit" class="btn btn-primary btn-sm" style="font-weight:700;">💾 APPLY TO SELECTED BOT</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
 
     <!-- SMART CONFIRMATION SYSTEM MODAL (3-TIER RISK) -->
     <div class="modal-overlay" id="smart-confirm-modal" style="display:none;">
@@ -2910,7 +2926,12 @@
                     <!-- Timeline rendered dynamically by JS -->
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="display:flex; justify-content:flex-end;">
+                <button class="btn btn-secondary" onclick="closeTradeTraceModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- INTERACTIVE PERFORMANCE DRILL-DOWN MODAL -->
     <div class="modal-overlay" id="analytics-drilldown-modal" style="display:none;">
         <div class="modal-card modal-lg" style="max-width:900px;">
@@ -2977,6 +2998,125 @@
             </div>
         </div>
     </div>
+
+    <!-- HOW TO USE ALGO BOT - 12-STEP GUIDED TUTORIAL MODAL -->
+    <div class="modal-overlay" id="tutorial-modal" style="display:none;">
+        <div class="modal-card modal-lg" style="max-width:850px;">
+            <div class="modal-header" style="background:var(--bg-card-subtle); border-bottom:1px solid var(--border-color); padding:16px 24px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.6rem;">📘</span>
+                    <div>
+                        <div class="modal-title" style="font-size:1.2rem; font-weight:700;">How to Use Algo Bot Terminal</div>
+                        <div style="font-size:12px; color:var(--text-muted);">Step-by-step master workflow from asset selection to automated paper execution</div>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeTutorialModal()">×</button>
+            </div>
+            <div style="padding:12px 24px 0 24px;">
+                <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px;" id="tutorial-step-pills">
+                    <!-- Step navigation pills generated dynamically -->
+                </div>
+            </div>
+            <div class="modal-body" style="padding:20px 24px; max-height:460px; overflow-y:auto;" id="tutorial-step-content">
+                <!-- Dynamic Step Content -->
+            </div>
+            <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card-subtle); border-top:1px solid var(--border-color); padding:12px 24px;">
+                <button class="btn btn-secondary" id="tut-prev-btn" onclick="prevTutorialStep()">← Previous</button>
+                <div style="font-size:12px; color:var(--text-muted); font-weight:600;" id="tut-step-counter">Step 1 of 12</div>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn btn-primary" id="tut-next-btn" onclick="nextTutorialStep()">Next Step →</button>
+                    <button class="btn btn-success" id="tut-finish-btn" onclick="launchPaperBotFromTutorial()" style="display:none;">🚀 Launch First Paper Bot</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISUAL STRATEGY BUILDER MODAL (IF / AND / OR / THEN) -->
+    <div class="modal-overlay" id="visual-strategy-modal" style="display:none;">
+        <div class="modal-card modal-lg" style="max-width:850px;">
+            <div class="modal-header" style="background:var(--bg-card-subtle); border-bottom:1px solid var(--border-color); padding:16px 24px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.6rem;">🛠️</span>
+                    <div>
+                        <div class="modal-title" style="font-size:1.2rem; font-weight:700;">Visual Strategy Builder</div>
+                        <div style="font-size:12px; color:var(--text-muted);">Build, compile, test, and save rule-based algorithmic trading strategies</div>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeVisualStrategyModal()">×</button>
+            </div>
+            <div class="modal-body" style="padding:20px 24px; max-height:480px; overflow-y:auto;">
+                <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:12px; margin-bottom:16px;">
+                    <div>
+                        <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Strategy Name</label>
+                        <input type="text" id="vsb-strat-name" class="form-control" placeholder="e.g. Trend Breakout & RSI Filter">
+                    </div>
+                    <div>
+                        <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Target Action / Signal</label>
+                        <select id="vsb-target-signal" class="form-control">
+                            <option value="BUY">BUY (LONG)</option>
+                            <option value="SELL">SELL (SHORT)</option>
+                            <option value="CLOSE">CLOSE POSITION</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Rule Conjunction</label>
+                        <select id="vsb-conjunction" class="form-control" onchange="updateVisualStrategyPreview()">
+                            <option value="AND">ALL Rules Must Match (AND)</option>
+                            <option value="OR">ANY Rule Can Match (OR)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:13px; font-weight:700; color:var(--text-primary);">Condition Rules (IF)</span>
+                    <button class="btn btn-secondary btn-sm" onclick="addVisualStrategyRuleRow()">➕ Add Condition</button>
+                </div>
+
+                <div id="vsb-rules-list" style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+                    <!-- Rule rows populated dynamically -->
+                </div>
+
+                <!-- COMPILED PREVIEW BOX -->
+                <div style="background:rgba(0,0,0,0.25); border:1px solid var(--border-color); border-radius:6px; padding:12px; margin-bottom:16px;">
+                    <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">Compiled Execution Rule:</div>
+                    <code id="vsb-compiled-preview" style="color:var(--accent-cyan); font-size:12px; word-break:break-all;">IF () THEN BUY</code>
+                </div>
+
+                <!-- TEST RESULT BOX -->
+                <div id="vsb-test-result-box" style="display:none; padding:10px 14px; border-radius:6px; font-size:12px; margin-bottom:12px;"></div>
+            </div>
+            <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card-subtle); border-top:1px solid var(--border-color); padding:12px 24px;">
+                <button class="btn btn-secondary" onclick="testVisualStrategyRules()">🧪 Test on Live Indicators</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn btn-secondary" onclick="closeVisualStrategyModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="saveVisualStrategyFromModal()">💾 Save & Compile Strategy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTEXTUAL HELP & EDUCATIONAL GUIDANCE MODAL -->
+    <div class="modal-overlay" id="context-help-modal" style="display:none;">
+        <div class="modal-card" style="max-width:550px;">
+            <div class="modal-header" style="background:var(--bg-card-subtle); border-bottom:1px solid var(--border-color); padding:16px 20px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:1.4rem;">ℹ️</span>
+                    <div>
+                        <div class="modal-title" id="help-modal-title" style="font-size:1.1rem; font-weight:700;">Setting Guidance</div>
+                        <div style="font-size:11px; color:var(--text-muted);">Detailed explanation, mathematical purpose & recommended safe ranges</div>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeContextHelpModal()">×</button>
+            </div>
+            <div class="modal-body" style="padding:20px;" id="help-modal-body">
+                <!-- Populated dynamically by JS -->
+            </div>
+            <div class="modal-footer" style="display:flex; justify-content:flex-end; background:var(--bg-card-subtle); border-top:1px solid var(--border-color); padding:10px 20px;">
+                <button class="btn btn-primary btn-sm" onclick="closeContextHelpModal()">Understood</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Chart.js Library for Performance Analytics Charts (Local with CDN Fallback) -->
     <script src="/static/js/chart.min.js"></script>

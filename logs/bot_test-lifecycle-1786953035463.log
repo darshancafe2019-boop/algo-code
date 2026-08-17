@@ -1,0 +1,20 @@
+2026-08-17 13:20:42,471 - INFO - Initializing scheduled trading bot live runner for test-lifecycle-1786953035463...
+2026-08-17 13:20:42,703 - INFO - SQLite database tables verified/created.
+2026-08-17 13:20:42,710 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-17 13:20:46,952 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-17 13:20:47,032 - INFO - Sending Telegram alert...
+2026-08-17 13:20:50,084 - INFO - Telegram alert sent successfully.
+2026-08-17 13:20:50,091 - INFO - [test-lifecycle-1786953035463] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-17 13:20:50,105 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: test-lifecycle-1786953035463]...
+2026-08-17 13:21:02,906 - INFO - Indicators computed | close=63528.10 ema_9=63555.58 ema_20=63562.71 ema_50=63503.27 ema_200=63267.09 macd=4.2326 poc=63050.0 val=62650.0 vah=63175.0
+2026-08-17 13:21:02,906 - INFO - [test-lifecycle-1786953035463] Evaluating strategy on completed candle: 2026-08-17T07:45:00+00:00 at Close price: 63530.32
+2026-08-17 13:21:03,908 - INFO - SHORT signal blocked | Trend blocked (Close 63530.32 >= EMA200 63264.47) | Momentum blocked (MACD 7.9105 >= 0) | context={'close': 63530.32, 'ema_9': 63562.45285305866, 'ema_20': 63566.349185658415, 'ema_50': 63502.25588128577, 'ema_200': 63264.471317897565, 'macd_line': 7.910512841990567, 'macd_signal': 21.311854446562897, 'macd_hist': -13.40134160457233, 'poc': np.float64(63050.0), 'val': np.float64(62650.0), 'vah': np.float64(63175.0)}
+2026-08-17 13:21:03,912 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=33.9) | Direction: HOLD | BullScore: 0.0% | BearScore: 21.1% | Active: ['ema', 'macd', 'vp']
+2026-08-17 13:21:05,428 - INFO - Signal evaluated: HOLD. Reason/Details: SHORT setup blocked: Trend blocked (Close 63530.32 >= EMA200 63264.47) | Momentum blocked (MACD 7.9105 >= 0)
+2026-08-17 13:21:05,429 - INFO - Sending Telegram alert...
+2026-08-17 13:21:14,435 - INFO - Telegram alert sent successfully.
+2026-08-17 13:21:16,998 - INFO - Logged heartbeat status: OK
+2026-08-17 13:21:17,001 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-17 13:21:17,001 - INFO - Bot test-lifecycle-1786953035463 scheduled to check every 5 minutes.
+2026-08-17 13:21:17,001 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-17 13:21:17,001 - INFO - Scheduler started

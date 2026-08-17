@@ -19,6 +19,7 @@ from . import market_intelligence
 from . import market_universe
 from . import market_providers
 from . import trade_audit_engine
+from . import strategy_builder
 
 __all__ = [
     "config",
@@ -42,4 +43,6 @@ __all__ = [
     "market_universe",
     "market_providers",
     "trade_audit_engine",
+    "strategy_builder",
 ]
+

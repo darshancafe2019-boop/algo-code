@@ -1,0 +1,17 @@
+2026-08-16 17:28:26,361 - INFO - Initializing scheduled trading bot live runner for bot-1786881495065-ac3a...
+2026-08-16 17:28:26,568 - INFO - SQLite database tables verified/created.
+2026-08-16 17:28:27,656 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 17:28:29,658 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 17:28:29,685 - INFO - Sending Telegram alert...
+2026-08-16 17:28:31,350 - INFO - Telegram alert sent successfully.
+2026-08-16 17:28:31,403 - INFO - [bot-1786881495065-ac3a] Starting signal check cycle for ETH/USDT (15m)...
+2026-08-16 17:28:31,828 - INFO - Fetching recent candles for ETH/USDT (15m) [Bot: bot-1786881495065-ac3a]...
+2026-08-16 17:28:34,046 - INFO - Indicators computed | close=1880.94 ema_9=1880.71 ema_20=1880.86 ema_50=1881.48 ema_200=1882.23 macd=-0.2589 poc=1875.0 val=1875.0 vah=1900.0
+2026-08-16 17:28:34,046 - INFO - [bot-1786881495065-ac3a] Evaluating strategy on completed candle: 2026-08-16T11:30:00+00:00 at Close price: 1880.55
+2026-08-16 17:28:43,296 - INFO - Confluence Evaluation | Regime: RANGING (ADX=15.2) | Direction: HOLD | BullScore: 32.6% | BearScore: 50.0% | Active: ['ema', 'macd', 'rsi', 'vp']
+2026-08-16 17:28:50,130 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 50% (HOLD)
+2026-08-16 17:28:59,554 - INFO - Logged heartbeat status: OK
+2026-08-16 17:28:59,556 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 17:28:59,556 - INFO - Bot bot-1786881495065-ac3a scheduled to check every 15 minutes.
+2026-08-16 17:28:59,556 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 17:28:59,556 - INFO - Scheduler started

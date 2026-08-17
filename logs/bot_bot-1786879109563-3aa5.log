@@ -1,0 +1,204 @@
+2026-08-16 16:48:43,290 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 16:48:43,317 - INFO - SQLite database tables verified/created.
+2026-08-16 16:48:43,371 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 16:48:44,749 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 16:48:44,786 - INFO - Sending Telegram alert...
+2026-08-16 16:48:45,643 - INFO - Telegram alert sent successfully.
+2026-08-16 16:48:45,662 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 16:48:45,747 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786879109563-3aa5]...
+2026-08-16 16:49:05,582 - INFO - Indicators computed | close=63006.54 ema_9=63007.19 ema_20=63012.75 ema_50=63033.45 ema_200=63066.09 macd=-9.4452 poc=63050.0 val=62600.0 vah=63425.0
+2026-08-16 16:49:05,713 - INFO - [bot-1786879109563-3aa5] Evaluating strategy on completed candle: 2026-08-16T11:10:00+00:00 at Close price: 63006.54
+2026-08-16 16:49:08,362 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=52.5) | Direction: SHORT | BullScore: 11.8% | BearScore: 88.2% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 16:49:15,259 - INFO - Capping position size 4.612546 BTC to available cash equivalent 0.238071 BTC.
+2026-08-16 16:49:15,280 - INFO - Created pending signal approval ID 210 for bot bot-1786879109563-3aa5 (SHORT @ $63006.54, status: WAITING_APPROVAL)
+2026-08-16 16:49:16,213 - INFO - [bot-1786879109563-3aa5] Signal SHORT generated (ID: 210). Waiting for manual user approval.
+2026-08-16 16:49:18,794 - INFO - Logged heartbeat status: OK
+2026-08-16 16:49:18,803 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 16:49:18,804 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 16:49:18,804 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 16:49:18,804 - INFO - Scheduler started
+2026-08-16 17:04:23,494 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 17:04:23,642 - INFO - SQLite database tables verified/created.
+2026-08-16 17:04:23,810 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 17:04:25,278 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 17:04:25,340 - INFO - Sending Telegram alert...
+2026-08-16 17:04:26,483 - INFO - Telegram alert sent successfully.
+2026-08-16 17:04:26,497 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 17:04:26,507 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786879109563-3aa5]...
+2026-08-16 17:04:30,733 - INFO - Indicators computed | close=62987.62 ema_9=62997.31 ema_20=63006.09 ema_50=63028.21 ema_200=63063.76 macd=-11.4479 poc=63050.0 val=62600.0 vah=63425.0
+2026-08-16 17:04:30,733 - INFO - [bot-1786879109563-3aa5] Evaluating strategy on completed candle: 2026-08-16T11:25:00+00:00 at Close price: 62981.95
+2026-08-16 17:04:31,445 - INFO - Confluence Evaluation | Regime: TRENDING (ADX=42.2) | Direction: SHORT | BullScore: 0.0% | BearScore: 100.0% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 17:04:31,494 - INFO - Capping position size 3.347094 BTC to available cash equivalent 0.238163 BTC.
+2026-08-16 17:04:35,912 - INFO - [bot-1786879109563-3aa5] Signal SHORT active pending approval already exists (ID: 210).
+2026-08-16 17:04:41,395 - INFO - Logged heartbeat status: OK
+2026-08-16 17:04:41,397 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 17:04:41,397 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 17:04:41,397 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 17:04:41,397 - INFO - Scheduler started
+2026-08-16 17:28:22,456 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 17:28:22,790 - INFO - SQLite database tables verified/created.
+2026-08-16 17:28:23,204 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 17:28:24,841 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 17:28:25,445 - INFO - Sending Telegram alert...
+2026-08-16 17:28:28,885 - INFO - Telegram alert sent successfully.
+2026-08-16 17:28:28,888 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 17:28:28,894 - WARNING - Global Kill switch active! Found flag file or config switch.
+2026-08-16 17:28:28,894 - WARNING - Kill switch file active. Skipping cycle.
+2026-08-16 17:28:28,894 - INFO - Sending Telegram alert...
+2026-08-16 17:28:29,611 - INFO - Telegram alert sent successfully.
+2026-08-16 17:28:29,838 - INFO - Logged heartbeat status: OK
+2026-08-16 17:28:29,840 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 17:28:29,840 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 17:28:29,840 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 17:28:29,840 - INFO - Scheduler started
+2026-08-16 18:12:22,208 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 18:12:22,363 - INFO - SQLite database tables verified/created.
+2026-08-16 18:12:22,401 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:12:24,062 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:12:24,177 - INFO - Sending Telegram alert...
+2026-08-16 18:12:24,916 - INFO - Telegram alert sent successfully.
+2026-08-16 18:12:25,346 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:12:36,405 - ERROR - Error logging bot activity for bot-1786879109563-3aa5: database is locked
+2026-08-16 18:12:36,406 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786879109563-3aa5]...
+2026-08-16 18:12:39,646 - INFO - Indicators computed | close=63005.96 ema_9=63011.70 ema_20=63010.55 ema_50=63020.86 ema_200=63056.81 macd=-0.3083 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:12:39,649 - INFO - [bot-1786879109563-3aa5] Evaluating strategy on completed candle: 2026-08-16T12:35:00+00:00 at Close price: 63005.97
+2026-08-16 18:12:39,829 - INFO - Confluence Evaluation | Regime: RANGING (ADX=17.7) | Direction: HOLD | BullScore: 73.8% | BearScore: 26.2% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 18:12:39,954 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 74% (HOLD)
+2026-08-16 18:12:40,195 - INFO - Logged heartbeat status: OK
+2026-08-16 18:12:40,198 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:12:40,198 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 18:12:40,198 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:12:40,198 - INFO - Scheduler started
+2026-08-16 18:14:12,915 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 18:14:12,928 - INFO - SQLite database tables verified/created.
+2026-08-16 18:14:12,932 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:14:14,012 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:14:14,036 - INFO - Sending Telegram alert...
+2026-08-16 18:14:14,741 - INFO - Telegram alert sent successfully.
+2026-08-16 18:14:14,745 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:14:14,749 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786879109563-3aa5]...
+2026-08-16 18:14:17,088 - INFO - Indicators computed | close=62997.77 ema_9=63010.06 ema_20=63009.77 ema_50=63020.54 ema_200=63056.72 macd=-0.9616 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:14:17,088 - INFO - [bot-1786879109563-3aa5] Evaluating strategy on completed candle: 2026-08-16T12:35:00+00:00 at Close price: 63005.97
+2026-08-16 18:14:17,475 - INFO - Confluence Evaluation | Regime: RANGING (ADX=17.7) | Direction: HOLD | BullScore: 73.8% | BearScore: 26.2% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 18:14:17,522 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 74% (HOLD)
+2026-08-16 18:14:19,206 - INFO - Logged heartbeat status: OK
+2026-08-16 18:14:19,212 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:14:19,212 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 18:14:19,212 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:14:19,212 - INFO - Scheduler started
+2026-08-16 18:17:49,590 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 18:17:49,614 - INFO - SQLite database tables verified/created.
+2026-08-16 18:17:49,641 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:17:51,324 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:17:51,453 - INFO - Sending Telegram alert...
+2026-08-16 18:17:52,145 - INFO - Telegram alert sent successfully.
+2026-08-16 18:17:52,158 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:17:52,183 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786879109563-3aa5]...
+2026-08-16 18:17:55,993 - INFO - Indicators computed | close=62998.11 ema_9=63007.67 ema_20=63008.66 ema_50=63019.66 ema_200=63056.14 macd=-1.8338 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:17:55,995 - INFO - [bot-1786879109563-3aa5] Evaluating strategy on completed candle: 2026-08-16T12:40:00+00:00 at Close price: 62997.77
+2026-08-16 18:18:08,650 - ERROR - Error logging bot activity for bot-1786879109563-3aa5: database is locked
+2026-08-16 18:18:13,196 - INFO - Confluence Evaluation | Regime: RANGING (ADX=17.3) | Direction: SHORT | BullScore: 24.6% | BearScore: 75.4% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 18:18:29,667 - ERROR - Error logging bot decision for bot-1786879109563-3aa5: database is locked
+2026-08-16 18:18:37,363 - INFO - Capping position size 3.310527 BTC to available cash equivalent 0.238104 BTC.
+2026-08-16 18:18:37,372 - INFO - Created pending signal approval ID 220 for bot bot-1786879109563-3aa5 (SHORT @ $62997.77, status: WAITING_APPROVAL)
+2026-08-16 18:18:38,669 - INFO - [bot-1786879109563-3aa5] Signal SHORT generated (ID: 220). Waiting for manual user approval.
+2026-08-16 18:18:39,289 - INFO - Logged heartbeat status: OK
+2026-08-16 18:18:39,351 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:18:39,351 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 18:18:39,352 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:18:39,352 - INFO - Scheduler started
+2026-08-16 18:35:19,255 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 18:35:19,292 - INFO - SQLite database tables verified/created.
+2026-08-16 18:35:19,368 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 18:35:21,114 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 18:35:21,207 - INFO - Sending Telegram alert...
+2026-08-16 18:35:23,067 - INFO - Telegram alert sent successfully.
+2026-08-16 18:35:23,072 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 18:35:23,076 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786879109563-3aa5]...
+2026-08-16 18:35:34,197 - INFO - Indicators computed | close=63021.98 ema_9=63015.87 ema_20=63012.97 ema_50=63019.99 ema_200=63054.81 macd=1.6140 poc=63050.0 val=62600.0 vah=63400.0
+2026-08-16 18:35:34,213 - INFO - [bot-1786879109563-3aa5] Evaluating strategy on completed candle: 2026-08-16T13:00:00+00:00 at Close price: 63021.99
+2026-08-16 18:35:34,768 - INFO - Confluence Evaluation | Regime: RANGING (ADX=10.3) | Direction: HOLD | BullScore: 24.6% | BearScore: 49.2% | Active: ['ema_9', 'ema_20', 'rsi', 'vwap', 'supertrend', 'atr']
+2026-08-16 18:35:36,266 - INFO - Signal evaluated: HOLD. Reason/Details: Confluence score: 49% (HOLD)
+2026-08-16 18:35:36,379 - INFO - Logged heartbeat status: OK
+2026-08-16 18:35:36,386 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 18:35:36,386 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 18:35:36,387 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 18:35:36,387 - INFO - Scheduler started
+2026-08-16 19:05:50,666 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 19:05:50,750 - INFO - SQLite database tables verified/created.
+2026-08-16 19:05:51,290 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:05:54,130 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 19:05:54,939 - INFO - Sending Telegram alert...
+2026-08-16 19:05:56,654 - INFO - Telegram alert sent successfully.
+2026-08-16 19:05:57,095 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 19:06:06,149 - ERROR - Audit batch write failed: database is locked
+2026-08-16 19:06:06,911 - WARNING - Global Kill switch active! Found flag file or config switch.
+2026-08-16 19:06:06,911 - WARNING - Kill switch file active. Skipping cycle.
+2026-08-16 19:06:06,912 - INFO - Sending Telegram alert...
+2026-08-16 19:06:19,863 - ERROR - Error logging Telegram event: database is locked
+2026-08-16 19:06:19,910 - INFO - Telegram alert sent successfully.
+2026-08-16 19:06:30,615 - ERROR - Error logging heartbeat to DB: database is locked
+2026-08-16 19:06:45,206 - INFO - Logged heartbeat status: OK
+2026-08-16 19:06:45,211 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 19:06:45,211 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 19:06:45,211 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 19:06:45,211 - INFO - Scheduler started
+2026-08-16 19:11:06,775 - INFO - Initializing scheduled trading bot live runner for bot-1786879109563-3aa5...
+2026-08-16 19:11:06,817 - INFO - SQLite database tables verified/created.
+2026-08-16 19:11:06,833 - INFO - Initializing CCXT Binance in TESTNET mode.
+2026-08-16 19:11:09,101 - INFO - Initializing CCXT Binance in MAINNET mode (Public endpoints).
+2026-08-16 19:11:09,178 - INFO - Sending Telegram alert...
+2026-08-16 19:11:10,013 - INFO - Telegram alert sent successfully.
+2026-08-16 19:11:10,023 - INFO - [bot-1786879109563-3aa5] Starting signal check cycle for BTC/USDT (5m)...
+2026-08-16 19:11:10,031 - INFO - Fetching recent candles for BTC/USDT (5m) [Bot: bot-1786879109563-3aa5]...
+2026-08-16 19:11:17,615 - ERROR - Error fetching live OHLCV for BTC/USDT 5m: 
+2026-08-16 19:11:17,631 - ERROR - System Error in runner execution cycle: 
+Traceback (most recent call last):
+  File "H:\algo\algo\btc-bot\src\live_runner.py", line 167, in process_cycle
+    df = self.mainnet_fetcher.fetch_live_ohlcv(self.symbol, self.timeframe, limit=1000)
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 196, in fetch_live_ohlcv
+    raise e
+  File "H:\algo\algo\btc-bot\src\data_fetcher.py", line 175, in fetch_live_ohlcv
+    candles = self.exchange.fetch_ohlcv(
+        symbol=symbol,
+        timeframe=timeframe,
+        limit=limit
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 4713, in fetch_ohlcv
+    self.load_markets()
+    ~~~~~~~~~~~~~~~~~^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 1816, in load_markets
+    markets = self.fetch_markets(params)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 3246, in fetch_markets
+    promisesRaw.append(self.fapiPublicGetExchangeInfo(params))
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\binance.py", line 11823, in request
+    response = self.fetch2(path, api, method, params, headers, body, config)
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 5544, in fetch2
+    raise e
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 5525, in fetch2
+    response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "H:\algo\algo\.venv\Lib\site-packages\ccxt\base\exchange.py", line 620, in fetch
+    response = self.session.request(
+        method,
+    ...<6 lines>...
+        files=files
+    )
+  File "H:\algo\algo\.venv\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "H:\algo\algo\.venv\Lib\site-packages\requests\sessions.py", line 827, in send
+    r.content
+  File "H:\algo\algo\.venv\Lib\site-packages\requests\models.py", line 1042, in content
+    self._content = b"".join(self.iter_content(CONTENT_CHUNK_SIZE)) or b""
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MemoryError
+2026-08-16 19:11:32,032 - INFO - Sending Telegram alert...
+2026-08-16 19:11:33,205 - INFO - Telegram alert sent successfully.
+2026-08-16 19:11:36,002 - INFO - Logged heartbeat status: ERROR
+2026-08-16 19:11:36,053 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-16 19:11:36,053 - INFO - Bot bot-1786879109563-3aa5 scheduled to check every 5 minutes.
+2026-08-16 19:11:36,053 - INFO - Added job "LiveRunner.process_cycle" to job store "default"
+2026-08-16 19:11:36,053 - INFO - Scheduler started
